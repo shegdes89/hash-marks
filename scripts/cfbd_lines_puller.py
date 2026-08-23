@@ -70,6 +70,7 @@ def fetch_games(year, week, season_type, api_key):
         by_id[g.get("id")] = {
             "neutralSite": g.get("neutralSite", False),
             "startDate": g.get("startDate"),
+            "week": g.get("week"),
         }
     return by_id
 
@@ -157,12 +158,23 @@ def main():
     json_games = []
     skipped = 0
     ml_missing = 0
+    week_mismatch = 0
     for g in games:
         home = g.get("homeTeam")
         away = g.get("awayTeam")
         info = game_info.get(g.get("id"), {})
         neutral = info.get("neutralSite", False)
         start_date = info.get("startDate")
+        # Use the game's ACTUAL week from CFBD's /games data, not the week
+        # number you requested — CFBD's week filter on /lines doesn't
+        # always cleanly match what you asked for, and blindly stamping
+        # every result with the requested week mislabels anything that
+        # slipped through from a different week.
+        real_week = info.get("week")
+        if real_week is None:
+            real_week = args.week
+        elif real_week != args.week:
+            week_mismatch += 1
         lines = g.get("lines", [])
 
         picked = pick_line(lines, args.provider)
@@ -179,10 +191,10 @@ def main():
         away_ml_str = f"{away_ml}" if away_ml is not None else ""
         if home_ml is None and away_ml is None:
             ml_missing += 1
-        rows.append((provider, f"{args.week}, {away}, {home}, {spread}, {total_str}, {neutral_str}, {time_str}, {home_ml_str}, {away_ml_str}"))
+        rows.append((provider, f"{real_week}, {away}, {home}, {spread}, {total_str}, {neutral_str}, {time_str}, {home_ml_str}, {away_ml_str}"))
 
         json_games.append({
-            "week": args.week,
+            "week": real_week,
             "away": away,
             "home": home,
             "marketLine": spread,
@@ -192,6 +204,12 @@ def main():
             "homeML": home_ml,
             "awayML": away_ml,
         })
+
+    if week_mismatch:
+        print(f"\nNOTE: {week_mismatch} game(s) came back tagged with a different week than you requested "
+              f"(you asked for week {args.week}) — these were labeled with their real week instead of "
+              f"being forced into week {args.week}. This is CFBD's own data, not a bug in this script; "
+              f"it just means their week filter is looser than you'd expect.")
 
     print(f"\n{len(rows)} games with a usable line, {skipped} skipped (no line posted yet).")
     if rows:
