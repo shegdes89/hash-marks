@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HASH MARKS — CFB Betting Board</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  :root{
+    --bg:#0A0F0C;
+    --surface:#121810;
+    --surface2:#171F14;
+    --turf:#2F5233;
+    --turf-bright:#4A7A42;
+    --chalk:#ECE7DC;
+    --muted:#8B9188;
+    --amber:#E8A33D;
+    --red:#C1453A;
+    --steel:#6E93A8;
+    --line:#263129;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 120px),
+      var(--bg);
+    color:var(--chalk);
+    font-family:'IBM Plex Sans', sans-serif;
+    min-height:100vh;
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:28px 20px 80px;}
+
+  /* HEADER */
+  header{display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:22px;border-bottom:2px solid var(--turf);padding-bottom:18px;}
+  .brand{display:flex;align-items:center;gap:14px;}
+  .brand-mark{
+    width:44px;height:44px;border:2px solid var(--amber);border-radius:4px;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Anton',sans-serif;color:var(--amber);font-size:20px;letter-spacing:1px;
+    position:relative;
+  }
+  .brand-mark::after{content:'';position:absolute;left:50%;top:6px;bottom:6px;width:2px;background:var(--amber);opacity:.5;}
+  h1{font-family:'Anton',sans-serif;font-weight:400;font-size:34px;letter-spacing:1.5px;margin:0;line-height:1;}
+  .sub{color:var(--muted);font-size:12.5px;letter-spacing:.5px;margin-top:4px;font-family:'JetBrains Mono',monospace;}
+  .season-tag{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--turf-bright);background:rgba(74,122,66,0.12);border:1px solid var(--turf);padding:6px 12px;border-radius:3px;}
+
+  nav{display:flex;gap:2px;margin-bottom:24px;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:4px;width:fit-content;}
+  nav button{
+    background:transparent;border:none;color:var(--muted);font-family:'Oswald',sans-serif;
+    font-size:14px;letter-spacing:1px;text-transform:uppercase;padding:9px 20px;border-radius:4px;cursor:pointer;transition:.15s;
+  }
+  nav button.active{background:var(--turf);color:var(--chalk);}
+  nav button:hover:not(.active){color:var(--chalk);}
+
+  .panel{display:none;}
+  .panel.active{display:block;}
+
+  section.card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:20px 22px;margin-bottom:18px;}
+  .card h2{font-family:'Oswald',sans-serif;font-size:16px;letter-spacing:1.5px;text-transform:uppercase;color:var(--amber);margin:0 0 14px;font-weight:600;}
+  .card h2 .cnt{color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:none;letter-spacing:0;margin-left:8px;}
+
+  /* RATINGS TABLE */
+  .ratings-controls{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
+  input[type=text], input[type=number], select{
+    background:var(--surface2);border:1px solid var(--line);color:var(--chalk);
+    padding:9px 11px;border-radius:5px;font-family:'IBM Plex Sans',sans-serif;font-size:13.5px;
+  }
+  input:focus, select:focus{outline:1px solid var(--turf-bright);}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;}
+  thead th{text-align:left;color:var(--muted);font-family:'Oswald',sans-serif;letter-spacing:.8px;text-transform:uppercase;font-size:11.5px;padding:8px 10px;border-bottom:1px solid var(--line);cursor:pointer;user-select:none;}
+  thead th:hover{color:var(--amber);}
+  tbody td{padding:8px 10px;border-bottom:1px solid rgba(38,49,41,0.6);font-family:'JetBrains Mono',monospace;}
+  tbody tr:hover{background:rgba(74,122,66,0.06);}
+  .rk{color:var(--muted);width:34px;}
+  .team-name{font-family:'IBM Plex Sans',sans-serif;font-weight:500;}
+  .rating-pos{color:var(--turf-bright);}
+  .rating-neg{color:var(--red);}
+  .edit-rating{width:64px;background:transparent;border:1px solid transparent;color:inherit;font-family:'JetBrains Mono',monospace;padding:3px 5px;border-radius:3px;}
+  .edit-rating:hover, .edit-rating:focus{border-color:var(--line);background:var(--surface2);}
+
+  /* BOARD */
+  .game-form{display:grid;grid-template-columns:1fr 1fr auto 1fr 1fr auto;gap:10px;align-items:end;margin-bottom:6px;}
+  .field label{display:block;font-size:11px;color:var(--muted);margin-bottom:5px;font-family:'Oswald',sans-serif;letter-spacing:.6px;text-transform:uppercase;}
+  .field select, .field input{width:100%;}
+  .at-symbol{color:var(--muted);padding-bottom:9px;font-family:'JetBrains Mono',monospace;}
+  .neutral-row{display:flex;align-items:center;gap:8px;margin:10px 0 4px;font-size:12.5px;color:var(--muted);}
+  button.primary{
+    background:var(--amber);color:#1A1408;border:none;padding:10px 18px;border-radius:5px;
+    font-family:'Oswald',sans-serif;letter-spacing:.8px;text-transform:uppercase;font-size:13px;font-weight:600;cursor:pointer;
+  }
+  button.primary:hover{background:#f2ad48;}
+  button.ghost{background:transparent;border:1px solid var(--line);color:var(--muted);padding:6px 12px;border-radius:5px;font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;}
+  button.ghost:hover{color:var(--chalk);border-color:var(--turf-bright);}
+
+  .game-card{border:1px solid var(--line);border-radius:8px;padding:16px 18px;margin-top:14px;background:var(--surface2);}
+  .game-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;}
+  .matchup{font-family:'Oswald',sans-serif;font-size:17px;letter-spacing:.3px;}
+  .matchup .at{color:var(--muted);font-size:13px;margin:0 6px;}
+  .neutral-badge{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--steel);border:1px solid var(--steel);padding:2px 6px;border-radius:3px;margin-left:8px;}
+  .game-meta{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);}
+
+  .yardstick{margin:14px 0 10px;position:relative;height:34px;background:
+      repeating-linear-gradient(90deg, var(--line) 0 1px, transparent 1px 10%);
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .yardstick .zero{position:absolute;left:50%;top:0;bottom:0;width:1px;background:var(--muted);}
+  .yardstick .mark{position:absolute;top:50%;transform:translate(-50%,-50%);width:12px;height:12px;border-radius:50%;}
+  .yardstick .mark.model{background:var(--amber);box-shadow:0 0 0 3px rgba(232,163,61,0.2);}
+  .yardstick .mark.market{background:var(--steel);box-shadow:0 0 0 3px rgba(110,147,168,0.2);}
+  .yardstick .gap{position:absolute;top:14px;bottom:14px;background:rgba(232,163,61,0.15);}
+  .legend{display:flex;gap:16px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-bottom:4px;}
+  .legend span{display:inline-flex;align-items:center;gap:5px;}
+  .dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
+  .dot.model{background:var(--amber);} .dot.market{background:var(--steel);}
+
+  .edge-readout{display:flex;justify-content:space-between;align-items:center;margin-top:10px;flex-wrap:wrap;gap:10px;}
+  .edge-num{font-family:'Anton',sans-serif;font-size:22px;}
+  .edge-num.pos{color:var(--turf-bright);} .edge-num.neg{color:var(--red);} .edge-num.flat{color:var(--muted);}
+  .edge-label{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--muted);}
+  .rec-pill{font-family:'Oswald',sans-serif;letter-spacing:.6px;text-transform:uppercase;font-size:12.5px;padding:6px 14px;border-radius:20px;border:1px solid var(--amber);color:var(--amber);}
+  .del-x{background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;line-height:1;padding:2px 6px;}
+  .del-x:hover{color:var(--red);}
+  .empty{color:var(--muted);font-size:13px;font-style:italic;padding:10px 0;}
+
+  /* LOG */
+  .stat-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:18px;}
+  .stat-box{background:var(--surface2);border:1px solid var(--line);border-radius:7px;padding:14px 16px;text-align:center;}
+  .stat-box .v{font-family:'Anton',sans-serif;font-size:24px;}
+  .stat-box .l{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--muted);letter-spacing:.4px;text-transform:uppercase;margin-top:2px;}
+  .pos{color:var(--turf-bright);} .neg{color:var(--red);} .neu{color:var(--chalk);}
+
+  .bet-form{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr auto;gap:10px;align-items:end;}
+  .bet-list{margin-top:16px;}
+  .bet-row{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr 1fr auto;gap:10px;align-items:center;padding:10px 4px;border-bottom:1px solid rgba(38,49,41,0.6);font-size:13px;}
+  .bet-row .desc{font-family:'IBM Plex Sans',sans-serif;}
+  .bet-row .mono{font-family:'JetBrains Mono',monospace;color:var(--muted);}
+  .status-select{background:var(--surface2);border:1px solid var(--line);color:var(--chalk);padding:5px 8px;border-radius:4px;font-size:12px;font-family:'JetBrains Mono',monospace;}
+  .status-select.win{color:var(--turf-bright);} .status-select.loss{color:var(--red);} .status-select.push{color:var(--steel);}
+  .result-mono{font-family:'JetBrains Mono',monospace;text-align:right;}
+
+  footer{margin-top:30px;text-align:center;color:var(--muted);font-size:11px;font-family:'JetBrains Mono',monospace;line-height:1.6;}
+  @media(max-width:820px){
+    .game-form{grid-template-columns:1fr 1fr;}
+    .bet-form{grid-template-columns:1fr 1fr;}
+    .stat-row{grid-template-columns:repeat(2,1fr);}
+    .bet-row{grid-template-columns:1fr;gap:4px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="brand">
+      <div class="brand-mark">H</div>
+      <div>
+        <h1>HASH MARKS</h1>
+        <div class="sub">POWER RATINGS · LINE BOARD · BET LOG</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
+      <div class="season-tag" id="seasonTag">2026 SEASON — FINAL PRESEASON SP+ (AUG)</div>
+      <div id="storageBackendTag" style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--muted);"></div>
+    </div>
+  </header>
+
+  <nav>
+    <button class="active" data-panel="ratings">Ratings</button>
+    <button data-panel="board">Board</button>
+    <button data-panel="log">Log</button>
+  </nav>
+
+  <!-- RATINGS -->
+  <div class="panel active" id="panel-ratings">
+    <section class="card">
+      <h2>Sync Latest Data</h2>
+      <div class="sub" style="margin-bottom:12px;">
+        If this page is hosted alongside a <code>data/</code> folder (ratings.json, offdefst.json, games.json) — e.g. via the GitHub Actions setup — this pulls that data in. Inside Claude's artifact preview, or if opened as a standalone file with no data folder next to it, there's nothing to fetch and this will just say so; the built-in defaults are used instead, same as always.
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+        <button class="primary" id="syncDataBtn">Sync latest data</button>
+        <span id="syncStatus" style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);"></span>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Live Data — CollegeFootballData.com</h2>
+      <div class="sub" style="margin-bottom:12px;">
+        <strong style="color:var(--amber);">Direct browser calls don't work</strong> — CFBD blocks cross-origin requests from web pages (by design; their docs recommend server-side calls only), so this tool can't fetch live data on its own.
+        <br><br>
+        <strong>Recommended workflow:</strong> use CFBD's <a href="https://collegefootballdata.com/exporter" target="_blank" style="color:var(--amber);">Data Exporter</a> to pull a CSV (play-by-play, PPA/success-rate splits with garbage time excluded, etc.), then upload the CSV in chat — I'll fold the numbers into the model. No key ever has to leave CFBD's site.
+        <br><br>
+        The field below just saves the key to your browser's local storage for your own reference (e.g. if you use it in your own scripts) — it's not written into this file's code or shared anywhere.
+      </div>
+      <div class="game-form" style="grid-template-columns:2fr auto auto;">
+        <div class="field"><label>CFBD API Key (local reference only)</label><input type="password" id="cfbdKey" placeholder="paste key here" autocomplete="off"></div>
+        <button class="primary" id="saveCfbdKeyBtn">Save key</button>
+        <button class="ghost" id="testCfbdKeyBtn">Test browser connection (expected to fail)</button>
+      </div>
+      <div id="cfbdStatus" style="margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);"></div>
+    </section>
+
+    <section class="card">
+      <h2>Power Ratings <span class="cnt" id="ratingsCount"></span></h2>
+      <div class="ratings-controls">
+        <input type="text" id="ratingsSearch" placeholder="Search team...">
+        <button class="ghost" id="resetRatingsBtn">Reset to final preseason SP+</button>
+      </div>
+      <div class="sub" style="margin-bottom:12px;">
+        Model uses ESPN SP+ (points, drives the Board's spreads). FEI and FPI ranks are shown for reference/comparison only — they don't feed the model.
+        FEI = BCF Toys' Fremeau Efficiency Index, opponent-adjusted possession efficiency with garbage time already excluded (all 138 FBS teams). FPI = ESPN's preseason Top 25 (published Jul 9, 2026).
+        Sagarin has no 2026 preseason ratings — his model is results-based and only starts computing once games are played; I'll fill that column in once the season kicks off.
+        (PFF's power rankings live behind a JS-rendered tool I can't scrape reliably, so that column's been dropped. Pick Six's ranking was also dropped since it won't update in-season.)
+      </div>
+      <table>
+        <thead>
+          <tr><th data-sort="rank">#</th><th data-sort="team">Team</th><th data-sort="rating">SP+ Rating</th><th data-sort="fei">FEI Rank</th><th data-sort="fpi">FPI Rank</th><th data-sort="sagarin">Sagarin</th></tr>
+        </thead>
+        <tbody id="ratingsBody"></tbody>
+      </table>
+    </section>
+  </div>
+
+  <!-- BOARD -->
+  <div class="panel" id="panel-board">
+    <section class="card">
+      <h2>Add Game</h2>
+      <div class="game-form">
+        <div class="field"><label>Week</label><input type="number" min="0" max="17" id="gameWeek" placeholder="1" style="width:70px;"></div>
+        <div class="field"><label>Kickoff (optional)</label><input type="datetime-local" id="gameTime"></div>
+        <div class="field"><label>Away</label><select id="awayTeam"></select></div>
+        <div class="field"><label>Home</label><select id="homeTeam"></select></div>
+        <div class="at-symbol">vs</div>
+        <div class="field"><label>Home line (home fav = neg.)</label><input type="number" step="0.5" id="marketLine" placeholder="-6.5"></div>
+        <div class="field"><label>O/U total (optional)</label><input type="number" step="0.5" id="marketTotal" placeholder="54.5"></div>
+        <div class="field"><label>Home ML (optional)</label><input type="number" id="homeML" placeholder="-250"></div>
+        <div class="field"><label>Away ML (optional)</label><input type="number" id="awayML" placeholder="+205"></div>
+        <button class="primary" id="addGameBtn">Add to board</button>
+      </div>
+      <div class="neutral-row">
+        <input type="checkbox" id="neutralSite"><label for="neutralSite">Neutral site (removes home-field edge)</label>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Bulk Import Lines</h2>
+      <div class="sub" style="margin-bottom:10px;">
+        Ask me to search current lines for any matchups — I'll hand you back rows in this format, one game per line, ready to paste:<br>
+        <span style="color:var(--amber);">week, away, home, home line, total, neutral, kickoff time, home ML, away ML</span> &nbsp;e.g. <span style="color:var(--muted);">1, Texas, Ohio State, -7.5, 54.5</span> (leave any field blank if unknown, use "N" for neutral site: <span style="color:var(--muted);">1, North Carolina, TCU, -6.5, 48.5, N, 2026-08-29T12:00:00Z, -250, 205</span>)
+      </div>
+      <textarea id="bulkImport" rows="4" style="width:100%;background:var(--surface2);border:1px solid var(--line);color:var(--chalk);border-radius:5px;padding:10px;font-family:'JetBrains Mono',monospace;font-size:12.5px;" placeholder="1, Texas, Ohio State, -7.5, 54.5, , 2026-08-29T19:30:00Z, -250, 205"></textarea>
+      <div style="margin-top:10px;"><button class="primary" id="bulkImportBtn">Import lines</button></div>
+      <div id="bulkImportMsg" style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);margin-top:8px;line-height:1.6;"></div>
+    </section>
+
+    <section class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
+        <h2 style="margin:0;">Board <span class="cnt" id="boardCount"></span></h2>
+        <div style="display:flex;gap:10px;align-items:end;flex-wrap:wrap;">
+          <div class="field" style="margin:0;"><label style="margin-bottom:4px;">Week</label><select id="weekFilter"><option value="all">All weeks</option></select></div>
+          <div class="field" style="margin:0;">
+            <label style="margin-bottom:4px;">Sort by</label>
+            <select id="sortFilter">
+              <option value="time">Kickoff time</option>
+              <option value="edge_desc">Edge: High → Low</option>
+              <option value="edge_asc">Edge: Low → High</option>
+              <option value="recent">Recently added</option>
+            </select>
+          </div>
+          <button class="ghost" id="clearBoardBtn" style="border-color:var(--red);color:var(--red);">Clear board</button>
+        </div>
+      </div>
+      <div id="boardList"><div class="empty">No games on the board yet. Add one above.</div></div>
+    </section>
+  </div>
+
+  <!-- LOG -->
+  <div class="panel" id="panel-log">
+    <section class="card">
+      <h2>Record</h2>
+      <div class="stat-row">
+        <div class="stat-box"><div class="v neu" id="statRecord">0-0-0</div><div class="l">Record</div></div>
+        <div class="stat-box"><div class="v neu" id="statUnitsRisked">0.0</div><div class="l">Units Risked</div></div>
+        <div class="stat-box"><div class="v neu" id="statProfit">0.0</div><div class="l">Net Units</div></div>
+        <div class="stat-box"><div class="v neu" id="statRoi">0.0%</div><div class="l">ROI</div></div>
+        <div class="stat-box"><div class="v neu" id="statPending">0</div><div class="l">Pending</div></div>
+      </div>
+      <div id="bookBreakdown" style="margin-top:14px;display:none;">
+        <div class="sub" style="margin-bottom:8px;">By book</div>
+        <div class="stat-row" id="bookBreakdownRow" style="grid-template-columns:repeat(3,1fr);"></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Log a Bet</h2>
+      <div class="bet-form">
+        <div class="field"><label>Description</label><input type="text" id="betDesc" placeholder="Ohio State -6.5 vs Texas"></div>
+        <div class="field"><label>Type</label>
+          <select id="betType"><option value="Spread">Spread</option><option value="Moneyline">Moneyline</option><option value="Total">Total</option></select>
+        </div>
+        <div class="field"><label>Book</label>
+          <select id="betBook"><option value="BetMGM">BetMGM</option><option value="FanDuel">FanDuel</option><option value="DraftKings">DraftKings</option></select>
+        </div>
+        <div class="field"><label>Odds (American)</label><input type="number" id="betOdds" placeholder="-110" value="-110"></div>
+        <div class="field"><label>Units</label><input type="number" step="0.1" id="betUnits" placeholder="1.0" value="1.0"></div>
+        <div class="field"><label>Status</label>
+          <select id="betStatus"><option value="pending">Pending</option><option value="win">Win</option><option value="loss">Loss</option><option value="push">Push</option></select>
+        </div>
+        <button class="primary" id="addBetBtn">Log bet</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Bet Log <span class="cnt" id="betCount"></span></h2>
+      <div class="bet-row" style="border-bottom:1px solid var(--line);padding-bottom:8px;margin-bottom:2px;">
+        <div class="mono" style="color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.5px;">Description</div>
+        <div class="mono" style="color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.5px;">Type</div>
+        <div class="mono" style="color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.5px;">Book</div>
+        <div class="mono" style="color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.5px;">Odds</div>
+        <div class="mono" style="color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.5px;">Units</div>
+        <div class="mono" style="color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.5px;">Status</div>
+        <div class="mono" style="color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.5px;">Result</div>
+        <div></div>
+      </div>
+      <div class="bet-list" id="betList"><div class="empty">No bets logged yet.</div></div>
+    </section>
+  </div>
+
+  <footer>
+    Model output is a data-driven reference point, not a guarantee — spreads move, injuries happen, and markets are efficient for a reason.<br>
+    Gambling involves risk. If it stops being fun, or you're chasing losses, please step back — 1-800-GAMBLER.
+  </footer>
+</div>
+
+<script>
+const HFA = 2.2; // home field advantage, points
+
+// Base ratings = ESPN preseason SP+ (Bill Connelly, final preseason update, Aug 2026)
+const PRESEASON_SP_PLUS = [
+["Ohio State",32.7],["Oregon",29.2],["Notre Dame",26.5],["Georgia",26.4],["Indiana",25.8],
+["Texas",22.8],["Miami",22.0],["Texas Tech",21.8],["Texas A&M",20.9],["LSU",20.4],
+["Oklahoma",18.8],["USC",17.7],["Alabama",17.6],["Tennessee",17.3],["Michigan",17.0],
+["Ole Miss",16.5],["Penn State",16.2],["Washington",15.8],["Missouri",15.4],["Florida",15.2],
+["BYU",14.9],["Iowa",14.6],["Clemson",13.1],["South Carolina",12.6],["SMU",12.1],
+["Auburn",11.5],["Louisville",11.1],["Illinois",10.4],["Vanderbilt",9.8],["Utah",9.8],
+["Arizona",9.5],["TCU",9.4],["Nebraska",9.3],["Kansas State",9.2],["Florida State",9.1],
+["Virginia Tech",8.6],["Virginia",8.1],["Houston",7.4],["Oklahoma State",6.9],["Minnesota",6.2],
+["Pittsburgh",6.2],["Georgia Tech",5.9],["NC State",5.7],["Arkansas",5.6],["Duke",5.6],
+["UCLA",5.4],["Kentucky",5.2],["Maryland",5.2],["Boise State",5.1],["Northwestern",5.1],
+["Arizona State",4.9],["Mississippi State",4.8],["Wisconsin",3.8],["Baylor",3.8],["UNLV",3.6],
+["North Carolina",3.5],["Wake Forest",3.4],["Kansas",3.3],["Cincinnati",3.0],["California",3.0],
+["Rutgers",2.7],["Michigan State",2.2],["UCF",1.7],["Navy",1.2],["San Diego State",0.7],
+["Colorado",0.7],["Memphis",0.3],["New Mexico",0.0],["Iowa State",-0.4],["James Madison",-0.9],
+["UTSA",-1.1],["West Virginia",-1.3],["Fresno State",-1.4],["South Florida",-1.7],["North Dakota State",-1.8],
+["Syracuse",-1.9],["Texas State",-2.1],["Purdue",-2.2],["Stanford",-2.3],["East Carolina",-2.3],
+["Army",-2.4],["Boston College",-2.5],["Hawaii",-2.6],["Air Force",-3.2],["Miami (OH)",-4.0],
+["Washington State",-4.3],["Tulane",-4.3],["Liberty",-5.3],["Oregon State",-5.6],["Western Michigan",-6.0],
+["Florida Atlantic",-6.1],["Tulsa",-6.1],["Old Dominion",-6.9],["Western Kentucky",-7.3],["Jacksonville State",-7.8],
+["Utah State",-7.9],["Troy",-8.0],["Marshall",-8.2],["Louisiana Tech",-9.1],["Temple",-9.1],
+["Toledo",-9.1],["Louisiana",-10.6],["Georgia Southern",-10.8],["Wyoming",-10.8],["North Texas",-11.6],
+["Arkansas State",-11.6],["Colorado State",-11.6],["Nevada",-11.7],["Ohio",-11.8],["UConn",-11.9],
+["Buffalo",-12.7],["Appalachian State",-12.7],["Delaware",-12.9],["Kennesaw State",-12.9],["FIU",-14.5],
+["South Alabama",-14.6],["Coastal Carolina",-14.7],["Bowling Green",-15.0],["Central Michigan",-15.1],["Rice",-15.3],
+["San Jose State",-15.7],["Eastern Michigan",-16.1],["Northern Illinois",-17.2],["UAB",-17.5],["New Mexico State",-18.5],
+["Missouri State",-19.1],["UTEP",-19.3],["Southern Miss",-20.7],["Kent State",-22.4],["Akron",-22.9],
+["Sacramento State",-23.4],["Charlotte",-24.1],["Ball State",-25.1],["Sam Houston",-26.0],["Middle Tennessee",-26.5],
+["UL Monroe",-28.9],["Georgia State",-29.3],["UMass",-32.9]
+];
+
+// ESPN SP+ Offense/Defense/Special Teams sub-ratings (Bill Connelly, final
+// preseason update, Aug 2026), per team: [offenseSP+, defenseSP+, specialTeamsSP+].
+// Off SP+ = expected points scored vs an average defense; Def SP+ = expected
+// points allowed vs an average offense (lower is better defense). This feeds
+// the Total model below — overall SP+ alone can't produce a total, only a spread.
+let OFF_DEF_ST = {
+"Ohio State":[41.0,8.4,0.1],"Oregon":[41.1,12.2,0.3],"Notre Dame":[40.6,14.3,0.3],
+"Georgia":[38.7,12.9,0.6],"Indiana":[37.8,12.5,0.5],"Texas":[37.3,14.9,0.4],
+"Miami":[35.0,13.3,0.3],"Texas Tech":[36.6,15.0,0.2],"Texas A&M":[37.6,16.4,-0.3],
+"LSU":[32.6,12.4,0.2],"Oklahoma":[32.1,13.7,0.4],"USC":[38.0,19.9,-0.3],
+"Alabama":[31.0,13.0,-0.4],"Tennessee":[39.3,22.4,0.4],"Michigan":[33.2,15.8,-0.5],
+"Ole Miss":[35.2,19.4,0.7],"Penn State":[33.9,18.3,0.6],"Washington":[33.0,17.0,-0.3],
+"Missouri":[32.3,16.4,-0.5],"Florida":[30.4,15.8,0.5],"BYU":[32.9,18.3,0.3],
+"Iowa":[30.8,16.8,0.6],"Clemson":[29.8,17.1,0.3],"South Carolina":[30.2,18.1,0.5],
+"SMU":[32.5,20.1,-0.4],"Auburn":[28.5,17.3,0.3],"Louisville":[30.7,19.8,0.2],
+"Illinois":[32.0,22.1,0.4],"Vanderbilt":[33.3,24.2,0.6],"Utah":[31.9,22.1,0.0],
+"Arizona":[31.1,21.2,-0.5],"TCU":[31.4,21.8,-0.2],"Nebraska":[30.0,20.7,0.1],
+"Kansas State":[32.5,23.6,0.3],"Florida State":[29.8,20.4,-0.3],"Virginia Tech":[30.7,21.9,-0.2],
+"Virginia":[26.9,18.9,0.2],"Houston":[30.9,23.1,-0.4],"Oklahoma State":[29.9,23.4,0.5],
+"Minnesota":[25.7,19.0,-0.5],"Pittsburgh":[30.0,23.9,0.1],"Georgia Tech":[28.7,23.4,0.6],
+"NC State":[31.0,24.9,-0.4],"Arkansas":[34.4,29.0,0.3],"Duke":[32.8,27.6,0.4],
+"UCLA":[29.1,23.7,0.0],"Kentucky":[26.3,21.1,0.0],"Maryland":[26.8,22.0,0.3],
+"Boise State":[29.0,23.7,-0.3],"Northwestern":[25.3,20.7,0.5],"Arizona State":[27.4,22.0,-0.6],
+"Mississippi State":[30.8,26.5,0.5],"Wisconsin":[21.6,17.5,-0.3],"Baylor":[31.9,28.8,0.6],
+"UNLV":[31.4,28.0,0.1],"North Carolina":[24.3,21.2,0.4],"Wake Forest":[24.2,20.7,0.0],
+"Kansas":[28.8,26.1,0.6],"Cincinnati":[28.9,26.1,0.3],"California":[28.8,25.5,-0.3],
+"Rutgers":[30.8,28.2,0.1],"Michigan State":[27.7,25.1,-0.4],"UCF":[24.2,22.3,-0.1],
+"Navy":[27.8,26.8,0.2],"San Diego State":[24.1,24.0,0.6],"Colorado":[26.1,25.0,-0.5],
+"Memphis":[29.0,29.2,0.5],"New Mexico":[25.6,26.1,0.6],"Iowa State":[22.4,23.2,0.5],
+"James Madison":[26.7,27.2,-0.4],"UTSA":[29.9,31.1,0.1],"West Virginia":[25.3,26.6,0.1],
+"Fresno State":[21.0,22.4,0.0],"South Florida":[28.1,29.6,-0.3],"North Dakota State":[24.1,25.9,0.0],
+"Syracuse":[23.3,25.6,0.4],"Texas State":[33.2,35.4,0.1],"Purdue":[24.2,27.0,0.6],
+"Stanford":[22.5,24.2,-0.6],"East Carolina":[24.1,26.3,-0.2],"Army":[24.8,27.2,0.1],
+"Boston College":[24.7,27.7,0.5],"Hawaii":[25.9,29.1,0.6],"Air Force":[24.8,28.1,0.1],
+"Miami (OH)":[19.2,23.8,0.5],"Washington State":[20.4,24.6,-0.1],"Tulane":[22.8,27.7,0.6],
+"Liberty":[26.0,31.1,-0.2],"Oregon State":[21.2,26.1,-0.7],"Western Michigan":[19.6,25.2,-0.4],
+"Florida Atlantic":[27.7,34.3,0.5],"Tulsa":[24.2,30.9,0.5],"Old Dominion":[19.6,25.8,-0.7],
+"Western Kentucky":[24.2,32.0,0.5],"Jacksonville State":[24.8,32.0,-0.5],"Utah State":[23.4,30.8,-0.5],
+"Troy":[22.5,30.7,0.2],"Marshall":[27.6,36.0,0.3],"Louisiana Tech":[21.9,31.0,0.0],
+"Temple":[25.0,34.4,0.3],"Toledo":[17.9,26.6,-0.4],"Louisiana":[24.4,34.6,-0.5],
+"Georgia Southern":[22.7,33.5,0.0],"Wyoming":[15.5,25.6,-0.6],"North Texas":[23.7,35.0,-0.2],
+"Arkansas State":[22.1,33.8,0.1],"Colorado State":[16.8,28.3,-0.1],"Nevada":[17.6,29.7,0.4],
+"Ohio":[14.1,25.3,-0.6],"UConn":[19.9,32.4,0.6],"Buffalo":[15.3,28.5,0.6],
+"Appalachian State":[20.8,33.9,0.3],"Delaware":[22.8,35.4,-0.3],"Kennesaw State":[19.5,31.8,-0.5],
+"FIU":[21.1,35.3,-0.3],"South Alabama":[22.0,35.9,-0.7],"Coastal Carolina":[20.6,34.8,-0.5],
+"Bowling Green":[13.9,29.2,0.3],"Central Michigan":[15.5,30.4,-0.2],"Rice":[16.7,32.5,0.5],
+"San Jose State":[18.3,33.5,-0.5],"Eastern Michigan":[17.2,33.4,0.0],"Northern Illinois":[15.2,32.1,-0.2],
+"UAB":[20.6,37.6,-0.5],"New Mexico State":[15.9,34.4,-0.1],"Missouri State":[16.4,35.1,-0.5],
+"UTEP":[15.2,34.1,-0.5],"Southern Miss":[17.8,38.0,-0.4],"Kent State":[14.7,36.6,-0.5],
+"Akron":[11.3,33.6,-0.6],"Sacramento State":[14.7,38.2,0.0],"Charlotte":[14.5,38.1,-0.5],
+"Ball State":[12.2,36.7,-0.7],"Sam Houston":[14.2,39.8,-0.4],"Middle Tennessee":[13.8,40.5,0.2],
+"UL Monroe":[11.9,40.1,-0.7],"Georgia State":[14.8,43.4,-0.7],"UMass":[8.8,41.2,-0.5]
+};
+
+// BCF Toys 2026 preseason FEI ratings (Fremeau Efficiency Index) — non-garbage-time
+// possession efficiency, all 138 FBS teams. Reference only, doesn't feed the model yet.
+const FEI_RANK = {
+"Ohio State":[1,1.52],"Oregon":[2,1.4],"Georgia":[3,1.34],"Notre Dame":[4,1.29],
+"Indiana":[5,1.14],"Alabama":[6,1.07],"Utah":[7,0.97],"Ole Miss":[8,0.93],
+"Texas Tech":[9,0.89],"Michigan":[10,0.89],"Penn State":[11,0.89],"Miami":[12,0.88],
+"Texas":[13,0.88],"Texas A&M":[14,0.85],"Oklahoma":[15,0.8],"Tennessee":[16,0.8],
+"USC":[17,0.79],"Washington":[18,0.78],"Iowa":[19,0.74],"BYU":[20,0.61],
+"Kansas State":[21,0.6],"Vanderbilt":[22,0.59],"Missouri":[23,0.56],"LSU":[24,0.55],
+"Illinois":[25,0.52],"Auburn":[26,0.51],"Louisville":[27,0.5],"Florida State":[28,0.47],
+"Clemson":[29,0.47],"SMU":[30,0.44],"TCU":[31,0.43],"South Carolina":[32,0.43],
+"Iowa State":[33,0.43],"Arizona":[34,0.38],"Florida":[35,0.36],"Pittsburgh":[36,0.33],
+"NC State":[37,0.33],"James Madison":[38,0.29],"Arkansas":[39,0.28],"Kansas":[40,0.28],
+"Wisconsin":[41,0.27],"Kentucky":[42,0.27],"Arizona State":[43,0.26],"Nebraska":[44,0.25],
+"Cincinnati":[45,0.24],"Washington State":[46,0.23],"Virginia":[47,0.22],"Mississippi State":[48,0.22],
+"Baylor":[49,0.2],"Georgia Tech":[50,0.2],"Minnesota":[51,0.2],"Wake Forest":[52,0.19],
+"Boise State":[53,0.19],"Duke":[54,0.17],"Tulane":[55,0.14],"Houston":[56,0.13],
+"South Florida":[57,0.1],"Northwestern":[58,0.09],"Maryland":[59,0.08],"UCLA":[60,0.08],
+"Toledo":[61,0.07],"North Texas":[62,0.07],"Memphis":[63,0.05],"UCF":[64,0.04],
+"East Carolina":[65,0.04],"Navy":[66,0.03],"Rutgers":[67,0.01],"Michigan State":[68,-0.02],
+"Army":[69,-0.02],"UTSA":[70,-0.02],"Old Dominion":[71,-0.03],"San Diego State":[72,-0.06],
+"California":[73,-0.07],"West Virginia":[74,-0.07],"Virginia Tech":[75,-0.08],"Purdue":[76,-0.1],
+"UNLV":[77,-0.12],"Fresno State":[78,-0.14],"Colorado":[79,-0.15],"Boston College":[80,-0.22],
+"North Carolina":[81,-0.23],"Air Force":[82,-0.23],"Stanford":[83,-0.24],"Oklahoma State":[84,-0.25],
+"Western Michigan":[85,-0.25],"Syracuse":[86,-0.26],"Ohio":[87,-0.28],"Texas State":[88,-0.28],
+"Utah State":[89,-0.28],"Marshall":[90,-0.3],"Western Kentucky":[91,-0.3],"Miami (OH)":[92,-0.32],
+"Troy":[93,-0.36],"Hawaii":[94,-0.37],"Oregon State":[95,-0.37],"New Mexico":[96,-0.37],
+"Liberty":[97,-0.41],"Louisiana":[98,-0.46],"UConn":[99,-0.46],"Jacksonville State":[100,-0.49],
+"Wyoming":[101,-0.5],"Louisiana Tech":[102,-0.51],"Appalachian State":[103,-0.52],"South Alabama":[104,-0.52],
+"San Jose State":[105,-0.53],"Coastal Carolina":[106,-0.58],"Georgia Southern":[107,-0.6],"Missouri State":[108,-0.6],
+"Colorado State":[109,-0.61],"Kennesaw State":[110,-0.61],"Central Michigan":[111,-0.64],"Arkansas State":[112,-0.64],
+"Temple":[113,-0.64],"Florida Atlantic":[114,-0.65],"Tulsa":[115,-0.66],"Northern Illinois":[116,-0.68],
+"Southern Miss":[117,-0.69],"UAB":[118,-0.7],"Bowling Green":[119,-0.71],"Buffalo":[120,-0.72],
+"Nevada":[121,-0.77],"Georgia State":[122,-0.79],"Eastern Michigan":[123,-0.8],"Delaware":[124,-0.8],
+"FIU":[125,-0.83],"Rice":[126,-0.85],"Middle Tennessee":[127,-0.86],"UTEP":[128,-0.89],
+"New Mexico State":[129,-0.89],"Ball State":[130,-0.95],"Sacramento State":[132,-1.0],"North Dakota State":[131,-1.0],
+"UL Monroe":[133,-1.02],"Sam Houston":[134,-1.02],"Kent State":[135,-1.06],"Charlotte":[136,-1.06],
+"Akron":[137,-1.06],"UMass":[138,-1.54]
+};
+
+// ESPN FPI preseason Top 25 for 2026 (published July 9, 2026) — reference only
+const FPI_RANK = {
+"Ohio State":1,"Texas":2,"Notre Dame":3,"Oregon":4,"Georgia":5,"Indiana":6,"Miami":7,
+"Alabama":8,"LSU":9,"Texas Tech":10,"Texas A&M":11,"Oklahoma":12,"USC":13,"Ole Miss":14,
+"Michigan":15,"Tennessee":16,"Penn State":17,"Florida":18,"Clemson":19,"BYU":20,
+"Missouri":21,"Auburn":22,"South Carolina":23,"SMU":24,"Iowa":25
+};
+
+let ratings = [];   // [{team, rating}]
+let games = [];      // [{id, away, home, marketLine, marketTotal, neutral}]
+let bets = [];        // [{id, desc, odds, units, status}]
+let sortState = {key:'rank', dir:1};
+
+// ---------- STORAGE ADAPTER ----------
+// Three possible backends, tried in this order:
+//   1. Claude's window.storage — only present inside a Claude conversation.
+//   2. Supabase — real cross-device sync, if you've filled in SUPABASE_URL
+//      and SUPABASE_ANON_KEY below (see supabase_setup.sql for the one-time
+//      database setup). This is what makes the same board/bets show up on
+//      your phone AND your laptop.
+//   3. localStorage — device-local fallback if neither of the above apply
+//      (e.g. you downloaded this file and opened it directly with no
+//      Supabase config set).
+// Determined once at load; whichever backend is available is used
+// consistently rather than mixing sources mid-session.
+
+// ---- Fill these in after setting up Supabase (see README.md) ----
+const SUPABASE_URL = "";        // e.g. "https://abcdefgh.supabase.co"
+const SUPABASE_ANON_KEY = "";   // the "anon public" key from your project's API settings
+// -------------------------------------------------------------------
+
+const HAS_CLAUDE_STORAGE = (typeof window !== 'undefined' && !!window.storage);
+const HAS_SUPABASE = !!(SUPABASE_URL && SUPABASE_ANON_KEY && typeof supabase !== 'undefined');
+const supabaseClient = HAS_SUPABASE ? supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+const LS_PREFIX = 'hashmarks_';
+
+function activeStorageBackend(){
+  if(HAS_CLAUDE_STORAGE) return 'Claude conversation storage';
+  if(HAS_SUPABASE) return 'Supabase (synced across devices)';
+  return 'This browser only (not synced)';
+}
+
+async function storageGet(key){
+  if(HAS_CLAUDE_STORAGE){
+    try{
+      const r = await window.storage.get(key);
+      return r ? r.value : null;
+    }catch(e){
+      return null; // key not found yet — not an error worth logging
+    }
+  }
+  if(HAS_SUPABASE){
+    try{
+      const { data, error } = await supabaseClient
+        .from('app_storage')
+        .select('value')
+        .eq('key', key)
+        .maybeSingle();
+      if(error) throw error;
+      return data ? JSON.stringify(data.value) : null;
+    }catch(e){
+      console.error('Supabase get failed', e);
+      return null;
+    }
+  }
+  try{
+    return localStorage.getItem(LS_PREFIX + key);
+  }catch(e){
+    console.error('localStorage get failed', e);
+    return null;
+  }
+}
+
+async function storageSet(key, value){
+  if(HAS_CLAUDE_STORAGE){
+    try{
+      const r = await window.storage.set(key, value);
+      return !!r;
+    }catch(e){
+      console.error('Claude storage set failed', e);
+      return false;
+    }
+  }
+  if(HAS_SUPABASE){
+    try{
+      const parsed = JSON.parse(value);
+      const { error } = await supabaseClient
+        .from('app_storage')
+        .upsert({ key, value: parsed, updated_at: new Date().toISOString() });
+      if(error) throw error;
+      return true;
+    }catch(e){
+      console.error('Supabase set failed', e);
+      return false;
+    }
+  }
+  try{
+    localStorage.setItem(LS_PREFIX + key, value);
+    return true;
+  }catch(e){
+    console.error('localStorage set failed', e);
+    return false;
+  }
+}
+
+async function loadAll(){
+  const r = await storageGet('sp-ratings');
+  ratings = r ? JSON.parse(r) : PRESEASON_SP_PLUS.map(([team,rating])=>({team,rating}));
+
+  const g = await storageGet('games');
+  games = g ? JSON.parse(g) : [];
+
+  const b = await storageGet('bets');
+  bets = b ? JSON.parse(b) : [];
+
+  renderRatings();
+  populateTeamSelects();
+  populateWeekFilter();
+  renderBoard();
+  renderLog();
+}
+
+async function saveRatings(){ await storageSet('sp-ratings', JSON.stringify(ratings)); }
+async function saveGames(){ await storageSet('games', JSON.stringify(games)); }
+async function saveBets(){ await storageSet('bets', JSON.stringify(bets)); }
+
+// ---------- SYNC LATEST DATA (hosted-site workflow) ----------
+// Tries to fetch data/ratings.json, data/offdefst.json, data/games.json from
+// alongside this page. Only works when actually hosted with that data folder
+// present (e.g. GitHub Pages + the Actions workflow) — inside Claude's
+// artifact preview, or a bare downloaded file, these fetches will fail and
+// that's expected, not a bug. Ratings/offdefst are REPLACED wholesale (same
+// as "Reset to final preseason SP+", just from a live source instead of the
+// built-in defaults). Games are MERGED — an existing card for the same
+// week+matchup gets its line/total/etc. updated in place rather than
+// duplicated; anything you added yourself that isn't in the feed is left
+// alone.
+async function syncLatestData(){
+  const status = document.getElementById('syncStatus');
+  status.textContent = 'Checking for hosted data...';
+  let foundAny = false;
+
+  try{
+    const r = await fetch('data/ratings.json');
+    if(r.ok){
+      const fetched = await r.json();
+      if(Array.isArray(fetched) && fetched.length){
+        ratings = fetched;
+        await saveRatings();
+        foundAny = true;
+      }
+    }
+  }catch(e){ /* not hosted, or file missing — fine */ }
+
+  try{
+    const r = await fetch('data/offdefst.json');
+    if(r.ok){
+      const fetched = await r.json();
+      if(fetched && typeof fetched === 'object'){
+        OFF_DEF_ST = fetched;
+        foundAny = true;
+      }
+    }
+  }catch(e){ /* not hosted, or file missing — fine */ }
+
+  let gamesUpdated = 0, gamesAdded = 0;
+  try{
+    const r = await fetch('data/games.json');
+    if(r.ok){
+      const fetched = await r.json();
+      if(Array.isArray(fetched)){
+        fetched.forEach(fg=>{
+          const existing = games.find(g =>
+            g.week === fg.week && g.home === fg.home && g.away === fg.away
+          );
+          if(existing){
+            existing.marketLine = fg.marketLine;
+            existing.marketTotal = fg.marketTotal ?? existing.marketTotal;
+            existing.neutral = fg.neutral ?? existing.neutral;
+            existing.time = fg.time ?? existing.time;
+            existing.homeML = fg.homeML ?? existing.homeML;
+            existing.awayML = fg.awayML ?? existing.awayML;
+            gamesUpdated++;
+          } else {
+            games.push({ id: Date.now() + gamesAdded, ...fg });
+            gamesAdded++;
+          }
+        });
+        if(gamesUpdated || gamesAdded){ await saveGames(); foundAny = true; }
+      }
+    }
+  }catch(e){ /* not hosted, or file missing — fine */ }
+
+  if(foundAny){
+    renderRatings();
+    populateTeamSelects();
+    populateWeekFilter();
+    renderBoard();
+    status.textContent = `Synced. Games: ${gamesAdded} added, ${gamesUpdated} updated.`;
+  } else {
+    status.textContent = 'No hosted data found — using built-in defaults (expected if not hosted with a data/ folder).';
+  }
+}
+document.getElementById('syncDataBtn').addEventListener('click', syncLatestData);
+
+// ---------- NAV ----------
+document.querySelectorAll('nav button').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-'+btn.dataset.panel).classList.add('active');
+  });
+});
+
+// ---------- RATINGS ----------
+function renderRatings(){
+  const search = document.getElementById('ratingsSearch').value.toLowerCase();
+  let sorted = ratings.map((r,i)=>({...r, origIndex:i}));
+  sorted.sort((a,b)=> b.rating - a.rating);
+  sorted = sorted.map((r,i)=>({...r, rank:i+1}));
+
+  if(sortState.key==='team') sorted.sort((a,b)=> sortState.dir*a.team.localeCompare(b.team));
+  else if(sortState.key==='rating') sorted.sort((a,b)=> sortState.dir*(b.rating-a.rating));
+  else if(sortState.key==='fei') sorted.sort((a,b)=> sortState.dir*((FEI_RANK[a.team]?FEI_RANK[a.team][0]:999)-(FEI_RANK[b.team]?FEI_RANK[b.team][0]:999)));
+  else if(sortState.key==='fpi') sorted.sort((a,b)=> sortState.dir*((FPI_RANK[a.team]||999)-(FPI_RANK[b.team]||999)));
+  else sorted.sort((a,b)=> sortState.dir*(a.rank-b.rank));
+
+  const filtered = search ? sorted.filter(r=>r.team.toLowerCase().includes(search)) : sorted;
+  document.getElementById('ratingsCount').textContent = `(${filtered.length} of ${ratings.length})`;
+
+  const body = document.getElementById('ratingsBody');
+  body.innerHTML = filtered.map(r=>`
+    <tr>
+      <td class="rk">${r.rank}</td>
+      <td class="team-name">${r.team}</td>
+      <td class="${r.rating>=0?'rating-pos':'rating-neg'}">
+        <input class="edit-rating" type="number" step="0.1" value="${r.rating}" data-team="${r.team}">
+      </td>
+      <td class="mono" style="color:var(--muted);" title="${FEI_RANK[r.team] ? 'FEI '+FEI_RANK[r.team][1].toFixed(2) : ''}">${FEI_RANK[r.team] ? '#'+FEI_RANK[r.team][0] : '—'}</td>
+      <td class="mono" style="color:var(--muted);">${FPI_RANK[r.team] ? '#'+FPI_RANK[r.team] : '—'}</td>
+      <td class="mono" style="color:var(--muted);" title="Sagarin has no 2026 preseason ratings — his model is results-based and only starts once games are played">—</td>
+    </tr>`).join('');
+
+  body.querySelectorAll('.edit-rating').forEach(inp=>{
+    inp.addEventListener('change', async (e)=>{
+      const team = e.target.dataset.team;
+      const val = parseFloat(e.target.value);
+      const found = ratings.find(r=>r.team===team);
+      if(found && !isNaN(val)){ found.rating = val; await saveRatings(); renderRatings(); populateTeamSelects(); renderBoard(); }
+    });
+  });
+}
+document.getElementById('ratingsSearch').addEventListener('input', renderRatings);
+document.querySelectorAll('thead th').forEach(th=>{
+  th.addEventListener('click', ()=>{
+    const key = th.dataset.sort;
+    sortState.dir = (sortState.key===key) ? -sortState.dir : (key==='team'?1:-1);
+    sortState.key = key;
+    renderRatings();
+  });
+});
+document.getElementById('resetRatingsBtn').addEventListener('click', async ()=>{
+  ratings = PRESEASON_SP_PLUS.map(([team,rating])=>({team,rating}));
+  await saveRatings(); renderRatings(); populateTeamSelects(); renderBoard();
+});
+
+async function loadCfbdKey(){
+  const v = await storageGet('cfbd-api-key');
+  if(v){
+    document.getElementById('cfbdKey').value = v;
+    document.getElementById('cfbdStatus').textContent = 'Key loaded from browser storage.';
+  }
+}
+
+document.getElementById('saveCfbdKeyBtn').addEventListener('click', async ()=>{
+  const key = document.getElementById('cfbdKey').value.trim();
+  const status = document.getElementById('cfbdStatus');
+  if(!key){ status.textContent = 'Enter a key first.'; return; }
+  const ok = await storageSet('cfbd-api-key', key);
+  if(ok){
+    status.textContent = 'Saved to browser storage.';
+  }else{
+    status.textContent = 'Could not save key — try again.';
+  }
+});
+
+document.getElementById('testCfbdKeyBtn').addEventListener('click', async ()=>{
+  const key = document.getElementById('cfbdKey').value.trim();
+  const status = document.getElementById('cfbdStatus');
+  if(!key){ status.textContent = 'Enter a key first.'; return; }
+  status.textContent = 'Testing connection...';
+  try{
+    const res = await fetch('https://api.collegefootballdata.com/teams?year=2026&conference=B1G', {
+      headers: { 'Authorization': 'Bearer ' + key }
+    });
+    if(res.ok){
+      const data = await res.json();
+      status.textContent = `Connected — got ${data.length} teams back. Key works.`;
+    } else if(res.status === 401 || res.status === 403){
+      status.textContent = `Auth failed (${res.status}) — check the key.`;
+    } else {
+      status.textContent = `Request failed (${res.status}).`;
+    }
+  }catch(e){
+    status.textContent = 'Request blocked or failed — this browser/CORS setup may not allow direct calls to the CFBD API. (' + e.message + ')';
+  }
+});
+
+loadCfbdKey();
+
+// ---------- BOARD ----------
+function populateTeamSelects(){
+  const opts = [...ratings].sort((a,b)=>a.team.localeCompare(b.team))
+    .map(r=>`<option value="${r.team}">${r.team}</option>`).join('');
+  document.getElementById('awayTeam').innerHTML = opts;
+  document.getElementById('homeTeam').innerHTML = opts;
+}
+
+function ratingOf(team){ const f = ratings.find(r=>r.team===team); return f? f.rating : 0; }
+
+function computeModelLine(home, away, neutral){
+  // returns home-team line (negative = home favored)
+  const diff = ratingOf(home) - ratingOf(away) + (neutral? 0 : HFA);
+  return -diff;
+}
+
+// Model total = average of the four offense/defense components involved.
+// Off SP+ ~ expected points scored vs an average defense; Def SP+ ~ expected
+// points allowed vs an average offense. Returns null if either team is
+// missing off/def data (mostly true for G5/FCS teams outside the P4+ set).
+function computeModelTotal(home, away){
+  const h = OFF_DEF_ST[home], a = OFF_DEF_ST[away];
+  if(!h || !a) return null;
+  const [hOff, hDef] = h;
+  const [aOff, aDef] = a;
+  return (hOff + aOff + hDef + aDef) / 2;
+}
+
+// Convert a model home-team spread into a home win probability using a
+// logistic curve calibrated so ~7pt favorite = ~67% WP, ~14pt = ~80%,
+// ~21pt = ~89% — standard-ish shape for CFB. K=23.
+function marginToWinProb(homeMarginFav){
+  // homeMarginFav: positive = home favored by that many points
+  const K = 23;
+  return 1 / (1 + Math.pow(10, -homeMarginFav / K));
+}
+
+function winProbToFairML(wp){
+  // returns American odds for a given win probability, no vig
+  if(wp <= 0 || wp >= 1) return null;
+  if(wp >= 0.5) return Math.round(-100 * wp / (1 - wp));
+  return Math.round(100 * (1 - wp) / wp);
+}
+
+function americanToImpliedProb(odds){
+  if(odds === null || odds === undefined || isNaN(odds)) return null;
+  return odds < 0 ? (-odds) / (-odds + 100) : 100 / (odds + 100);
+}
+
+document.getElementById('addGameBtn').addEventListener('click', async ()=>{
+  const away = document.getElementById('awayTeam').value;
+  const home = document.getElementById('homeTeam').value;
+  const marketLine = parseFloat(document.getElementById('marketLine').value);
+  const marketTotal = document.getElementById('marketTotal').value;
+  const neutral = document.getElementById('neutralSite').checked;
+  const weekVal = document.getElementById('gameWeek').value;
+  const week = weekVal ? parseInt(weekVal) : 0;
+  const timeVal = document.getElementById('gameTime').value; // datetime-local string or ''
+  const homeMLVal = document.getElementById('homeML').value;
+  const awayMLVal = document.getElementById('awayML').value;
+  if(!away || !home || away===home || isNaN(marketLine)){
+    alert('Pick two different teams and enter a home-team market line.');
+    return;
+  }
+  games.push({
+    id: Date.now(),
+    away, home, marketLine, neutral, week,
+    time: timeVal || null,
+    marketTotal: marketTotal ? parseFloat(marketTotal) : null,
+    homeML: homeMLVal ? parseInt(homeMLVal) : null,
+    awayML: awayMLVal ? parseInt(awayMLVal) : null
+  });
+  await saveGames();
+  document.getElementById('marketLine').value='';
+  document.getElementById('marketTotal').value='';
+  document.getElementById('gameTime').value='';
+  document.getElementById('homeML').value='';
+  document.getElementById('awayML').value='';
+  populateWeekFilter();
+  renderBoard();
+});
+
+// Common full-name / alternate-name variants that data sources (CFBD, ESPN, etc.)
+// use, mapped to the exact team name used in this tool's ratings data.
+// Deliberately NO fuzzy substring matching below this — substring matching
+// silently mismatched "Florida International" to "Florida" in testing, which
+// is exactly the kind of quiet error a betting tool can't afford.
+const TEAM_ALIASES = {
+  "florida international": "FIU",
+  "southern methodist": "SMU",
+  "southern california": "USC",
+  "central florida": "UCF",
+  "connecticut": "UConn",
+  "massachusetts": "UMass",
+  "alabama-birmingham": "UAB",
+  "alabama birmingham": "UAB",
+  "texas-san antonio": "UTSA",
+  "texas san antonio": "UTSA",
+  "texas-el paso": "UTEP",
+  "texas el paso": "UTEP",
+  "nevada-las vegas": "UNLV",
+  "nevada las vegas": "UNLV",
+  "louisiana-monroe": "UL Monroe",
+  "louisiana monroe": "UL Monroe",
+  "louisiana-lafayette": "Louisiana",
+  "louisiana lafayette": "Louisiana",
+  "ul lafayette": "Louisiana",
+  "middle tennessee state": "Middle Tennessee",
+  "brigham young": "BYU",
+  "texas christian": "TCU",
+  "miami (fl)": "Miami",
+  "miami fl": "Miami",
+  "miami-ohio": "Miami (OH)",
+  "miami ohio": "Miami (OH)",
+  "mississippi": "Ole Miss",
+  "north carolina state": "NC State",
+  "southern mississippi": "Southern Miss",
+  "sam houston state": "Sam Houston",
+  "bowling green state": "Bowling Green",
+  "pitt": "Pittsburgh",
+  "cal": "California",
+  "hawai'i": "Hawaii",
+  "army west point": "Army",
+  "san jose state": "San Jose State",
+  "san josé state": "San Jose State",
+  "north dakota state": "North Dakota State",
+  "app state": "Appalachian State"
+};
+
+function findTeam(nameRaw){
+  const name = nameRaw.trim().toLowerCase();
+  // 1. Exact match against ratings
+  let match = ratings.find(r=>r.team.toLowerCase()===name);
+  if(match) return match.team;
+  // 2. Known alias/full-name lookup
+  if(TEAM_ALIASES[name]){
+    const alias = TEAM_ALIASES[name];
+    const found = ratings.find(r=>r.team===alias);
+    if(found) return found.team;
+  }
+  // 3. No fuzzy fallback — fail loudly rather than risk a wrong silent match.
+  return null;
+}
+
+document.getElementById('bulkImportBtn').addEventListener('click', async ()=>{
+  const raw = document.getElementById('bulkImport').value;
+  const lines = raw.split('\n').map(l=>l.trim()).filter(Boolean);
+  let added = 0, failed = [];
+  lines.forEach(line=>{
+    const parts = line.split(',').map(p=>p.trim());
+    if(parts.length < 4){ failed.push(`"${line}" — expected at least 4 comma-separated fields`); return; }
+    const [weekStr, awayRaw, homeRaw, lineStr, totalStr, neutralStr, timeStr, homeMLStr, awayMLStr] = parts;
+    const away = findTeam(awayRaw);
+    const home = findTeam(homeRaw);
+    const marketLine = parseFloat(lineStr);
+    if(!away || !home || isNaN(marketLine)){
+      const reasons = [];
+      if(!away) reasons.push(`away team "${awayRaw}" not recognized`);
+      if(!home) reasons.push(`home team "${homeRaw}" not recognized`);
+      if(isNaN(marketLine)) reasons.push(`line "${lineStr}" not a number`);
+      failed.push(`"${line}" — ${reasons.join('; ')}`);
+      return;
+    }
+    const homeML = (homeMLStr && homeMLStr.trim()!=='') ? parseInt(homeMLStr) : null;
+    const awayML = (awayMLStr && awayMLStr.trim()!=='') ? parseInt(awayMLStr) : null;
+    games.push({
+      id: Date.now() + added,
+      away, home, marketLine,
+      neutral: (neutralStr||'').trim().toUpperCase()==='N',
+      week: weekStr ? parseInt(weekStr) : 0,
+      time: (timeStr && timeStr.trim()!=='') ? timeStr.trim() : null,
+      marketTotal: (totalStr && totalStr.trim()!=='') ? parseFloat(totalStr) : null,
+      homeML: (homeML!==null && !isNaN(homeML)) ? homeML : null,
+      awayML: (awayML!==null && !isNaN(awayML)) ? awayML : null
+    });
+    added++;
+  });
+  await saveGames();
+  populateWeekFilter();
+  renderBoard();
+  const msg = document.getElementById('bulkImportMsg');
+  if(failed.length){
+    msg.innerHTML = `Imported ${added} game${added===1?'':'s'}. Couldn't parse ${failed.length}:<br>` +
+      failed.map(f=>`&nbsp;&nbsp;• ${f}`).join('<br>');
+  } else {
+    msg.textContent = `Imported ${added} game${added===1?'':'s'}.`;
+  }
+  if(added>0) document.getElementById('bulkImport').value='';
+});
+
+function populateWeekFilter(){
+  const sel = document.getElementById('weekFilter');
+  const current = sel.value;
+  const weeks = [...new Set(games.map(g=>g.week ?? 0))].sort((a,b)=>a-b);
+  sel.innerHTML = '<option value="all">All weeks</option>' + weeks.map(w=>`<option value="${w}">${w===0?'Unassigned':'Week '+w}</option>`).join('');
+  if([...sel.options].some(o=>o.value===current)) sel.value = current;
+}
+document.getElementById('weekFilter').addEventListener('change', renderBoard);
+document.getElementById('sortFilter').addEventListener('change', renderBoard);
+
+document.getElementById('clearBoardBtn').addEventListener('click', async ()=>{
+  if(games.length===0) return;
+  if(!confirm(`Remove all ${games.length} game${games.length===1?'':'s'} from the board? This can't be undone.`)) return;
+  games = [];
+  await saveGames();
+  populateWeekFilter();
+  renderBoard();
+});
+
+function computeEdge(g){
+  const modelLine = computeModelLine(g.home, g.away, g.neutral);
+  const edge = modelLine - g.marketLine; // negative -> model likes HOME more than market; positive -> model likes AWAY more
+  return { modelLine, edge };
+}
+
+function formatKickoff(timeStr){
+  if(!timeStr) return null;
+  const d = new Date(timeStr);
+  if(isNaN(d.getTime())) return timeStr; // not parseable — show raw string as typed/imported
+  return d.toLocaleString(undefined, { weekday:'short', month:'short', day:'numeric', hour:'numeric', minute:'2-digit' });
+}
+
+function renderBoard(){
+  const filterVal = document.getElementById('weekFilter').value;
+  const sortVal = document.getElementById('sortFilter').value;
+  let visibleGames = filterVal==='all' ? games.slice() : games.filter(g=>String(g.week ?? 0)===filterVal);
+  document.getElementById('boardCount').textContent = `(${visibleGames.length} of ${games.length})`;
+  const list = document.getElementById('boardList');
+  if(visibleGames.length===0){ list.innerHTML = '<div class="empty">No games on the board yet. Add one above.</div>'; return; }
+
+  if(sortVal === 'time'){
+    visibleGames.sort((a,b)=>{
+      const ta = a.time ? new Date(a.time).getTime() : NaN;
+      const tb = b.time ? new Date(b.time).getTime() : NaN;
+      const aValid = !isNaN(ta), bValid = !isNaN(tb);
+      if(aValid && bValid) return ta - tb;
+      if(aValid) return -1;   // known times first
+      if(bValid) return 1;
+      return a.id - b.id;     // both unknown — fall back to import order
+    });
+  } else if(sortVal === 'edge_desc' || sortVal === 'edge_asc'){
+    visibleGames.sort((a,b)=>{
+      const ea = Math.abs(computeEdge(a).edge);
+      const eb = Math.abs(computeEdge(b).edge);
+      return sortVal === 'edge_desc' ? eb - ea : ea - eb;
+    });
+  } else { // 'recent'
+    visibleGames.sort((a,b)=> b.id - a.id);
+  }
+
+  list.innerHTML = visibleGames.map(g=>{
+    const { modelLine, edge } = computeEdge(g);
+    const edgeAbs = Math.abs(edge).toFixed(1);
+    const recTeam = edge < 0 ? g.home : g.away;
+    const noEdge = Math.abs(edge) < 0.5;
+    const kickoff = formatKickoff(g.time);
+
+    // yardstick: map lines to a -100..+100 scale (positive = home favored more) for display, clamp at +-28pt range
+    const scale = v => Math.max(-46, Math.min(46, (-v) * 3)); // negative home line -> positive position (home favored, right side)
+    const modelPos = 50 + scale(modelLine);
+    const marketPos = 50 + scale(g.marketLine);
+    const gapLeft = Math.min(modelPos, marketPos);
+    const gapWidth = Math.abs(modelPos - marketPos);
+
+    // Total model
+    const modelTotal = computeModelTotal(g.home, g.away);
+    let totalBlock = '';
+    if(modelTotal !== null){
+      if(g.marketTotal !== null && g.marketTotal !== undefined){
+        const totalEdge = modelTotal - g.marketTotal;
+        const totalNoEdge = Math.abs(totalEdge) < 1.5;
+        const totalLean = totalEdge > 0 ? 'Over' : 'Under';
+        totalBlock = `
+      <div class="edge-readout" style="margin-top:6px;">
+        <div>
+          <div class="edge-num ${totalNoEdge?'flat':'pos'}" style="font-size:16px;">${totalNoEdge? '—' : Math.abs(totalEdge).toFixed(1)+' pt'}</div>
+          <div class="edge-label">model total: ${modelTotal.toFixed(1)} &nbsp;|&nbsp; market: ${g.marketTotal} &nbsp;|&nbsp; total edge</div>
+        </div>
+        ${totalNoEdge ? '<span class="rec-pill" style="border-color:var(--muted);color:var(--muted);font-size:11px;">No edge</span>' : `<span class="rec-pill" style="font-size:11px;">Lean ${totalLean}</span>`}
+      </div>`;
+      } else {
+        totalBlock = `<div class="edge-label" style="margin-top:6px;">Model total: ${modelTotal.toFixed(1)} (no market total entered)</div>`;
+      }
+    }
+
+    // Moneyline model — always computable from the model spread via win probability
+    const homeMargin = -modelLine; // positive = home favored
+    const wpHome = marginToWinProb(homeMargin);
+    const wpAway = 1 - wpHome;
+    const fairHomeML = winProbToFairML(wpHome);
+    const fairAwayML = winProbToFairML(wpAway);
+
+    let mlValueNote = '';
+    if(g.homeML !== null && g.homeML !== undefined){
+      const impliedHome = americanToImpliedProb(g.homeML);
+      const mlEdge = (wpHome - impliedHome) * 100;
+      if(Math.abs(mlEdge) >= 3) mlValueNote += ` ${mlEdge>0?'▲':'▼'} ${Math.abs(mlEdge).toFixed(1)}pp vs market`;
+    }
+    if(g.awayML !== null && g.awayML !== undefined){
+      const impliedAway = americanToImpliedProb(g.awayML);
+      const mlEdgeA = (wpAway - impliedAway) * 100;
+      if(Math.abs(mlEdgeA) >= 3) mlValueNote += ` | ${g.away} ${mlEdgeA>0?'▲':'▼'} ${Math.abs(mlEdgeA).toFixed(1)}pp`;
+    }
+
+    const mlBlock = `
+      <div class="edge-label" style="margin-top:6px;">
+        Moneyline (model fair, no vig): ${g.home} ${fairHomeML>0?'+':''}${fairHomeML} / ${g.away} ${fairAwayML>0?'+':''}${fairAwayML}
+        ${(g.homeML!==null && g.homeML!==undefined) || (g.awayML!==null && g.awayML!==undefined) ? `&nbsp;|&nbsp; market: ${g.home} ${g.homeML!=null?(g.homeML>0?'+':'')+g.homeML:'—'} / ${g.away} ${g.awayML!=null?(g.awayML>0?'+':'')+g.awayML:'—'}` : ''}
+        ${mlValueNote}
+      </div>`;
+
+    return `
+    <div class="game-card">
+      <div class="game-top">
+        <div>
+          ${g.week ? `<span class="neutral-badge" style="border-color:var(--turf-bright);color:var(--turf-bright);">WK ${g.week}</span>` : ''}
+          <span class="matchup">${g.away}<span class="at">@</span>${g.home}</span>
+          ${g.neutral ? '<span class="neutral-badge">NEUTRAL</span>' : ''}
+        </div>
+        <button class="del-x" data-del="${g.id}" title="Remove">✕</button>
+      </div>
+      <div class="game-meta">${kickoff ? kickoff + ' &nbsp;·&nbsp; ' : ''}Market: ${g.home} ${g.marketLine>0?'+':''}${g.marketLine}${g.marketTotal? ' &nbsp;·&nbsp; O/U ' + g.marketTotal : ''}</div>
+
+      <div class="legend">
+        <span><span class="dot model"></span>Model line</span>
+        <span><span class="dot market"></span>Market line</span>
+      </div>
+      <div class="yardstick">
+        <div class="zero"></div>
+        <div class="gap" style="left:${gapLeft}%; width:${gapWidth}%;"></div>
+        <div class="mark market" style="left:${marketPos}%;"></div>
+        <div class="mark model" style="left:${modelPos}%;"></div>
+      </div>
+
+      <div class="edge-readout">
+        <div>
+          <div class="edge-num ${noEdge?'flat':'pos'}">${noEdge? '—' : edgeAbs+' pt'}</div>
+          <div class="edge-label">model: ${g.home} ${modelLine>0?'+':''}${modelLine.toFixed(1)} &nbsp;|&nbsp; edge size vs market</div>
+        </div>
+        ${noEdge ? '<span class="rec-pill" style="border-color:var(--muted);color:var(--muted);">No edge</span>' : `<span class="rec-pill">Lean ${recTeam}</span>`}
+      </div>
+      ${totalBlock}
+      ${mlBlock}
+    </div>`;
+  }).join('');
+
+  list.querySelectorAll('[data-del]').forEach(btn=>{
+    btn.addEventListener('click', async ()=>{
+      games = games.filter(g=>g.id !== Number(btn.dataset.del));
+      await saveGames(); populateWeekFilter(); renderBoard();
+    });
+  });
+}
+
+document.getElementById('neutralSite').addEventListener('change', ()=>{});
+
+// ---------- LOG ----------
+function americanProfit(odds, units){
+  if(odds>0) return units * (odds/100);
+  return units * (100/Math.abs(odds));
+}
+
+document.getElementById('addBetBtn').addEventListener('click', async ()=>{
+  const desc = document.getElementById('betDesc').value.trim();
+  const type = document.getElementById('betType').value;
+  const book = document.getElementById('betBook').value;
+  const odds = parseFloat(document.getElementById('betOdds').value);
+  const units = parseFloat(document.getElementById('betUnits').value);
+  const status = document.getElementById('betStatus').value;
+  if(!desc || isNaN(odds) || isNaN(units) || units<=0){ alert('Fill in a description, odds, and units.'); return; }
+  bets.push({ id: Date.now(), desc, type, book, odds, units, status });
+  await saveBets();
+  document.getElementById('betDesc').value='';
+  document.getElementById('betOdds').value='-110';
+  document.getElementById('betUnits').value='1.0';
+  document.getElementById('betStatus').value='pending';
+  renderLog();
+});
+
+function renderLog(){
+  document.getElementById('betCount').textContent = `(${bets.length})`;
+  const list = document.getElementById('betList');
+
+  let wins=0, losses=0, pushes=0, pending=0, unitsRisked=0, netUnits=0;
+  bets.forEach(b=>{
+    if(b.status==='pending'){ pending++; return; }
+    unitsRisked += b.units;
+    if(b.status==='win'){ wins++; netUnits += americanProfit(b.odds, b.units); }
+    else if(b.status==='loss'){ losses++; netUnits -= b.units; }
+    else if(b.status==='push'){ pushes++; }
+  });
+  const roi = unitsRisked>0 ? (netUnits/unitsRisked*100) : 0;
+
+  document.getElementById('statRecord').textContent = `${wins}-${losses}-${pushes}`;
+  document.getElementById('statUnitsRisked').textContent = unitsRisked.toFixed(1);
+  const profitEl = document.getElementById('statProfit');
+  profitEl.textContent = (netUnits>=0?'+':'') + netUnits.toFixed(2);
+  profitEl.className = 'v ' + (netUnits>0?'pos':netUnits<0?'neg':'neu');
+  const roiEl = document.getElementById('statRoi');
+  roiEl.textContent = (roi>=0?'+':'') + roi.toFixed(1) + '%';
+  roiEl.className = 'v ' + (roi>0?'pos':roi<0?'neg':'neu');
+  document.getElementById('statPending').textContent = pending;
+
+  // Per-book breakdown
+  const byBook = {};
+  bets.forEach(b=>{
+    if(b.status==='pending' || !b.book) return;
+    if(!byBook[b.book]) byBook[b.book] = { w:0,l:0,p:0, net:0 };
+    const bb = byBook[b.book];
+    if(b.status==='win'){ bb.w++; bb.net += americanProfit(b.odds, b.units); }
+    else if(b.status==='loss'){ bb.l++; bb.net -= b.units; }
+    else if(b.status==='push'){ bb.p++; }
+  });
+  const bookKeys = Object.keys(byBook);
+  const breakdownWrap = document.getElementById('bookBreakdown');
+  const breakdownRow = document.getElementById('bookBreakdownRow');
+  if(bookKeys.length === 0){
+    breakdownWrap.style.display = 'none';
+  } else {
+    breakdownWrap.style.display = 'block';
+    breakdownRow.innerHTML = bookKeys.map(book=>{
+      const bb = byBook[book];
+      const cls = bb.net>0?'pos':bb.net<0?'neg':'neu';
+      return `<div class="stat-box"><div class="v ${cls}" style="font-size:18px;">${bb.net>=0?'+':''}${bb.net.toFixed(2)}</div><div class="l">${book} · ${bb.w}-${bb.l}-${bb.p}</div></div>`;
+    }).join('');
+  }
+
+  if(bets.length===0){ list.innerHTML = '<div class="empty">No bets logged yet.</div>'; return; }
+
+  list.innerHTML = bets.slice().reverse().map(b=>{
+    let resultText = '—', resultClass='mono';
+    if(b.status==='win'){ const p = americanProfit(b.odds,b.units); resultText='+'+p.toFixed(2)+'u'; resultClass='result-mono pos'; }
+    else if(b.status==='loss'){ resultText='-'+b.units.toFixed(2)+'u'; resultClass='result-mono neg'; }
+    else if(b.status==='push'){ resultText='0.00u'; resultClass='result-mono neu'; }
+    else { resultText='pending'; resultClass='result-mono'; }
+
+    return `
+    <div class="bet-row">
+      <div class="desc">${b.desc}</div>
+      <div class="mono">${b.type || '—'}</div>
+      <div class="mono">${b.book || '—'}</div>
+      <div class="mono">${b.odds>0?'+':''}${b.odds}</div>
+      <div class="mono">${b.units.toFixed(1)}u</div>
+      <select class="status-select ${b.status}" data-id="${b.id}">
+        <option value="pending" ${b.status==='pending'?'selected':''}>Pending</option>
+        <option value="win" ${b.status==='win'?'selected':''}>Win</option>
+        <option value="loss" ${b.status==='loss'?'selected':''}>Loss</option>
+        <option value="push" ${b.status==='push'?'selected':''}>Push</option>
+      </select>
+      <div class="${resultClass}">${resultText}</div>
+      <button class="del-x" data-delbet="${b.id}">✕</button>
+    </div>`;
+  }).join('');
+
+  list.querySelectorAll('.status-select').forEach(sel=>{
+    sel.addEventListener('change', async (e)=>{
+      const b = bets.find(x=>x.id===Number(e.target.dataset.id));
+      if(b){ b.status = e.target.value; await saveBets(); renderLog(); }
+    });
+  });
+  list.querySelectorAll('[data-delbet]').forEach(btn=>{
+    btn.addEventListener('click', async ()=>{
+      bets = bets.filter(b=>b.id !== Number(btn.dataset.delbet));
+      await saveBets(); renderLog();
+    });
+  });
+}
+
+document.getElementById('storageBackendTag').textContent = 'Data: ' + activeStorageBackend();
+loadAll();
+</script>
+</body>
+</html>
