@@ -298,7 +298,7 @@
       <div class="bet-form">
         <div class="field"><label>Description</label><input type="text" id="betDesc" placeholder="Ohio State -6.5 vs Texas"></div>
         <div class="field"><label>Type</label>
-          <select id="betType"><option value="Spread">Spread</option><option value="Moneyline">Moneyline</option><option value="Total">Total</option></select>
+          <select id="betType"><option value="Spread">Spread</option><option value="Moneyline">Moneyline</option><option value="Total">Total</option><option value="Futures">Futures</option></select>
         </div>
         <div class="field"><label>Book</label>
           <select id="betBook"><option value="BetMGM">BetMGM</option><option value="FanDuel">FanDuel</option><option value="DraftKings">DraftKings</option></select>
@@ -490,8 +490,8 @@ let sortState = {key:'rank', dir:1};
 // consistently rather than mixing sources mid-session.
 
 // ---- Fill these in after setting up Supabase (see README.md) ----
-const SUPABASE_URL = "https://riergagoouiqmoiiwzng.supabase.co";        // e.g. "https://abcdefgh.supabase.co"
-const SUPABASE_ANON_KEY = "sb_publishable_KW9uQUnfb02z38lCL8Pgnw_QqhYH9kM";   // the "anon public" key from your project's API settings
+const SUPABASE_URL = "";        // e.g. "https://abcdefgh.supabase.co"
+const SUPABASE_ANON_KEY = "";   // the "anon public" key from your project's API settings
 // -------------------------------------------------------------------
 
 const HAS_CLAUDE_STORAGE = (typeof window !== 'undefined' && !!window.storage);
@@ -830,7 +830,7 @@ document.getElementById('addGameBtn').addEventListener('click', async ()=>{
   const marketTotal = document.getElementById('marketTotal').value;
   const neutral = document.getElementById('neutralSite').checked;
   const weekVal = document.getElementById('gameWeek').value;
-  const week = weekVal ? parseInt(weekVal) : 0;
+  const week = weekVal ? parseInt(weekVal) : null;
   const timeVal = document.getElementById('gameTime').value; // datetime-local string or ''
   const homeMLVal = document.getElementById('homeML').value;
   const awayMLVal = document.getElementById('awayML').value;
@@ -943,7 +943,7 @@ document.getElementById('bulkImportBtn').addEventListener('click', async ()=>{
       id: Date.now() + added,
       away, home, marketLine,
       neutral: (neutralStr||'').trim().toUpperCase()==='N',
-      week: weekStr ? parseInt(weekStr) : 0,
+      week: weekStr ? parseInt(weekStr) : null,
       time: (timeStr && timeStr.trim()!=='') ? timeStr.trim() : null,
       marketTotal: (totalStr && totalStr.trim()!=='') ? parseFloat(totalStr) : null,
       homeML: (homeML!==null && !isNaN(homeML)) ? homeML : null,
@@ -967,8 +967,13 @@ document.getElementById('bulkImportBtn').addEventListener('click', async ()=>{
 function populateWeekFilter(){
   const sel = document.getElementById('weekFilter');
   const current = sel.value;
-  const weeks = [...new Set(games.map(g=>g.week ?? 0))].sort((a,b)=>a-b);
-  sel.innerHTML = '<option value="all">All weeks</option>' + weeks.map(w=>`<option value="${w}">${w===0?'Unassigned':'Week '+w}</option>`).join('');
+  const weeks = [...new Set(games.map(g=> (g.week === null || g.week === undefined) ? 'unassigned' : g.week))]
+    .sort((a,b)=>{
+      if(a==='unassigned') return 1;
+      if(b==='unassigned') return -1;
+      return a-b;
+    });
+  sel.innerHTML = '<option value="all">All weeks</option>' + weeks.map(w=>`<option value="${w}">${w==='unassigned'?'Unassigned':'Week '+w}</option>`).join('');
   if([...sel.options].some(o=>o.value===current)) sel.value = current;
 }
 document.getElementById('weekFilter').addEventListener('change', renderBoard);
@@ -999,7 +1004,10 @@ function formatKickoff(timeStr){
 function renderBoard(){
   const filterVal = document.getElementById('weekFilter').value;
   const sortVal = document.getElementById('sortFilter').value;
-  let visibleGames = filterVal==='all' ? games.slice() : games.filter(g=>String(g.week ?? 0)===filterVal);
+  let visibleGames = filterVal==='all' ? games.slice() : games.filter(g=>{
+    const gWeek = (g.week === null || g.week === undefined) ? 'unassigned' : String(g.week);
+    return gWeek === filterVal;
+  });
   document.getElementById('boardCount').textContent = `(${visibleGames.length} of ${games.length})`;
   const list = document.getElementById('boardList');
   if(visibleGames.length===0){ list.innerHTML = '<div class="empty">No games on the board yet. Add one above.</div>'; return; }
@@ -1089,7 +1097,7 @@ function renderBoard(){
     <div class="game-card">
       <div class="game-top">
         <div>
-          ${g.week ? `<span class="neutral-badge" style="border-color:var(--turf-bright);color:var(--turf-bright);">WK ${g.week}</span>` : ''}
+          ${(g.week !== null && g.week !== undefined) ? `<span class="neutral-badge" style="border-color:var(--turf-bright);color:var(--turf-bright);">WK ${g.week}</span>` : ''}
           <span class="matchup">${g.away}<span class="at">@</span>${g.home}</span>
           ${g.neutral ? '<span class="neutral-badge">NEUTRAL</span>' : ''}
         </div>
