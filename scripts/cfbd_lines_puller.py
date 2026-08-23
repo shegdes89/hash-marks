@@ -52,7 +52,7 @@ PROVIDER_PREFERENCE = ["DraftKings", "FanDuel", "BetMGM", "ESPN Bet", "Bovada"]
 
 def fetch_lines(year, week, season_type, api_key):
     headers = {"Authorization": f"Bearer {api_key}"}
-    params = {"year": year, "week": week, "seasonType": season_type}
+    params = {"year": year, "week": week, "seasonType": season_type, "classification": "fbs"}
     resp = requests.get(f"{API_BASE}/lines", headers=headers, params=params, timeout=60)
     resp.raise_for_status()
     return resp.json()
@@ -159,10 +159,22 @@ def main():
     skipped = 0
     ml_missing = 0
     week_mismatch = 0
+    non_fbs_skipped = 0
     for g in games:
         home = g.get("homeTeam")
         away = g.get("awayTeam")
-        info = game_info.get(g.get("id"), {})
+        game_id = g.get("id")
+
+        # game_info comes from /games, which we requested with
+        # classification=fbs — so if a game isn't in there, it's not FBS
+        # (or something else was wrong with it). Belt-and-suspenders on
+        # top of the classification=fbs filter added to the /lines call
+        # itself, in case that param doesn't fully filter server-side.
+        if game_id not in game_info:
+            non_fbs_skipped += 1
+            continue
+
+        info = game_info[game_id]
         neutral = info.get("neutralSite", False)
         start_date = info.get("startDate")
         # Use the game's ACTUAL week from CFBD's /games data, not the week
@@ -211,7 +223,8 @@ def main():
               f"being forced into week {args.week}. This is CFBD's own data, not a bug in this script; "
               f"it just means their week filter is looser than you'd expect.")
 
-    print(f"\n{len(rows)} games with a usable line, {skipped} skipped (no line posted yet).")
+    print(f"\n{len(rows)} games with a usable line, {skipped} skipped (no line posted yet), "
+          f"{non_fbs_skipped} skipped (not FBS).")
     if rows:
         print(f"{len(rows) - ml_missing}/{len(rows)} games had moneyline data from their picked book.")
 
