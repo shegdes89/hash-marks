@@ -1,0 +1,56 @@
+name: Update Hash Marks lines
+
+# Manual trigger only — no schedule. Go to the "Actions" tab on GitHub,
+# pick "Update Hash Marks lines" on the left, click "Run workflow", fill
+# in the year/week, and click the green "Run workflow" button.
+on:
+  workflow_dispatch:
+    inputs:
+      year:
+        description: "Season year"
+        required: true
+        default: "2026"
+      week:
+        description: "Week number"
+        required: true
+        default: "1"
+      season_type:
+        description: "regular or postseason"
+        required: true
+        default: "regular"
+
+permissions:
+  contents: write
+
+jobs:
+  update-lines:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Pull lines from CollegeFootballData.com
+        env:
+          CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
+        run: |
+          python scripts/cfbd_lines_puller.py \
+            --year "${{ github.event.inputs.year }}" \
+            --week "${{ github.event.inputs.week }}" \
+            --season-type "${{ github.event.inputs.season_type }}" \
+            --out-json data/games.json
+
+      - name: Commit updated data
+        run: |
+          git config user.name "hash-marks-bot"
+          git config user.email "actions@github.com"
+          git add data/games.json
+          git diff --staged --quiet && echo "No changes to commit" || git commit -m "Update lines: ${{ github.event.inputs.year }} week ${{ github.event.inputs.week }}"
+          git push
