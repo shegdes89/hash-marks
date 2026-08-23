@@ -634,24 +634,41 @@ async function syncLatestData(){
     if(r.ok){
       const fetched = await r.json();
       if(Array.isArray(fetched)){
+        let nameFailures = [];
         fetched.forEach(fg=>{
+          // Normalize team names the same way the manual Bulk Import does —
+          // without this, a spelling variant (e.g. CFBD's "San José State"
+          // vs. this app's "San Jose State") silently fails to match a
+          // rating and defaults to 0, quietly wrecking the model line.
+          const away = findTeam(fg.away);
+          const home = findTeam(fg.home);
+          if(!away || !home){
+            nameFailures.push(`${fg.away} @ ${fg.home}`);
+            return;
+          }
+          const normalized = { ...fg, away, home };
+
           const existing = games.find(g =>
-            g.week === fg.week && g.home === fg.home && g.away === fg.away
+            g.week === normalized.week && g.home === normalized.home && g.away === normalized.away
           );
           if(existing){
-            existing.marketLine = fg.marketLine;
-            existing.marketTotal = fg.marketTotal ?? existing.marketTotal;
-            existing.neutral = fg.neutral ?? existing.neutral;
-            existing.time = fg.time ?? existing.time;
-            existing.homeML = fg.homeML ?? existing.homeML;
-            existing.awayML = fg.awayML ?? existing.awayML;
+            existing.marketLine = normalized.marketLine;
+            existing.marketTotal = normalized.marketTotal ?? existing.marketTotal;
+            existing.neutral = normalized.neutral ?? existing.neutral;
+            existing.time = normalized.time ?? existing.time;
+            existing.homeML = normalized.homeML ?? existing.homeML;
+            existing.awayML = normalized.awayML ?? existing.awayML;
             gamesUpdated++;
           } else {
-            games.push({ id: Date.now() + gamesAdded, ...fg });
+            games.push({ id: Date.now() + gamesAdded, ...normalized });
             gamesAdded++;
           }
         });
         if(gamesUpdated || gamesAdded){ await saveGames(); foundAny = true; }
+        if(nameFailures.length){
+          status.textContent = (status.textContent ? status.textContent + ' ' : '') +
+            `${nameFailures.length} game(s) skipped — unrecognized team name(s): ${nameFailures.join(', ')}`;
+        }
       }
     }
   }catch(e){ /* not hosted, or file missing — fine */ }
