@@ -209,14 +209,14 @@
         <button class="ghost" id="resetRatingsBtn">Reset to final preseason SP+</button>
       </div>
       <div class="sub" style="margin-bottom:12px;">
-        Model uses ESPN SP+ (points, drives the Board's spreads). FEI and FPI ranks are shown for reference/comparison only — they don't feed the model.
+        Model uses ESPN SP+ (points, drives the Board's spreads). FEI, FPI, and Sagarin ranks are shown for reference/comparison only — they don't feed the model.
         FEI = BCF Toys' Fremeau Efficiency Index, opponent-adjusted possession efficiency with garbage time already excluded (all 138 FBS teams). FPI = ESPN's preseason Top 25 (published Jul 9, 2026).
-        Sagarin has no 2026 preseason ratings — his model is results-based and only starts computing once games are played; I'll fill that column in once the season kicks off.
+        Sagarin = Jeff Sagarin's 2026 "starting" rating (sagarin.com) — despite being pulled after Week 0, the source explicitly labels these preseason seed values (every team shows a 0-0 record); treat as a baseline, not a live in-season number yet. Will update once his site starts reflecting actual results.
         (PFF's power rankings live behind a JS-rendered tool I can't scrape reliably, so that column's been dropped. Pick Six's ranking was also dropped since it won't update in-season.)
       </div>
       <table>
         <thead>
-          <tr><th data-sort="rank">#</th><th data-sort="team">Team</th><th data-sort="rating">SP+ Rating</th><th data-sort="fei">FEI Rank</th><th data-sort="fpi">FPI Rank</th><th data-sort="sagarin">Sagarin</th></tr>
+          <tr><th data-sort="rank">#</th><th data-sort="team">Team</th><th data-sort="rating">SP+ Rating</th><th data-sort="fei">FEI Rank</th><th data-sort="fpi">FPI Rank</th><th data-sort="sagarin">Sagarin Rank</th></tr>
         </thead>
         <tbody id="ratingsBody"></tbody>
       </table>
@@ -464,6 +464,52 @@ const FEI_RANK = {
 "Akron":[137,-1.06],"UMass":[138,-1.54]
 };
 
+// Jeff Sagarin's 2026 "starting" ratings (sagarin.com), pulled after Week 0.
+// IMPORTANT: despite being pulled after Week 0 games were played, the source
+// page is explicitly labeled "STARTING ratings" with every team at a 0-0
+// record — this is Sagarin's preseason seed value, not yet updated with any
+// 2026 results. Treat as a preseason baseline reference, not a live number;
+// it should start reflecting actual games once Sagarin's site updates.
+// Values are [rank, rating] on Sagarin's own 0-100ish scale (not comparable
+// directly to SP+ point values).
+const SAGARIN_RANK = {
+"Ohio State":[1,103.07],"Oregon":[2,101.74],"Notre Dame":[3,101.0],"Indiana":[4,100.44],
+"Texas":[5,98.5],"Georgia":[6,97.38],"Miami":[7,95.73],"Texas A&M":[8,92.87],
+"Oklahoma":[9,92.66],"LSU":[10,92.31],"USC":[11,92.11],"Texas Tech":[12,92.08],
+"Michigan":[13,91.82],"Alabama":[14,91.76],"Ole Miss":[15,91.18],"Florida":[16,87.91],
+"Tennessee":[17,87.9],"Penn State":[18,87.68],"Washington":[19,87.63],"Iowa":[20,85.4],
+"Missouri":[21,84.98],"Auburn":[22,84.38],"South Carolina":[23,84.2],"BYU":[24,84.02],
+"SMU":[25,83.06],"Wisconsin":[26,82.49],"Louisville":[27,82.09],"Clemson":[28,81.63],
+"Utah":[29,81.6],"Illinois":[30,81.12],"Nebraska":[31,80.57],"Vanderbilt":[32,80.09],
+"Kentucky":[33,79.45],"Minnesota":[34,79.37],"UCLA":[35,79.24],"Pittsburgh":[36,78.78],
+"Houston":[37,78.71],"Mississippi State":[38,78.28],"Kansas State":[39,77.98],"Florida State":[40,77.72],
+"Arizona":[41,77.7],"Virginia Tech":[42,77.49],"Northwestern":[43,77.49],"Virginia":[44,77.43],
+"Arizona State":[45,77.11],"TCU":[46,76.92],"Georgia Tech":[47,76.31],"Arkansas":[48,75.76],
+"NC State":[49,75.29],"Baylor":[50,74.67],"Oklahoma State":[51,74.55],"Maryland":[52,74.14],
+"Kansas":[53,74.06],"California":[54,74.05],"Rutgers":[55,73.3],"West Virginia":[56,73.11],
+"Wake Forest":[57,72.71],"Duke":[58,72.32],"Michigan State":[59,72.15],"UCF":[60,71.77],
+"North Carolina":[61,70.72],"Purdue":[62,70.4],"Cincinnati":[63,70.29],"Colorado":[64,69.8],
+"Boise State":[65,69.71],"Syracuse":[66,69.2],"Iowa State":[67,68.73],"Stanford":[69,66.8],
+"Boston College":[71,65.7],"San Diego State":[72,64.58],"Navy":[73,64.23],"UNLV":[74,64.16],
+"UTSA":[75,63.92],"North Dakota State":[76,63.83],"Tulane":[77,63.39],"Memphis":[78,63.24],
+"South Florida":[79,63.15],"Army":[80,62.91],"New Mexico":[81,62.81],"James Madison":[82,62.67],
+"Texas State":[83,61.61],"Washington State":[84,61.44],"Hawaii":[85,60.58],"East Carolina":[86,60.51],
+"Old Dominion":[87,60.09],"Fresno State":[88,59.78],"Air Force":[90,58.76],"Liberty":[92,58.2],
+"Western Kentucky":[93,57.94],"Marshall":[94,57.57],"Western Michigan":[95,57.53],"Florida Atlantic":[96,57.47],
+"North Texas":[98,56.76],"Tulsa":[99,56.53],"Toledo":[100,56.53],"Miami (OH)":[101,56.45],
+"Troy":[102,56.23],"Oregon State":[103,56.18],"Jacksonville State":[106,55.87],"Temple":[107,55.61],
+"Utah State":[109,55.26],"UConn":[110,55.22],"Louisiana":[111,55.07],"Louisiana Tech":[112,54.99],
+"Colorado State":[113,54.84],"Delaware":[114,53.94],"Arkansas State":[115,53.82],"Wyoming":[116,53.8],
+"Appalachian State":[117,53.78],"South Alabama":[118,53.75],"Georgia Southern":[120,53.34],"Kennesaw State":[121,53.34],
+"Central Michigan":[122,53.14],"Ohio":[123,53.0],"Nevada":[127,52.05],"FIU":[128,51.97],
+"Coastal Carolina":[131,51.21],"Eastern Michigan":[133,51.09],"San Jose State":[134,50.82],"Rice":[136,50.61],
+"Bowling Green":[141,49.48],"Buffalo":[142,49.06],"New Mexico State":[144,48.39],"UAB":[145,48.17],
+"Northern Illinois":[146,48.14],"Missouri State":[147,48.11],"Akron":[148,47.94],"Georgia State":[153,47.38],
+"Southern Miss":[154,47.34],"UTEP":[158,46.71],"UL Monroe":[160,46.39],"Middle Tennessee":[164,46.11],
+"Sacramento State":[172,45.22],"Kent State":[177,44.3],"Sam Houston":[182,43.58],"Charlotte":[185,42.87],
+"Ball State":[186,42.69],"UMass":[226,35.9]
+};
+
 // ESPN FPI preseason Top 25 for 2026 (published July 9, 2026) — reference only
 const FPI_RANK = {
 "Ohio State":1,"Texas":2,"Notre Dame":3,"Oregon":4,"Georgia":5,"Indiana":6,"Miami":7,
@@ -707,6 +753,7 @@ function renderRatings(){
   else if(sortState.key==='rating') sorted.sort((a,b)=> sortState.dir*(b.rating-a.rating));
   else if(sortState.key==='fei') sorted.sort((a,b)=> sortState.dir*((FEI_RANK[a.team]?FEI_RANK[a.team][0]:999)-(FEI_RANK[b.team]?FEI_RANK[b.team][0]:999)));
   else if(sortState.key==='fpi') sorted.sort((a,b)=> sortState.dir*((FPI_RANK[a.team]||999)-(FPI_RANK[b.team]||999)));
+  else if(sortState.key==='sagarin') sorted.sort((a,b)=> sortState.dir*((SAGARIN_RANK[a.team]?SAGARIN_RANK[a.team][0]:999)-(SAGARIN_RANK[b.team]?SAGARIN_RANK[b.team][0]:999)));
   else sorted.sort((a,b)=> sortState.dir*(a.rank-b.rank));
 
   const filtered = search ? sorted.filter(r=>r.team.toLowerCase().includes(search)) : sorted;
@@ -722,7 +769,7 @@ function renderRatings(){
       </td>
       <td class="mono" style="color:var(--muted);" title="${FEI_RANK[r.team] ? 'FEI '+FEI_RANK[r.team][1].toFixed(2) : ''}">${FEI_RANK[r.team] ? '#'+FEI_RANK[r.team][0] : '—'}</td>
       <td class="mono" style="color:var(--muted);">${FPI_RANK[r.team] ? '#'+FPI_RANK[r.team] : '—'}</td>
-      <td class="mono" style="color:var(--muted);" title="Sagarin has no 2026 preseason ratings — his model is results-based and only starts once games are played">—</td>
+      <td class="mono" style="color:var(--muted);" title="${SAGARIN_RANK[r.team] ? 'Sagarin '+SAGARIN_RANK[r.team][1].toFixed(2)+' (preseason baseline, not yet updated with 2026 results)' : ''}">${SAGARIN_RANK[r.team] ? '#'+SAGARIN_RANK[r.team][0] : '—'}</td>
     </tr>`).join('');
 
   body.querySelectorAll('.edit-rating').forEach(inp=>{
