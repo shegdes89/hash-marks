@@ -1087,5 +1087,137 @@
     "time": "2026-09-05T00:00:00.000Z",
     "homeML": null,
     "awayML": null
+  },
+  {
+    "week": 3,
+    "away": "Houston",
+    "home": "Texas Tech",
+    "marketLine": -14,
+    "marketTotal": null,
+    "neutral": false,
+    "time": "2026-09-19T00:00:00.000Z",
+    "homeML": null,
+    "awayML": null
+  },
+  {
+    "week": 3,
+    "away": "Florida State",
+    "home": "Alabama",
+    "marketLine": -17.5,
+    "marketTotal": 50.5,
+    "neutral": false,
+    "time": "2026-09-19T19:30:00.000Z",
+    "homeML": -950,
+    "awayML": 625
+  },
+  {
+    "week": 3,
+    "away": "SMU",
+    "home": "Louisville",
+    "marketLine": -1.5,
+    "marketTotal": 58.5,
+    "neutral": false,
+    "time": "2026-09-19T19:30:00.000Z",
+    "homeML": -112,
+    "awayML": -108
+  },
+  {
+    "week": 3,
+    "away": "Florida",
+    "home": "Auburn",
+    "marketLine": 2.5,
+    "marketTotal": 49.5,
+    "neutral": false,
+    "time": "2026-09-19T23:00:00.000Z",
+    "homeML": 120,
+    "awayML": -142
+  },
+  {
+    "week": 3,
+    "away": "LSU",
+    "home": "Ole Miss",
+    "marketLine": 2.5,
+    "marketTotal": 58.5,
+    "neutral": false,
+    "time": "2026-09-19T23:30:00.000Z",
+    "homeML": 110,
+    "awayML": -130
+  },
+  {
+    "week": 3,
+    "away": "North Carolina",
+    "home": "Clemson",
+    "marketLine": -9.5,
+    "marketTotal": 44.5,
+    "neutral": false,
+    "time": "2026-09-19T16:00:00.000Z",
+    "homeML": -410,
+    "awayML": 320
+  },
+  {
+    "week": 3,
+    "away": "Georgia",
+    "home": "Arkansas",
+    "marketLine": 17.5,
+    "marketTotal": 52.5,
+    "neutral": false,
+    "time": "2026-09-19T16:00:00.000Z",
+    "homeML": 600,
+    "awayML": -900
+  },
+  {
+    "week": 3,
+    "away": "Mississippi State",
+    "home": "South Carolina",
+    "marketLine": -7.5,
+    "marketTotal": 54.5,
+    "neutral": false,
+    "time": "2026-09-19T20:15:00.000Z",
+    "homeML": -298,
+    "awayML": 240
+  },
+  {
+    "week": 3,
+    "away": "Virginia Tech",
+    "home": "Maryland",
+    "marketLine": 1.5,
+    "marketTotal": 53.5,
+    "neutral": false,
+    "time": "2026-09-19T23:30:00.000Z",
+    "homeML": -105,
+    "awayML": -115
+  },
+  {
+    "week": 3,
+    "away": "West Virginia",
+    "home": "Virginia",
+    "marketLine": -8.5,
+    "marketTotal": 50.5,
+    "neutral": true,
+    "time": "2026-09-19T23:30:00.000Z",
+    "homeML": -298,
+    "awayML": 240
+  },
+  {
+    "week": 3,
+    "away": "Miami",
+    "home": "Wake Forest",
+    "marketLine": 19.5,
+    "marketTotal": 52.5,
+    "neutral": false,
+    "time": "2026-09-18T23:30:00.000Z",
+    "homeML": 750,
+    "awayML": -1200
+  },
+  {
+    "week": 3,
+    "away": "Syracuse",
+    "home": "Pittsburgh",
+    "marketLine": -10.5,
+    "marketTotal": 59.5,
+    "neutral": false,
+    "time": "2026-09-17T23:30:00.000Z",
+    "homeML": -375,
+    "awayML": 295
   }
 ]
