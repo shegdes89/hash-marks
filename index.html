@@ -537,8 +537,8 @@ let sortState = {key:'rank', dir:1};
 // consistently rather than mixing sources mid-session.
 
 // ---- Fill these in after setting up Supabase (see README.md) ----
-const SUPABASE_URL = "https://riergagoouiqmoiiwzng.supabase.co";        // e.g. "https://abcdefgh.supabase.co"
-const SUPABASE_ANON_KEY = "sb_publishable_KW9uQUnfb02z38lCL8Pgnw_QqhYH9kM";   // the "anon public" key from your project's API settings
+const SUPABASE_URL = "";        // e.g. "https://abcdefgh.supabase.co"
+const SUPABASE_ANON_KEY = "";   // the "anon public" key from your project's API settings
 // -------------------------------------------------------------------
 
 const HAS_CLAUDE_STORAGE = (typeof window !== 'undefined' && !!window.storage);
@@ -653,7 +653,7 @@ async function syncLatestData(){
   let foundAny = false;
 
   try{
-    const r = await fetch('data/ratings.json');
+    const r = await fetch('data/ratings.json', { cache: 'no-store' });
     if(r.ok){
       const fetched = await r.json();
       if(Array.isArray(fetched) && fetched.length){
@@ -665,7 +665,7 @@ async function syncLatestData(){
   }catch(e){ /* not hosted, or file missing — fine */ }
 
   try{
-    const r = await fetch('data/offdefst.json');
+    const r = await fetch('data/offdefst.json', { cache: 'no-store' });
     if(r.ok){
       const fetched = await r.json();
       if(fetched && typeof fetched === 'object'){
@@ -677,7 +677,7 @@ async function syncLatestData(){
 
   let gamesUpdated = 0, gamesAdded = 0;
   try{
-    const r = await fetch('data/games.json');
+    const r = await fetch('data/games.json', { cache: 'no-store' });
     if(r.ok){
       const fetched = await r.json();
       if(Array.isArray(fetched)){
