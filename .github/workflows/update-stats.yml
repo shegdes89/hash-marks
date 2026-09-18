@@ -1,0 +1,50 @@
+name: update-stats
+
+on:
+  workflow_dispatch:
+    inputs:
+      year:
+        description: "Season year"
+        required: true
+        default: "2026"
+      through_week:
+        description: "Aggregate weeks 1 through this week (inclusive)"
+        required: true
+        default: "3"
+      season_type:
+        description: "regular or postseason"
+        required: true
+        default: "regular"
+
+jobs:
+  update-stats:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Pull season-to-date garbage-time-excluded stats from CollegeFootballData.com
+        env:
+          CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
+        run: |
+          python scripts/cfbd_garbage_time_stats.py \
+            --year "${{ github.event.inputs.year }}" \
+            --through-week "${{ github.event.inputs.through_week }}" \
+            --season-type "${{ github.event.inputs.season_type }}" \
+            --out-json data/team_stats.json
+
+      - name: Commit updated data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/team_stats.json
+          git diff --staged --quiet && echo "No changes to commit." || git commit -m "Update team efficiency stats: ${{ github.event.inputs.year }} through week ${{ github.event.inputs.through_week }}"
+          git push
