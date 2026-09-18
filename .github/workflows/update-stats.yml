@@ -16,6 +16,9 @@ on:
         required: true
         default: "regular"
 
+permissions:
+  contents: write
+
 jobs:
   update-stats:
     runs-on: ubuntu-latest
