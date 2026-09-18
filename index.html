@@ -489,6 +489,14 @@ let games = [];      // [{id, away, home, marketLine, marketTotal, neutral}]
 let bets = [];        // [{id, desc, odds, units, status}]
 let sortState = {key:'rank', dir:1};
 
+// Season-to-date, garbage-time-excluded efficiency stats pulled from CFBD
+// play-by-play (scripts/cfbd_garbage_time_stats.py). Keyed by canonical team
+// name: {offPlays, offPpa, offSuccessRate, defPlays, defPpa, defSuccessRate}.
+// Populated by syncLatestData() from data/team_stats.json — empty until then.
+let TEAM_STATS = {};
+let TEAM_STATS_META = { year:null, asOfWeek:null };
+let statsExpanded = new Set(); // game ids currently showing the stats panel
+
 // ---------- STORAGE ADAPTER ----------
 // Three possible backends, tried in this order:
 //   1. Claude's window.storage — only present inside a Claude conversation.
@@ -637,6 +645,29 @@ async function syncLatestData(){
       if(fetched && typeof fetched === 'object'){
         OFF_DEF_ST = fetched;
         foundAny = true;
+      }
+    }
+  }catch(e){ /* not hosted, or file missing — fine */ }
+
+  try{
+    const r = await fetch('data/team_stats.json', { cache: 'no-store' });
+    if(r.ok){
+      const fetched = await r.json();
+      if(fetched && fetched.teams && typeof fetched.teams === 'object'){
+        const normalized = {};
+        let nameFailures = [];
+        Object.entries(fetched.teams).forEach(([rawName, s])=>{
+          const canon = findTeam(rawName);
+          if(!canon){ nameFailures.push(rawName); return; }
+          normalized[canon] = s;
+        });
+        TEAM_STATS = normalized;
+        TEAM_STATS_META = { year: fetched.year ?? null, asOfWeek: fetched.asOfWeek ?? null };
+        foundAny = true;
+        if(nameFailures.length){
+          status.textContent = (status.textContent ? status.textContent + ' ' : '') +
+            `Team stats: ${nameFailures.length} unrecognized name(s) skipped: ${nameFailures.join(', ')}`;
+        }
       }
     }
   }catch(e){ /* not hosted, or file missing — fine */ }
@@ -1124,6 +1155,51 @@ function renderBoard(){
         ${mlValueNote}
       </div>`;
 
+    // Garbage-time-excluded EPA/success-rate panel (season-to-date), from
+    // scripts/cfbd_garbage_time_stats.py via data/team_stats.json. Only
+    // rendered if we actually have both teams' stats synced.
+    const homeStats = TEAM_STATS[g.home];
+    const awayStats = TEAM_STATS[g.away];
+    const hasStats = !!(homeStats && awayStats);
+    const isExpanded = statsExpanded.has(g.id);
+    const fmtPpa = v => (v>=0?'+':'') + v.toFixed(2);
+    const fmtPct = v => (v*100).toFixed(1)+'%';
+    let statsPanel = '';
+    if(hasStats && isExpanded){
+      statsPanel = `
+      <div class="stats-panel" style="margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);font-size:12.5px;">
+        <div class="edge-label" style="margin-bottom:6px;">Garbage-time-excluded, season-to-date${TEAM_STATS_META.asOfWeek? ' (thru wk '+TEAM_STATS_META.asOfWeek+')' : ''} — EPA/play &amp; success rate</div>
+        <table style="width:100%;border-collapse:collapse;">
+          <thead>
+            <tr style="color:var(--muted);text-align:left;">
+              <th style="padding:2px 6px 2px 0;">Team</th>
+              <th style="padding:2px 6px;">Off EPA/play</th>
+              <th style="padding:2px 6px;">Off Succ%</th>
+              <th style="padding:2px 6px;">Def EPA/play</th>
+              <th style="padding:2px 6px;">Def Succ%</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding:2px 6px 2px 0;">${g.away}</td>
+              <td style="padding:2px 6px;">${fmtPpa(awayStats.offPpa)}</td>
+              <td style="padding:2px 6px;">${fmtPct(awayStats.offSuccessRate)}</td>
+              <td style="padding:2px 6px;">${fmtPpa(awayStats.defPpa)}</td>
+              <td style="padding:2px 6px;">${fmtPct(awayStats.defSuccessRate)}</td>
+            </tr>
+            <tr>
+              <td style="padding:2px 6px 2px 0;">${g.home}</td>
+              <td style="padding:2px 6px;">${fmtPpa(homeStats.offPpa)}</td>
+              <td style="padding:2px 6px;">${fmtPct(homeStats.offSuccessRate)}</td>
+              <td style="padding:2px 6px;">${fmtPpa(homeStats.defPpa)}</td>
+              <td style="padding:2px 6px;">${fmtPct(homeStats.defSuccessRate)}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="edge-label" style="margin-top:4px;color:var(--muted);">Def EPA/play: lower (more negative) is better defense. Not opponent-adjusted.</div>
+      </div>`;
+    }
+
     return `
     <div class="game-card">
       <div class="game-top">
@@ -1132,7 +1208,10 @@ function renderBoard(){
           <span class="matchup">${g.away}<span class="at">@</span>${g.home}</span>
           ${g.neutral ? '<span class="neutral-badge">NEUTRAL</span>' : ''}
         </div>
-        <button class="del-x" data-del="${g.id}" title="Remove">✕</button>
+        <div style="display:flex;align-items:center;gap:8px;">
+          ${hasStats ? `<button class="ghost stats-toggle" data-stats="${g.id}" style="font-size:11px;padding:3px 8px;">${isExpanded ? 'Hide stats' : 'Stats'}</button>` : ''}
+          <button class="del-x" data-del="${g.id}" title="Remove">✕</button>
+        </div>
       </div>
       <div class="game-meta">${kickoff ? kickoff + ' &nbsp;·&nbsp; ' : ''}Market: ${g.home} ${g.marketLine>0?'+':''}${g.marketLine}${g.marketTotal? ' &nbsp;·&nbsp; O/U ' + g.marketTotal : ''}</div>
 
@@ -1156,6 +1235,7 @@ function renderBoard(){
       </div>
       ${totalBlock}
       ${mlBlock}
+      ${statsPanel}
     </div>`;
   }).join('');
 
@@ -1163,6 +1243,15 @@ function renderBoard(){
     btn.addEventListener('click', async ()=>{
       games = games.filter(g=>g.id !== Number(btn.dataset.del));
       await saveGames(); populateWeekFilter(); renderBoard();
+    });
+  });
+
+  list.querySelectorAll('[data-stats]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const id = Number(btn.dataset.stats);
+      if(statsExpanded.has(id)) statsExpanded.delete(id);
+      else statsExpanded.add(id);
+      renderBoard();
     });
   });
 }
