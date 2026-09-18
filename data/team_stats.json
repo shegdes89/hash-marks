@@ -1,0 +1,1750 @@
+{
+ "year": 2026,
+ "asOfWeek": 3,
+ "teams": {
+  "Abilene Christian": {
+   "offPlays": 45,
+   "offPpa": -0.2238,
+   "offSuccessRate": 0.2667,
+   "defPlays": 59,
+   "defPpa": 0.2507,
+   "defSuccessRate": 0.5254
+  },
+  "Air Force": {
+   "offPlays": 124,
+   "offPpa": 0.2891,
+   "offSuccessRate": 0.5161,
+   "defPlays": 98,
+   "defPpa": -0.0525,
+   "defSuccessRate": 0.3469
+  },
+  "Akron": {
+   "offPlays": 106,
+   "offPpa": 0.0706,
+   "offSuccessRate": 0.4717,
+   "defPlays": 99,
+   "defPpa": 0.1911,
+   "defSuccessRate": 0.3737
+  },
+  "Alabama": {
+   "offPlays": 117,
+   "offPpa": 0.2375,
+   "offSuccessRate": 0.5043,
+   "defPlays": 89,
+   "defPpa": -0.2988,
+   "defSuccessRate": 0.3146
+  },
+  "Alabama State": {
+   "offPlays": 61,
+   "offPpa": -0.2335,
+   "offSuccessRate": 0.2459,
+   "defPlays": 70,
+   "defPpa": 0.2092,
+   "defSuccessRate": 0.4
+  },
+  "Alcorn State": {
+   "offPlays": 35,
+   "offPpa": -0.2958,
+   "offSuccessRate": 0.1714,
+   "defPlays": 57,
+   "defPpa": 0.4035,
+   "defSuccessRate": 0.614
+  },
+  "App State": {
+   "offPlays": 118,
+   "offPpa": 0.2972,
+   "offSuccessRate": 0.4492,
+   "defPlays": 97,
+   "defPpa": 0.1286,
+   "defSuccessRate": 0.433
+  },
+  "Arizona": {
+   "offPlays": 113,
+   "offPpa": 0.2086,
+   "offSuccessRate": 0.531,
+   "defPlays": 104,
+   "defPpa": 0.0922,
+   "defSuccessRate": 0.3654
+  },
+  "Arizona State": {
+   "offPlays": 99,
+   "offPpa": 0.2678,
+   "offSuccessRate": 0.5152,
+   "defPlays": 84,
+   "defPpa": -0.0607,
+   "defSuccessRate": 0.3571
+  },
+  "Arkansas": {
+   "offPlays": 127,
+   "offPpa": 0.0476,
+   "offSuccessRate": 0.4488,
+   "defPlays": 80,
+   "defPpa": 0.2103,
+   "defSuccessRate": 0.425
+  },
+  "Arkansas State": {
+   "offPlays": 103,
+   "offPpa": 0.1722,
+   "offSuccessRate": 0.534,
+   "defPlays": 107,
+   "defPpa": 0.208,
+   "defSuccessRate": 0.4579
+  },
+  "Arkansas-Pine Bluff": {
+   "offPlays": 26,
+   "offPpa": -0.3751,
+   "offSuccessRate": 0.0769,
+   "defPlays": 47,
+   "defPpa": 0.4747,
+   "defSuccessRate": 0.617
+  },
+  "Army": {
+   "offPlays": 105,
+   "offPpa": 0.33,
+   "offSuccessRate": 0.5524,
+   "defPlays": 89,
+   "defPpa": 0.1706,
+   "defSuccessRate": 0.4382
+  },
+  "Auburn": {
+   "offPlays": 142,
+   "offPpa": 0.1174,
+   "offSuccessRate": 0.4507,
+   "defPlays": 145,
+   "defPpa": -0.0687,
+   "defSuccessRate": 0.3862
+  },
+  "Austin Peay": {
+   "offPlays": 47,
+   "offPpa": -0.0289,
+   "offSuccessRate": 0.3404,
+   "defPlays": 63,
+   "defPpa": 0.2618,
+   "defSuccessRate": 0.4762
+  },
+  "BYU": {
+   "offPlays": 102,
+   "offPpa": 0.5006,
+   "offSuccessRate": 0.5686,
+   "defPlays": 86,
+   "defPpa": -0.137,
+   "defSuccessRate": 0.3605
+  },
+  "Ball State": {
+   "offPlays": 102,
+   "offPpa": -0.02,
+   "offSuccessRate": 0.3235,
+   "defPlays": 97,
+   "defPpa": 0.1779,
+   "defSuccessRate": 0.4536
+  },
+  "Baylor": {
+   "offPlays": 142,
+   "offPpa": 0.0954,
+   "offSuccessRate": 0.4437,
+   "defPlays": 112,
+   "defPpa": -0.1308,
+   "defSuccessRate": 0.3036
+  },
+  "Bethune-Cookman": {
+   "offPlays": 36,
+   "offPpa": -0.3087,
+   "offSuccessRate": 0.1667,
+   "defPlays": 35,
+   "defPpa": 0.2848,
+   "defSuccessRate": 0.6
+  },
+  "Boise State": {
+   "offPlays": 143,
+   "offPpa": 0.2664,
+   "offSuccessRate": 0.4336,
+   "defPlays": 117,
+   "defPpa": 0.1018,
+   "defSuccessRate": 0.4017
+  },
+  "Boston College": {
+   "offPlays": 135,
+   "offPpa": -0.0552,
+   "offSuccessRate": 0.3778,
+   "defPlays": 129,
+   "defPpa": 0.0645,
+   "defSuccessRate": 0.4031
+  },
+  "Bowling Green": {
+   "offPlays": 88,
+   "offPpa": -0.1606,
+   "offSuccessRate": 0.3636,
+   "defPlays": 99,
+   "defPpa": 0.2954,
+   "defSuccessRate": 0.4747
+  },
+  "Bryant": {
+   "offPlays": 33,
+   "offPpa": -0.1357,
+   "offSuccessRate": 0.303,
+   "defPlays": 41,
+   "defPpa": 0.6453,
+   "defSuccessRate": 0.6098
+  },
+  "Buffalo": {
+   "offPlays": 153,
+   "offPpa": 0.0688,
+   "offSuccessRate": 0.3333,
+   "defPlays": 152,
+   "defPpa": 0.0287,
+   "defSuccessRate": 0.3487
+  },
+  "Cal Poly": {
+   "offPlays": 72,
+   "offPpa": 0.0348,
+   "offSuccessRate": 0.4583,
+   "defPlays": 78,
+   "defPpa": 0.2177,
+   "defSuccessRate": 0.4872
+  },
+  "California": {
+   "offPlays": 149,
+   "offPpa": -0.0808,
+   "offSuccessRate": 0.349,
+   "defPlays": 140,
+   "defPpa": 0.068,
+   "defSuccessRate": 0.4214
+  },
+  "Campbell": {
+   "offPlays": 34,
+   "offPpa": -0.4722,
+   "offSuccessRate": 0.3235,
+   "defPlays": 32,
+   "defPpa": 0.523,
+   "defSuccessRate": 0.6875
+  },
+  "Central Connecticut": {
+   "offPlays": 40,
+   "offPpa": -0.3942,
+   "offSuccessRate": 0.275,
+   "defPlays": 34,
+   "defPpa": 0.4407,
+   "defSuccessRate": 0.5294
+  },
+  "Central Michigan": {
+   "offPlays": 89,
+   "offPpa": -0.1629,
+   "offSuccessRate": 0.3146,
+   "defPlays": 123,
+   "defPpa": 0.0735,
+   "defSuccessRate": 0.4553
+  },
+  "Charleston Southern": {
+   "offPlays": 32,
+   "offPpa": -0.3148,
+   "offSuccessRate": 0.1562,
+   "defPlays": 54,
+   "defPpa": 0.2456,
+   "defSuccessRate": 0.5185
+  },
+  "Charlotte": {
+   "offPlays": 123,
+   "offPpa": 0.1304,
+   "offSuccessRate": 0.4634,
+   "defPlays": 110,
+   "defPpa": 0.3536,
+   "defSuccessRate": 0.5455
+  },
+  "Cincinnati": {
+   "offPlays": 110,
+   "offPpa": 0.4216,
+   "offSuccessRate": 0.5091,
+   "defPlays": 115,
+   "defPpa": 0.0167,
+   "defSuccessRate": 0.4261
+  },
+  "Clemson": {
+   "offPlays": 108,
+   "offPpa": -0.2367,
+   "offSuccessRate": 0.2778,
+   "defPlays": 127,
+   "defPpa": 0.0684,
+   "defSuccessRate": 0.3858
+  },
+  "Coastal Carolina": {
+   "offPlays": 120,
+   "offPpa": 0.2083,
+   "offSuccessRate": 0.45,
+   "defPlays": 121,
+   "defPpa": 0.0263,
+   "defSuccessRate": 0.405
+  },
+  "Colgate": {
+   "offPlays": 64,
+   "offPpa": -0.1065,
+   "offSuccessRate": 0.3906,
+   "defPlays": 63,
+   "defPpa": -0.0805,
+   "defSuccessRate": 0.3651
+  },
+  "Colorado": {
+   "offPlays": 127,
+   "offPpa": 0.3016,
+   "offSuccessRate": 0.4252,
+   "defPlays": 104,
+   "defPpa": -0.0114,
+   "defSuccessRate": 0.3269
+  },
+  "Colorado State": {
+   "offPlays": 122,
+   "offPpa": 0.4271,
+   "offSuccessRate": 0.5,
+   "defPlays": 99,
+   "defPpa": -0.0801,
+   "defSuccessRate": 0.404
+  },
+  "Delaware": {
+   "offPlays": 116,
+   "offPpa": 0.0806,
+   "offSuccessRate": 0.4138,
+   "defPlays": 112,
+   "defPpa": -0.1661,
+   "defSuccessRate": 0.3125
+  },
+  "Duke": {
+   "offPlays": 135,
+   "offPpa": 0.0971,
+   "offSuccessRate": 0.363,
+   "defPlays": 125,
+   "defPpa": -0.0251,
+   "defSuccessRate": 0.416
+  },
+  "Duquesne": {
+   "offPlays": 37,
+   "offPpa": -0.3251,
+   "offSuccessRate": 0.2703,
+   "defPlays": 56,
+   "defPpa": 0.371,
+   "defSuccessRate": 0.5179
+  },
+  "East Carolina": {
+   "offPlays": 98,
+   "offPpa": 0.1677,
+   "offSuccessRate": 0.4388,
+   "defPlays": 132,
+   "defPpa": 0.2568,
+   "defSuccessRate": 0.4545
+  },
+  "East Tennessee State": {
+   "offPlays": 50,
+   "offPpa": -0.2552,
+   "offSuccessRate": 0.44,
+   "defPlays": 37,
+   "defPpa": 0.638,
+   "defSuccessRate": 0.6757
+  },
+  "Eastern Illinois": {
+   "offPlays": 29,
+   "offPpa": -0.2028,
+   "offSuccessRate": 0.1724,
+   "defPlays": 38,
+   "defPpa": 0.5074,
+   "defSuccessRate": 0.6316
+  },
+  "Eastern Kentucky": {
+   "offPlays": 37,
+   "offPpa": -0.279,
+   "offSuccessRate": 0.4054,
+   "defPlays": 46,
+   "defPpa": 0.4939,
+   "defSuccessRate": 0.6304
+  },
+  "Eastern Michigan": {
+   "offPlays": 189,
+   "offPpa": -0.0247,
+   "offSuccessRate": 0.381,
+   "defPlays": 204,
+   "defPpa": 0.0601,
+   "defSuccessRate": 0.402
+  },
+  "Florida": {
+   "offPlays": 71,
+   "offPpa": 0.5547,
+   "offSuccessRate": 0.6197,
+   "defPlays": 93,
+   "defPpa": -0.2166,
+   "defSuccessRate": 0.3656
+  },
+  "Florida A&M": {
+   "offPlays": 21,
+   "offPpa": -0.2489,
+   "offSuccessRate": 0.3333,
+   "defPlays": 26,
+   "defPpa": 1.1587,
+   "defSuccessRate": 0.9231
+  },
+  "Florida Atlantic": {
+   "offPlays": 130,
+   "offPpa": 0.088,
+   "offSuccessRate": 0.4154,
+   "defPlays": 85,
+   "defPpa": 0.2902,
+   "defSuccessRate": 0.4588
+  },
+  "Florida International": {
+   "offPlays": 156,
+   "offPpa": -0.0028,
+   "offSuccessRate": 0.4038,
+   "defPlays": 128,
+   "defPpa": -0.045,
+   "defSuccessRate": 0.3359
+  },
+  "Florida State": {
+   "offPlays": 134,
+   "offPpa": 0.2042,
+   "offSuccessRate": 0.4104,
+   "defPlays": 134,
+   "defPpa": 0.2341,
+   "defSuccessRate": 0.4478
+  },
+  "Fordham": {
+   "offPlays": 72,
+   "offPpa": -0.3399,
+   "offSuccessRate": 0.375,
+   "defPlays": 99,
+   "defPpa": 0.2519,
+   "defSuccessRate": 0.4949
+  },
+  "Fresno State": {
+   "offPlays": 69,
+   "offPpa": 0.0643,
+   "offSuccessRate": 0.3913,
+   "defPlays": 67,
+   "defPpa": 0.0574,
+   "defSuccessRate": 0.5224
+  },
+  "Furman": {
+   "offPlays": 31,
+   "offPpa": -0.403,
+   "offSuccessRate": 0.1935,
+   "defPlays": 46,
+   "defPpa": 0.3766,
+   "defSuccessRate": 0.4783
+  },
+  "Gardner-Webb": {
+   "offPlays": 73,
+   "offPpa": -0.1419,
+   "offSuccessRate": 0.3425,
+   "defPlays": 67,
+   "defPpa": -0.2127,
+   "defSuccessRate": 0.403
+  },
+  "Georgia": {
+   "offPlays": 57,
+   "offPpa": 0.878,
+   "offSuccessRate": 0.7018,
+   "defPlays": 57,
+   "defPpa": -0.2469,
+   "defSuccessRate": 0.2281
+  },
+  "Georgia Southern": {
+   "offPlays": 120,
+   "offPpa": 0.0541,
+   "offSuccessRate": 0.375,
+   "defPlays": 109,
+   "defPpa": -0.1722,
+   "defSuccessRate": 0.2752
+  },
+  "Georgia State": {
+   "offPlays": 115,
+   "offPpa": 0.3808,
+   "offSuccessRate": 0.5391,
+   "defPlays": 87,
+   "defPpa": -0.0308,
+   "defSuccessRate": 0.3448
+  },
+  "Georgia Tech": {
+   "offPlays": 126,
+   "offPpa": -0.0062,
+   "offSuccessRate": 0.4365,
+   "defPlays": 146,
+   "defPpa": 0.1405,
+   "defSuccessRate": 0.4041
+  },
+  "Grambling": {
+   "offPlays": 41,
+   "offPpa": 0.0005,
+   "offSuccessRate": 0.2683,
+   "defPlays": 51,
+   "defPpa": 0.5151,
+   "defSuccessRate": 0.6275
+  },
+  "Hampton": {
+   "offPlays": 27,
+   "offPpa": -0.6013,
+   "offSuccessRate": 0.1852,
+   "defPlays": 45,
+   "defPpa": 0.3492,
+   "defSuccessRate": 0.4889
+  },
+  "Hawai'i": {
+   "offPlays": 230,
+   "offPpa": 0.0329,
+   "offSuccessRate": 0.3783,
+   "defPlays": 205,
+   "defPpa": 0.1297,
+   "defSuccessRate": 0.439
+  },
+  "Holy Cross": {
+   "offPlays": 28,
+   "offPpa": -0.4919,
+   "offSuccessRate": 0.2857,
+   "defPlays": 29,
+   "defPpa": 0.7976,
+   "defSuccessRate": 0.7931
+  },
+  "Houston": {
+   "offPlays": 101,
+   "offPpa": 0.3836,
+   "offSuccessRate": 0.5545,
+   "defPlays": 101,
+   "defPpa": -0.1086,
+   "defSuccessRate": 0.3465
+  },
+  "Houston Christian": {
+   "offPlays": 42,
+   "offPpa": -0.319,
+   "offSuccessRate": 0.3095,
+   "defPlays": 73,
+   "defPpa": 0.1556,
+   "defSuccessRate": 0.5205
+  },
+  "Howard": {
+   "offPlays": 26,
+   "offPpa": -0.5002,
+   "offSuccessRate": 0.2308,
+   "defPlays": 35,
+   "defPpa": 0.6654,
+   "defSuccessRate": 0.6
+  },
+  "Idaho": {
+   "offPlays": 35,
+   "offPpa": -0.02,
+   "offSuccessRate": 0.3143,
+   "defPlays": 44,
+   "defPpa": 0.4256,
+   "defSuccessRate": 0.5455
+  },
+  "Idaho State": {
+   "offPlays": 65,
+   "offPpa": 0.0339,
+   "offSuccessRate": 0.3538,
+   "defPlays": 89,
+   "defPpa": -0.0614,
+   "defSuccessRate": 0.4494
+  },
+  "Illinois": {
+   "offPlays": 114,
+   "offPpa": 0.2124,
+   "offSuccessRate": 0.5263,
+   "defPlays": 124,
+   "defPpa": 0.3208,
+   "defSuccessRate": 0.4355
+  },
+  "Illinois State": {
+   "offPlays": 64,
+   "offPpa": -0.0298,
+   "offSuccessRate": 0.4219,
+   "defPlays": 66,
+   "defPpa": -0.0783,
+   "defSuccessRate": 0.4848
+  },
+  "Indiana": {
+   "offPlays": 79,
+   "offPpa": 0.6211,
+   "offSuccessRate": 0.5443,
+   "defPlays": 86,
+   "defPpa": -0.0459,
+   "defSuccessRate": 0.314
+  },
+  "Indiana State": {
+   "offPlays": 36,
+   "offPpa": -0.0917,
+   "offSuccessRate": 0.1944,
+   "defPlays": 54,
+   "defPpa": 0.4079,
+   "defSuccessRate": 0.4815
+  },
+  "Iowa": {
+   "offPlays": 111,
+   "offPpa": 0.1321,
+   "offSuccessRate": 0.4234,
+   "defPlays": 77,
+   "defPpa": -0.0862,
+   "defSuccessRate": 0.2338
+  },
+  "Iowa State": {
+   "offPlays": 99,
+   "offPpa": 0.1532,
+   "offSuccessRate": 0.3131,
+   "defPlays": 112,
+   "defPpa": -0.1276,
+   "defSuccessRate": 0.3304
+  },
+  "Jacksonville State": {
+   "offPlays": 160,
+   "offPpa": 0.1332,
+   "offSuccessRate": 0.4688,
+   "defPlays": 160,
+   "defPpa": 0.0571,
+   "defSuccessRate": 0.4188
+  },
+  "James Madison": {
+   "offPlays": 81,
+   "offPpa": 0.2928,
+   "offSuccessRate": 0.4568,
+   "defPlays": 107,
+   "defPpa": -0.144,
+   "defSuccessRate": 0.3178
+  },
+  "Kansas": {
+   "offPlays": 109,
+   "offPpa": 0.1329,
+   "offSuccessRate": 0.422,
+   "defPlays": 103,
+   "defPpa": 0.0265,
+   "defSuccessRate": 0.3107
+  },
+  "Kansas State": {
+   "offPlays": 101,
+   "offPpa": 0.2296,
+   "offSuccessRate": 0.5248,
+   "defPlays": 72,
+   "defPpa": -0.2827,
+   "defSuccessRate": 0.2639
+  },
+  "Kennesaw State": {
+   "offPlays": 103,
+   "offPpa": 0.1663,
+   "offSuccessRate": 0.4757,
+   "defPlays": 95,
+   "defPpa": 0.0793,
+   "defSuccessRate": 0.4
+  },
+  "Kent State": {
+   "offPlays": 106,
+   "offPpa": 0.1002,
+   "offSuccessRate": 0.3774,
+   "defPlays": 90,
+   "defPpa": 0.0433,
+   "defSuccessRate": 0.4556
+  },
+  "Kentucky": {
+   "offPlays": 111,
+   "offPpa": 0.0293,
+   "offSuccessRate": 0.4595,
+   "defPlays": 114,
+   "defPpa": 0.1203,
+   "defSuccessRate": 0.4649
+  },
+  "LSU": {
+   "offPlays": 131,
+   "offPpa": 0.1018,
+   "offSuccessRate": 0.4809,
+   "defPlays": 67,
+   "defPpa": -0.7079,
+   "defSuccessRate": 0.1343
+  },
+  "Lafayette": {
+   "offPlays": 29,
+   "offPpa": -0.2915,
+   "offSuccessRate": 0.1379,
+   "defPlays": 49,
+   "defPpa": 0.4645,
+   "defSuccessRate": 0.4898
+  },
+  "Lamar": {
+   "offPlays": 46,
+   "offPpa": -0.2363,
+   "offSuccessRate": 0.413,
+   "defPlays": 50,
+   "defPpa": 0.288,
+   "defSuccessRate": 0.5
+  },
+  "Liberty": {
+   "offPlays": 136,
+   "offPpa": -0.1161,
+   "offSuccessRate": 0.3897,
+   "defPlays": 123,
+   "defPpa": 0.0295,
+   "defSuccessRate": 0.3659
+  },
+  "Lindenwood": {
+   "offPlays": 29,
+   "offPpa": -0.2895,
+   "offSuccessRate": 0.2414,
+   "defPlays": 42,
+   "defPpa": 0.4822,
+   "defSuccessRate": 0.4762
+  },
+  "Long Island University": {
+   "offPlays": 29,
+   "offPpa": -0.2498,
+   "offSuccessRate": 0.1379,
+   "defPlays": 42,
+   "defPpa": 0.5503,
+   "defSuccessRate": 0.5952
+  },
+  "Louisiana": {
+   "offPlays": 92,
+   "offPpa": 0.2353,
+   "offSuccessRate": 0.4348,
+   "defPlays": 119,
+   "defPpa": 0.0533,
+   "defSuccessRate": 0.4622
+  },
+  "Louisiana Tech": {
+   "offPlays": 62,
+   "offPpa": -0.0973,
+   "offSuccessRate": 0.3065,
+   "defPlays": 93,
+   "defPpa": -0.1007,
+   "defSuccessRate": 0.3656
+  },
+  "Louisville": {
+   "offPlays": 116,
+   "offPpa": 0.4271,
+   "offSuccessRate": 0.5172,
+   "defPlays": 127,
+   "defPpa": 0.1589,
+   "defSuccessRate": 0.4016
+  },
+  "Maine": {
+   "offPlays": 24,
+   "offPpa": -0.3418,
+   "offSuccessRate": 0.25,
+   "defPlays": 45,
+   "defPpa": 0.5027,
+   "defSuccessRate": 0.5556
+  },
+  "Marshall": {
+   "offPlays": 99,
+   "offPpa": 0.0388,
+   "offSuccessRate": 0.3737,
+   "defPlays": 108,
+   "defPpa": 0.3133,
+   "defSuccessRate": 0.4722
+  },
+  "Maryland": {
+   "offPlays": 110,
+   "offPpa": 0.2955,
+   "offSuccessRate": 0.5,
+   "defPlays": 73,
+   "defPpa": -0.2058,
+   "defSuccessRate": 0.2877
+  },
+  "Massachusetts": {
+   "offPlays": 91,
+   "offPpa": 0.3762,
+   "offSuccessRate": 0.5055,
+   "defPlays": 87,
+   "defPpa": -0.1809,
+   "defSuccessRate": 0.3793
+  },
+  "Memphis": {
+   "offPlays": 177,
+   "offPpa": 0.2351,
+   "offSuccessRate": 0.4463,
+   "defPlays": 217,
+   "defPpa": 0.1926,
+   "defSuccessRate": 0.447
+  },
+  "Mercyhurst": {
+   "offPlays": 77,
+   "offPpa": -0.2378,
+   "offSuccessRate": 0.3506,
+   "defPlays": 91,
+   "defPpa": 0.2135,
+   "defSuccessRate": 0.4615
+  },
+  "Merrimack": {
+   "offPlays": 40,
+   "offPpa": -0.3129,
+   "offSuccessRate": 0.2,
+   "defPlays": 47,
+   "defPpa": 0.4634,
+   "defSuccessRate": 0.5319
+  },
+  "Miami": {
+   "offPlays": 71,
+   "offPpa": 0.7493,
+   "offSuccessRate": 0.7042,
+   "defPlays": 55,
+   "defPpa": 0.0128,
+   "defSuccessRate": 0.3636
+  },
+  "Miami (OH)": {
+   "offPlays": 68,
+   "offPpa": 0.3897,
+   "offSuccessRate": 0.5,
+   "defPlays": 80,
+   "defPpa": 0.0863,
+   "defSuccessRate": 0.4125
+  },
+  "Michigan": {
+   "offPlays": 106,
+   "offPpa": 0.0845,
+   "offSuccessRate": 0.3491,
+   "defPlays": 134,
+   "defPpa": -0.0898,
+   "defSuccessRate": 0.3507
+  },
+  "Michigan State": {
+   "offPlays": 147,
+   "offPpa": 0.1021,
+   "offSuccessRate": 0.449,
+   "defPlays": 92,
+   "defPpa": 0.0818,
+   "defSuccessRate": 0.3696
+  },
+  "Middle Tennessee": {
+   "offPlays": 120,
+   "offPpa": 0.2627,
+   "offSuccessRate": 0.4667,
+   "defPlays": 105,
+   "defPpa": 0.1821,
+   "defSuccessRate": 0.4095
+  },
+  "Minnesota": {
+   "offPlays": 98,
+   "offPpa": 0.1294,
+   "offSuccessRate": 0.4898,
+   "defPlays": 82,
+   "defPpa": 0.2592,
+   "defSuccessRate": 0.4512
+  },
+  "Mississippi State": {
+   "offPlays": 103,
+   "offPpa": 0.577,
+   "offSuccessRate": 0.6019,
+   "defPlays": 93,
+   "defPpa": -0.1692,
+   "defSuccessRate": 0.3441
+  },
+  "Mississippi Valley State": {
+   "offPlays": 26,
+   "offPpa": -0.2052,
+   "offSuccessRate": 0.0769,
+   "defPlays": 41,
+   "defPpa": 0.1957,
+   "defSuccessRate": 0.3659
+  },
+  "Missouri": {
+   "offPlays": 121,
+   "offPpa": 0.2668,
+   "offSuccessRate": 0.4711,
+   "defPlays": 93,
+   "defPpa": -0.1976,
+   "defSuccessRate": 0.2473
+  },
+  "Missouri State": {
+   "offPlays": 67,
+   "offPpa": 0.0813,
+   "offSuccessRate": 0.3582,
+   "defPlays": 95,
+   "defPpa": 0.1111,
+   "defSuccessRate": 0.4526
+  },
+  "Monmouth": {
+   "offPlays": 66,
+   "offPpa": -0.1688,
+   "offSuccessRate": 0.4091,
+   "defPlays": 38,
+   "defPpa": 0.5105,
+   "defSuccessRate": 0.4737
+  },
+  "Montana State": {
+   "offPlays": 65,
+   "offPpa": 0.1438,
+   "offSuccessRate": 0.4462,
+   "defPlays": 72,
+   "defPpa": -0.1798,
+   "defSuccessRate": 0.4028
+  },
+  "Morgan State": {
+   "offPlays": 27,
+   "offPpa": -0.2093,
+   "offSuccessRate": 0.2963,
+   "defPlays": 40,
+   "defPpa": 0.8287,
+   "defSuccessRate": 0.7
+  },
+  "Murray State": {
+   "offPlays": 42,
+   "offPpa": 0.2994,
+   "offSuccessRate": 0.4048,
+   "defPlays": 50,
+   "defPpa": 0.3933,
+   "defSuccessRate": 0.5
+  },
+  "NC State": {
+   "offPlays": 68,
+   "offPpa": 0.29,
+   "offSuccessRate": 0.4853,
+   "defPlays": 89,
+   "defPpa": 0.095,
+   "defSuccessRate": 0.4382
+  },
+  "Navy": {
+   "offPlays": 114,
+   "offPpa": 0.3077,
+   "offSuccessRate": 0.5263,
+   "defPlays": 110,
+   "defPpa": 0.1712,
+   "defSuccessRate": 0.3909
+  },
+  "Nebraska": {
+   "offPlays": 113,
+   "offPpa": 0.5142,
+   "offSuccessRate": 0.5398,
+   "defPlays": 87,
+   "defPpa": -0.0482,
+   "defSuccessRate": 0.3448
+  },
+  "Nevada": {
+   "offPlays": 116,
+   "offPpa": 0.1002,
+   "offSuccessRate": 0.4569,
+   "defPlays": 135,
+   "defPpa": 0.0477,
+   "defSuccessRate": 0.4296
+  },
+  "New Hampshire": {
+   "offPlays": 25,
+   "offPpa": -0.3405,
+   "offSuccessRate": 0.32,
+   "defPlays": 41,
+   "defPpa": 0.6052,
+   "defSuccessRate": 0.6098
+  },
+  "New Mexico": {
+   "offPlays": 99,
+   "offPpa": 0.2577,
+   "offSuccessRate": 0.5051,
+   "defPlays": 58,
+   "defPpa": -0.3831,
+   "defSuccessRate": 0.2414
+  },
+  "New Mexico State": {
+   "offPlays": 186,
+   "offPpa": 0.0874,
+   "offSuccessRate": 0.4247,
+   "defPlays": 188,
+   "defPpa": 0.12,
+   "defSuccessRate": 0.4309
+  },
+  "Nicholls": {
+   "offPlays": 35,
+   "offPpa": -0.3264,
+   "offSuccessRate": 0.2571,
+   "defPlays": 38,
+   "defPpa": 0.4036,
+   "defSuccessRate": 0.5789
+  },
+  "Norfolk State": {
+   "offPlays": 102,
+   "offPpa": -0.2765,
+   "offSuccessRate": 0.3137,
+   "defPlays": 93,
+   "defPpa": 0.2173,
+   "defSuccessRate": 0.5484
+  },
+  "North Alabama": {
+   "offPlays": 45,
+   "offPpa": -0.0746,
+   "offSuccessRate": 0.2667,
+   "defPlays": 84,
+   "defPpa": 0.0917,
+   "defSuccessRate": 0.5238
+  },
+  "North Carolina": {
+   "offPlays": 95,
+   "offPpa": 0.2398,
+   "offSuccessRate": 0.5474,
+   "defPlays": 122,
+   "defPpa": -0.1486,
+   "defSuccessRate": 0.377
+  },
+  "North Carolina A&T": {
+   "offPlays": 29,
+   "offPpa": -0.1418,
+   "offSuccessRate": 0.2414,
+   "defPlays": 45,
+   "defPpa": 0.5728,
+   "defSuccessRate": 0.6
+  },
+  "North Dakota State": {
+   "offPlays": 162,
+   "offPpa": 0.1879,
+   "offSuccessRate": 0.4444,
+   "defPlays": 139,
+   "defPpa": -0.1688,
+   "defSuccessRate": 0.4101
+  },
+  "North Texas": {
+   "offPlays": 109,
+   "offPpa": 0.2883,
+   "offSuccessRate": 0.4037,
+   "defPlays": 103,
+   "defPpa": 0.1291,
+   "defSuccessRate": 0.4369
+  },
+  "Northern Arizona": {
+   "offPlays": 46,
+   "offPpa": -0.3714,
+   "offSuccessRate": 0.1739,
+   "defPlays": 50,
+   "defPpa": 0.3381,
+   "defSuccessRate": 0.66
+  },
+  "Northern Colorado": {
+   "offPlays": 62,
+   "offPpa": -0.1943,
+   "offSuccessRate": 0.3548,
+   "defPlays": 62,
+   "defPpa": 0.1126,
+   "defSuccessRate": 0.4194
+  },
+  "Northern Illinois": {
+   "offPlays": 88,
+   "offPpa": -0.1812,
+   "offSuccessRate": 0.3864,
+   "defPlays": 115,
+   "defPpa": 0.1305,
+   "defSuccessRate": 0.4435
+  },
+  "Northwestern": {
+   "offPlays": 55,
+   "offPpa": 0.4796,
+   "offSuccessRate": 0.5091,
+   "defPlays": 90,
+   "defPpa": 0.09,
+   "defSuccessRate": 0.4222
+  },
+  "Northwestern State": {
+   "offPlays": 23,
+   "offPpa": -0.3153,
+   "offSuccessRate": 0.1304,
+   "defPlays": 26,
+   "defPpa": 0.9438,
+   "defSuccessRate": 0.5769
+  },
+  "Notre Dame": {
+   "offPlays": 91,
+   "offPpa": 0.3923,
+   "offSuccessRate": 0.5275,
+   "defPlays": 78,
+   "defPpa": -0.288,
+   "defSuccessRate": 0.2692
+  },
+  "Ohio": {
+   "offPlays": 131,
+   "offPpa": 0.0763,
+   "offSuccessRate": 0.3893,
+   "defPlays": 144,
+   "defPpa": 0.3487,
+   "defSuccessRate": 0.4931
+  },
+  "Ohio State": {
+   "offPlays": 107,
+   "offPpa": 0.2861,
+   "offSuccessRate": 0.4766,
+   "defPlays": 114,
+   "defPpa": -0.064,
+   "defSuccessRate": 0.4035
+  },
+  "Oklahoma": {
+   "offPlays": 96,
+   "offPpa": 0.0445,
+   "offSuccessRate": 0.4271,
+   "defPlays": 95,
+   "defPpa": -0.142,
+   "defSuccessRate": 0.3263
+  },
+  "Oklahoma State": {
+   "offPlays": 175,
+   "offPpa": -0.1205,
+   "offSuccessRate": 0.4114,
+   "defPlays": 119,
+   "defPpa": 0.0479,
+   "defSuccessRate": 0.3613
+  },
+  "Old Dominion": {
+   "offPlays": 85,
+   "offPpa": -0.0041,
+   "offSuccessRate": 0.4,
+   "defPlays": 126,
+   "defPpa": 0.0139,
+   "defSuccessRate": 0.3333
+  },
+  "Ole Miss": {
+   "offPlays": 125,
+   "offPpa": 0.2649,
+   "offSuccessRate": 0.528,
+   "defPlays": 113,
+   "defPpa": 0.1644,
+   "defSuccessRate": 0.4336
+  },
+  "Oregon": {
+   "offPlays": 125,
+   "offPpa": 0.0494,
+   "offSuccessRate": 0.384,
+   "defPlays": 154,
+   "defPpa": 0.0018,
+   "defSuccessRate": 0.4156
+  },
+  "Oregon State": {
+   "offPlays": 145,
+   "offPpa": 0.1108,
+   "offSuccessRate": 0.3517,
+   "defPlays": 151,
+   "defPpa": 0.2375,
+   "defSuccessRate": 0.457
+  },
+  "Penn State": {
+   "offPlays": 101,
+   "offPpa": 0.3242,
+   "offSuccessRate": 0.4653,
+   "defPlays": 83,
+   "defPpa": -0.0128,
+   "defSuccessRate": 0.3735
+  },
+  "Pittsburgh": {
+   "offPlays": 124,
+   "offPpa": 0.1412,
+   "offSuccessRate": 0.4113,
+   "defPlays": 93,
+   "defPpa": -0.1098,
+   "defSuccessRate": 0.2796
+  },
+  "Portland State": {
+   "offPlays": 52,
+   "offPpa": 0.034,
+   "offSuccessRate": 0.4231,
+   "defPlays": 40,
+   "defPpa": 0.2887,
+   "defSuccessRate": 0.4
+  },
+  "Prairie View A&M": {
+   "offPlays": 37,
+   "offPpa": -0.3076,
+   "offSuccessRate": 0.1081,
+   "defPlays": 41,
+   "defPpa": 0.3578,
+   "defSuccessRate": 0.5854
+  },
+  "Purdue": {
+   "offPlays": 138,
+   "offPpa": 0.3377,
+   "offSuccessRate": 0.4928,
+   "defPlays": 105,
+   "defPpa": 0.2032,
+   "defSuccessRate": 0.4095
+  },
+  "Rhode Island": {
+   "offPlays": 52,
+   "offPpa": 0.1531,
+   "offSuccessRate": 0.3846,
+   "defPlays": 55,
+   "defPpa": 0.237,
+   "defSuccessRate": 0.4909
+  },
+  "Rice": {
+   "offPlays": 98,
+   "offPpa": -0.0566,
+   "offSuccessRate": 0.4184,
+   "defPlays": 71,
+   "defPpa": 0.0519,
+   "defSuccessRate": 0.4648
+  },
+  "Richmond": {
+   "offPlays": 25,
+   "offPpa": -0.4523,
+   "offSuccessRate": 0.28,
+   "defPlays": 30,
+   "defPpa": 0.9726,
+   "defSuccessRate": 0.6667
+  },
+  "Robert Morris": {
+   "offPlays": 42,
+   "offPpa": -0.2914,
+   "offSuccessRate": 0.3095,
+   "defPlays": 56,
+   "defPpa": 0.2798,
+   "defSuccessRate": 0.5357
+  },
+  "Rutgers": {
+   "offPlays": 118,
+   "offPpa": -0.0803,
+   "offSuccessRate": 0.4237,
+   "defPlays": 128,
+   "defPpa": 0.137,
+   "defSuccessRate": 0.4453
+  },
+  "SE Louisiana": {
+   "offPlays": 32,
+   "offPpa": -0.1428,
+   "offSuccessRate": 0.4062,
+   "defPlays": 78,
+   "defPpa": 0.0222,
+   "defSuccessRate": 0.3846
+  },
+  "SMU": {
+   "offPlays": 94,
+   "offPpa": 0.5185,
+   "offSuccessRate": 0.6064,
+   "defPlays": 103,
+   "defPpa": -0.0743,
+   "defSuccessRate": 0.3301
+  },
+  "Sacramento State": {
+   "offPlays": 135,
+   "offPpa": -0.0571,
+   "offSuccessRate": 0.363,
+   "defPlays": 139,
+   "defPpa": 0.078,
+   "defSuccessRate": 0.3813
+  },
+  "Sacred Heart": {
+   "offPlays": 37,
+   "offPpa": -0.3227,
+   "offSuccessRate": 0.3243,
+   "defPlays": 27,
+   "defPpa": 0.569,
+   "defSuccessRate": 0.4815
+  },
+  "Sam Houston": {
+   "offPlays": 135,
+   "offPpa": 0.0679,
+   "offSuccessRate": 0.4593,
+   "defPlays": 143,
+   "defPpa": 0.0801,
+   "defSuccessRate": 0.3287
+  },
+  "San Diego State": {
+   "offPlays": 97,
+   "offPpa": -0.0186,
+   "offSuccessRate": 0.3402,
+   "defPlays": 119,
+   "defPpa": 0.0739,
+   "defSuccessRate": 0.437
+  },
+  "San Jos\u00e9 State": {
+   "offPlays": 194,
+   "offPpa": 0.1226,
+   "offSuccessRate": 0.3969,
+   "defPlays": 201,
+   "defPpa": 0.0619,
+   "defSuccessRate": 0.4627
+  },
+  "South Alabama": {
+   "offPlays": 152,
+   "offPpa": 0.1364,
+   "offSuccessRate": 0.4211,
+   "defPlays": 84,
+   "defPpa": 0.1661,
+   "defSuccessRate": 0.381
+  },
+  "South Carolina": {
+   "offPlays": 98,
+   "offPpa": 0.3216,
+   "offSuccessRate": 0.5306,
+   "defPlays": 87,
+   "defPpa": -0.0472,
+   "defSuccessRate": 0.2874
+  },
+  "South Dakota State": {
+   "offPlays": 90,
+   "offPpa": 0.09,
+   "offSuccessRate": 0.4222,
+   "defPlays": 55,
+   "defPpa": 0.4796,
+   "defSuccessRate": 0.5091
+  },
+  "South Florida": {
+   "offPlays": 114,
+   "offPpa": 0.1406,
+   "offSuccessRate": 0.4737,
+   "defPlays": 140,
+   "defPpa": -0.0059,
+   "defSuccessRate": 0.4571
+  },
+  "Southeast Missouri State": {
+   "offPlays": 52,
+   "offPpa": -0.2317,
+   "offSuccessRate": 0.2692,
+   "defPlays": 44,
+   "defPpa": 0.2506,
+   "defSuccessRate": 0.3409
+  },
+  "Southern": {
+   "offPlays": 27,
+   "offPpa": -0.5605,
+   "offSuccessRate": 0.1852,
+   "defPlays": 27,
+   "defPpa": 0.6682,
+   "defSuccessRate": 0.6667
+  },
+  "Southern Miss": {
+   "offPlays": 101,
+   "offPpa": 0.1401,
+   "offSuccessRate": 0.5149,
+   "defPlays": 102,
+   "defPpa": 0.0941,
+   "defSuccessRate": 0.3922
+  },
+  "Southern Utah": {
+   "offPlays": 44,
+   "offPpa": -0.014,
+   "offSuccessRate": 0.3636,
+   "defPlays": 54,
+   "defPpa": 0.5855,
+   "defSuccessRate": 0.5185
+  },
+  "Stanford": {
+   "offPlays": 107,
+   "offPpa": 0.2658,
+   "offSuccessRate": 0.4299,
+   "defPlays": 121,
+   "defPpa": 0.2214,
+   "defSuccessRate": 0.4463
+  },
+  "Stony Brook": {
+   "offPlays": 54,
+   "offPpa": -0.1108,
+   "offSuccessRate": 0.3333,
+   "defPlays": 66,
+   "defPpa": 0.1543,
+   "defSuccessRate": 0.3939
+  },
+  "Syracuse": {
+   "offPlays": 128,
+   "offPpa": 0.0968,
+   "offSuccessRate": 0.4219,
+   "defPlays": 85,
+   "defPpa": -0.1778,
+   "defSuccessRate": 0.3412
+  },
+  "TCU": {
+   "offPlays": 123,
+   "offPpa": 0.1699,
+   "offSuccessRate": 0.4553,
+   "defPlays": 99,
+   "defPpa": -0.0082,
+   "defSuccessRate": 0.3838
+  },
+  "Tarleton State": {
+   "offPlays": 59,
+   "offPpa": 0.0378,
+   "offSuccessRate": 0.3898,
+   "defPlays": 66,
+   "defPpa": -0.1018,
+   "defSuccessRate": 0.3939
+  },
+  "Temple": {
+   "offPlays": 102,
+   "offPpa": 0.1439,
+   "offSuccessRate": 0.4608,
+   "defPlays": 115,
+   "defPpa": 0.1629,
+   "defSuccessRate": 0.4087
+  },
+  "Tennessee": {
+   "offPlays": 115,
+   "offPpa": 0.2941,
+   "offSuccessRate": 0.4522,
+   "defPlays": 103,
+   "defPpa": -0.1677,
+   "defSuccessRate": 0.3981
+  },
+  "Tennessee State": {
+   "offPlays": 31,
+   "offPpa": -0.1519,
+   "offSuccessRate": 0.2258,
+   "defPlays": 32,
+   "defPpa": 0.672,
+   "defSuccessRate": 0.6875
+  },
+  "Texas": {
+   "offPlays": 129,
+   "offPpa": 0.1947,
+   "offSuccessRate": 0.4961,
+   "defPlays": 106,
+   "defPpa": 0.1027,
+   "defSuccessRate": 0.4057
+  },
+  "Texas A&M": {
+   "offPlays": 123,
+   "offPpa": 0.1585,
+   "offSuccessRate": 0.4715,
+   "defPlays": 84,
+   "defPpa": -0.2552,
+   "defSuccessRate": 0.3214
+  },
+  "Texas Southern": {
+   "offPlays": 42,
+   "offPpa": 0.0174,
+   "offSuccessRate": 0.3095,
+   "defPlays": 34,
+   "defPpa": 0.2236,
+   "defSuccessRate": 0.5588
+  },
+  "Texas State": {
+   "offPlays": 122,
+   "offPpa": 0.1226,
+   "offSuccessRate": 0.459,
+   "defPlays": 125,
+   "defPpa": 0.2972,
+   "defSuccessRate": 0.472
+  },
+  "Texas Tech": {
+   "offPlays": 136,
+   "offPpa": 0.2202,
+   "offSuccessRate": 0.4559,
+   "defPlays": 116,
+   "defPpa": 0.0158,
+   "defSuccessRate": 0.2845
+  },
+  "The Citadel": {
+   "offPlays": 64,
+   "offPpa": 0.3754,
+   "offSuccessRate": 0.4844,
+   "defPlays": 78,
+   "defPpa": 0.2119,
+   "defSuccessRate": 0.4872
+  },
+  "Toledo": {
+   "offPlays": 76,
+   "offPpa": 0.2502,
+   "offSuccessRate": 0.3947,
+   "defPlays": 125,
+   "defPpa": -0.1206,
+   "defSuccessRate": 0.344
+  },
+  "Towson": {
+   "offPlays": 93,
+   "offPpa": -0.0247,
+   "offSuccessRate": 0.2903,
+   "defPlays": 130,
+   "defPpa": 0.2912,
+   "defSuccessRate": 0.5462
+  },
+  "Troy": {
+   "offPlays": 139,
+   "offPpa": 0.1832,
+   "offSuccessRate": 0.3669,
+   "defPlays": 131,
+   "defPpa": -0.0731,
+   "defSuccessRate": 0.374
+  },
+  "Tulane": {
+   "offPlays": 107,
+   "offPpa": 0.1056,
+   "offSuccessRate": 0.3364,
+   "defPlays": 152,
+   "defPpa": 0.0601,
+   "defSuccessRate": 0.375
+  },
+  "Tulsa": {
+   "offPlays": 132,
+   "offPpa": 0.0856,
+   "offSuccessRate": 0.3636,
+   "defPlays": 153,
+   "defPpa": -0.0881,
+   "defSuccessRate": 0.3922
+  },
+  "UAB": {
+   "offPlays": 136,
+   "offPpa": 0.179,
+   "offSuccessRate": 0.4706,
+   "defPlays": 107,
+   "defPpa": 0.0833,
+   "defSuccessRate": 0.4953
+  },
+  "UAlbany": {
+   "offPlays": 72,
+   "offPpa": -0.0586,
+   "offSuccessRate": 0.2917,
+   "defPlays": 83,
+   "defPpa": 0.1523,
+   "defSuccessRate": 0.3976
+  },
+  "UC Davis": {
+   "offPlays": 36,
+   "offPpa": -0.4728,
+   "offSuccessRate": 0.25,
+   "defPlays": 27,
+   "defPpa": 0.9077,
+   "defSuccessRate": 0.7407
+  },
+  "UCF": {
+   "offPlays": 89,
+   "offPpa": -0.0406,
+   "offSuccessRate": 0.4045,
+   "defPlays": 108,
+   "defPpa": -0.1322,
+   "defSuccessRate": 0.2963
+  },
+  "UCLA": {
+   "offPlays": 120,
+   "offPpa": 0.2414,
+   "offSuccessRate": 0.5,
+   "defPlays": 146,
+   "defPpa": -0.1287,
+   "defSuccessRate": 0.3288
+  },
+  "UConn": {
+   "offPlays": 95,
+   "offPpa": 0.2524,
+   "offSuccessRate": 0.4211,
+   "defPlays": 94,
+   "defPpa": 0.0887,
+   "defSuccessRate": 0.3936
+  },
+  "UL Monroe": {
+   "offPlays": 96,
+   "offPpa": -0.212,
+   "offSuccessRate": 0.375,
+   "defPlays": 119,
+   "defPpa": 0.3347,
+   "defSuccessRate": 0.5546
+  },
+  "UNLV": {
+   "offPlays": 204,
+   "offPpa": -0.0301,
+   "offSuccessRate": 0.3627,
+   "defPlays": 186,
+   "defPpa": 0.1551,
+   "defSuccessRate": 0.414
+  },
+  "USC": {
+   "offPlays": 170,
+   "offPpa": 0.2995,
+   "offSuccessRate": 0.5824,
+   "defPlays": 106,
+   "defPpa": 0.0037,
+   "defSuccessRate": 0.3208
+  },
+  "UT Martin": {
+   "offPlays": 48,
+   "offPpa": -0.1218,
+   "offSuccessRate": 0.4167,
+   "defPlays": 28,
+   "defPpa": 0.7589,
+   "defSuccessRate": 0.6429
+  },
+  "UT Rio Grande Valley": {
+   "offPlays": 62,
+   "offPpa": -0.2856,
+   "offSuccessRate": 0.371,
+   "defPlays": 44,
+   "defPpa": 0.3606,
+   "defSuccessRate": 0.6364
+  },
+  "UTEP": {
+   "offPlays": 71,
+   "offPpa": -0.11,
+   "offSuccessRate": 0.4789,
+   "defPlays": 74,
+   "defPpa": 0.1878,
+   "defSuccessRate": 0.4054
+  },
+  "UTSA": {
+   "offPlays": 118,
+   "offPpa": 0.2783,
+   "offSuccessRate": 0.5254,
+   "defPlays": 142,
+   "defPpa": -0.0441,
+   "defSuccessRate": 0.4296
+  },
+  "Utah": {
+   "offPlays": 79,
+   "offPpa": 0.4925,
+   "offSuccessRate": 0.5823,
+   "defPlays": 78,
+   "defPpa": -0.0301,
+   "defSuccessRate": 0.3077
+  },
+  "Utah State": {
+   "offPlays": 147,
+   "offPpa": -0.1255,
+   "offSuccessRate": 0.4014,
+   "defPlays": 142,
+   "defPpa": 0.033,
+   "defSuccessRate": 0.3873
+  },
+  "Utah Tech": {
+   "offPlays": 23,
+   "offPpa": -0.8024,
+   "offSuccessRate": 0.1739,
+   "defPlays": 44,
+   "defPpa": 0.5542,
+   "defSuccessRate": 0.6364
+  },
+  "VMI": {
+   "offPlays": 20,
+   "offPpa": -0.4537,
+   "offSuccessRate": 0.1,
+   "defPlays": 32,
+   "defPpa": 0.8154,
+   "defSuccessRate": 0.7812
+  },
+  "Vanderbilt": {
+   "offPlays": 135,
+   "offPpa": 0.0771,
+   "offSuccessRate": 0.4222,
+   "defPlays": 116,
+   "defPpa": -0.1189,
+   "defSuccessRate": 0.3362
+  },
+  "Villanova": {
+   "offPlays": 48,
+   "offPpa": 0.0404,
+   "offSuccessRate": 0.2917,
+   "defPlays": 48,
+   "defPpa": 0.6351,
+   "defSuccessRate": 0.625
+  },
+  "Virginia": {
+   "offPlays": 100,
+   "offPpa": 0.3795,
+   "offSuccessRate": 0.58,
+   "defPlays": 79,
+   "defPpa": -0.2655,
+   "defSuccessRate": 0.3671
+  },
+  "Virginia Tech": {
+   "offPlays": 97,
+   "offPpa": 0.4591,
+   "offSuccessRate": 0.5258,
+   "defPlays": 48,
+   "defPpa": -0.2384,
+   "defSuccessRate": 0.2292
+  },
+  "Wagner": {
+   "offPlays": 38,
+   "offPpa": -0.3649,
+   "offSuccessRate": 0.2105,
+   "defPlays": 31,
+   "defPpa": 0.3139,
+   "defSuccessRate": 0.5484
+  },
+  "Wake Forest": {
+   "offPlays": 126,
+   "offPpa": 0.4428,
+   "offSuccessRate": 0.4762,
+   "defPlays": 134,
+   "defPpa": 0.1223,
+   "defSuccessRate": 0.4627
+  },
+  "Washington": {
+   "offPlays": 141,
+   "offPpa": 0.0384,
+   "offSuccessRate": 0.4397,
+   "defPlays": 115,
+   "defPpa": -0.197,
+   "defSuccessRate": 0.3304
+  },
+  "Washington State": {
+   "offPlays": 94,
+   "offPpa": -0.1979,
+   "offSuccessRate": 0.3085,
+   "defPlays": 127,
+   "defPpa": 0.085,
+   "defSuccessRate": 0.4803
+  },
+  "Weber State": {
+   "offPlays": 50,
+   "offPpa": -0.1036,
+   "offSuccessRate": 0.28,
+   "defPlays": 50,
+   "defPpa": 0.6858,
+   "defSuccessRate": 0.5
+  },
+  "West Georgia": {
+   "offPlays": 67,
+   "offPpa": -0.244,
+   "offSuccessRate": 0.2836,
+   "defPlays": 88,
+   "defPpa": 0.3177,
+   "defSuccessRate": 0.5568
+  },
+  "West Virginia": {
+   "offPlays": 105,
+   "offPpa": 0.2942,
+   "offSuccessRate": 0.4762,
+   "defPlays": 113,
+   "defPpa": 0.045,
+   "defSuccessRate": 0.4248
+  },
+  "Western Carolina": {
+   "offPlays": 44,
+   "offPpa": 0.1827,
+   "offSuccessRate": 0.5,
+   "defPlays": 49,
+   "defPpa": 0.6607,
+   "defSuccessRate": 0.6735
+  },
+  "Western Illinois": {
+   "offPlays": 60,
+   "offPpa": -0.0574,
+   "offSuccessRate": 0.3833,
+   "defPlays": 47,
+   "defPpa": 0.2204,
+   "defSuccessRate": 0.3617
+  },
+  "Western Kentucky": {
+   "offPlays": 96,
+   "offPpa": -0.1278,
+   "offSuccessRate": 0.3646,
+   "defPlays": 69,
+   "defPpa": 0.7696,
+   "defSuccessRate": 0.6087
+  },
+  "Western Michigan": {
+   "offPlays": 108,
+   "offPpa": 0.1505,
+   "offSuccessRate": 0.3796,
+   "defPlays": 114,
+   "defPpa": -0.0361,
+   "defSuccessRate": 0.4211
+  },
+  "Wisconsin": {
+   "offPlays": 100,
+   "offPpa": 0.048,
+   "offSuccessRate": 0.35,
+   "defPlays": 122,
+   "defPpa": 0.1243,
+   "defSuccessRate": 0.418
+  },
+  "Wofford": {
+   "offPlays": 54,
+   "offPpa": -0.4227,
+   "offSuccessRate": 0.3148,
+   "defPlays": 73,
+   "defPpa": 0.125,
+   "defSuccessRate": 0.411
+  },
+  "Wyoming": {
+   "offPlays": 117,
+   "offPpa": -0.0028,
+   "offSuccessRate": 0.4274,
+   "defPlays": 130,
+   "defPpa": 0.0649,
+   "defSuccessRate": 0.4231
+  },
+  "Youngstown State": {
+   "offPlays": 56,
+   "offPpa": 0.1318,
+   "offSuccessRate": 0.4643,
+   "defPlays": 47,
+   "defPpa": 0.5447,
+   "defSuccessRate": 0.6383
+  }
+ }
+}
