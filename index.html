@@ -161,7 +161,7 @@
       </div>
     </div>
     <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
-      <div class="season-tag" id="seasonTag">2026 SEASON — SP+ UPDATED THRU WEEK 1</div>
+      <div class="season-tag" id="seasonTag">2026 SEASON — SP+ THRU WK3 · SAGARIN THRU WK2</div>
       <div id="storageBackendTag" style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--muted);"></div>
     </div>
   </header>
@@ -206,7 +206,7 @@
       <h2>Power Ratings <span class="cnt" id="ratingsCount"></span></h2>
       <div class="ratings-controls">
         <input type="text" id="ratingsSearch" placeholder="Search team...">
-        <button class="ghost" id="resetRatingsBtn">Reset to SP+ (thru Week 1)</button>
+        <button class="ghost" id="resetRatingsBtn">Reset to SP+ (thru Week 3)</button>
       </div>
       <div class="sub" style="margin-bottom:12px;">
         Model uses ESPN SP+ (points, drives the Board's spreads). FEI, FPI, and Sagarin ranks are shown for reference/comparison only — they don't feed the model.
@@ -341,88 +341,88 @@ const HFA = 2.2; // home field advantage, points
 // All 138 teams updated at this point since virtually every team has played
 // at least once (Week 0 + Week 1 combined).
 const PRESEASON_SP_PLUS = [
-["Ohio State",30.0],["Oregon",23.9],["Notre Dame",26.8],["Georgia",28.7],["Indiana",24.1],
-["Texas",25.4],["Miami",24.7],["Texas Tech",18.9],["Texas A&M",23.9],["LSU",23.3],
-["Oklahoma",21.7],["USC",17.7],["Alabama",20.0],["Tennessee",19.9],["Michigan",12.2],
-["Ole Miss",13.3],["Penn State",19.8],["Washington",12.0],["Missouri",12.9],["Florida",18.6],
-["BYU",16.8],["Iowa",18.0],["Clemson",5.2],["South Carolina",16.7],["SMU",11.1],
-["Auburn",7.0],["Louisville",10.0],["Illinois",7.5],["Vanderbilt",12.1],["Utah",13.0],
-["Arizona",12.6],["TCU",3.9],["Nebraska",12.1],["Kansas State",12.7],["Florida State",6.9],
-["Virginia Tech",12.4],["Virginia",11.5],["Houston",6.5],["Oklahoma State",1.1],["Minnesota",9.6],
-["Pittsburgh",10.1],["Georgia Tech",1.7],["NC State",-0.7],["Arkansas",3.3],["Duke",6.6],
-["UCLA",9.2],["Kentucky",8.5],["Maryland",9.1],["Boise State",5.2],["Northwestern",7.8],
-["Arizona State",8.7],["Mississippi State",9.4],["Wisconsin",-1.5],["Baylor",4.9],["UNLV",2.3],
-["North Carolina",5.8],["Wake Forest",1.6],["Kansas",7.5],["Cincinnati",5.9],["California",-3.4],
-["Rutgers",-3.6],["Michigan State",1.0],["UCF",5.9],["Navy",3.6],["San Diego State",3.1],
-["Colorado",2.1],["Memphis",2.1],["New Mexico",4.4],["Iowa State",3.1],["James Madison",-0.3],
-["UTSA",2.9],["West Virginia",-4.4],["Fresno State",-7.6],["South Florida",-3.1],["North Dakota State",2.6],
-["Syracuse",2.7],["Texas State",-7.8],["Purdue",1.2],["Stanford",-4.7],["East Carolina",-8.1],
-["Army",2.2],["Boston College",-7.4],["Hawaii",-7.0],["Air Force",1.1],["Miami (OH)",-10.0],
-["Washington State",-3.7],["Tulane",-7.4],["Liberty",-7.2],["Oregon State",-6.8],["Western Michigan",-4.2],
-["Florida Atlantic",-12.2],["Tulsa",-2.3],["Old Dominion",-6.2],["Western Kentucky",-13.1],["Jacksonville State",-7.0],
-["Utah State",-11.5],["Troy",-11.4],["Marshall",-14.4],["Louisiana Tech",-3.8],["Temple",-4.9],
-["Toledo",-9.4],["Louisiana",-5.7],["Georgia Southern",-5.8],["Wyoming",-15.2],["North Texas",-13.2],
-["Arkansas State",-15.1],["Colorado State",-7.5],["Nevada",-6.1],["Ohio",-16.4],["UConn",-6.3],
-["Buffalo",-11.6],["Appalachian State",-7.2],["Delaware",-7.6],["Kennesaw State",-7.4],["FIU",-13.5],
-["South Alabama",-11.4],["Coastal Carolina",-12.1],["Bowling Green",-12.8],["Central Michigan",-20.0],["Rice",-10.4],
-["San Jose State",-12.8],["Eastern Michigan",-15.6],["Northern Illinois",-22.3],["UAB",-16.0],["New Mexico State",-15.0],
-["Missouri State",-24.3],["UTEP",-24.3],["Southern Miss",-14.9],["Kent State",-27.5],["Akron",-21.4],
-["Sacramento State",-19.1],["Charlotte",-26.0],["Ball State",-25.0],["Sam Houston",-21.5],["Middle Tennessee",-20.8],
-["UL Monroe",-33.2],["Georgia State",-22.7],["UMass",-25.8]
+["Ohio State",29.2],["Oregon",22.9],["Notre Dame",29.0],["Georgia",29.3],["Indiana",25.4],
+["Texas",25.0],["Miami",25.6],["Texas Tech",19.1],["Texas A&M",24.2],["LSU",24.1],
+["Oklahoma",19.2],["USC",19.5],["Alabama",21.2],["Tennessee",20.2],["Michigan",13.8],
+["Ole Miss",15.2],["Penn State",17.7],["Washington",11.1],["Missouri",15.1],["Florida",19.4],
+["BYU",16.8],["Iowa",13.8],["Clemson",8.1],["South Carolina",16.9],["SMU",15.3],
+["Auburn",11.7],["Louisville",14.1],["Illinois",7.2],["Vanderbilt",10.1],["Utah",14.8],
+["Arizona",10.3],["TCU",11.3],["Nebraska",13.0],["Kansas State",13.9],["Florida State",7.7],
+["Virginia Tech",12.7],["Virginia",12.7],["Houston",11.6],["Oklahoma State",6.7],["Minnesota",4.7],
+["Pittsburgh",10.0],["Georgia Tech",2.7],["NC State",8.0],["Arkansas",1.5],["Duke",6.9],
+["UCLA",9.1],["Kentucky",6.2],["Maryland",8.7],["Boise State",6.9],["Northwestern",7.8],
+["Arizona State",7.8],["Mississippi State",10.0],["Wisconsin",1.9],["Baylor",7.4],["UNLV",-2.7],
+["North Carolina",6.4],["Wake Forest",3.4],["Kansas",4.7],["Cincinnati",7.6],["California",-0.6],
+["Rutgers",-2.8],["Michigan State",3.5],["UCF",5.6],["Navy",-0.7],["San Diego State",-0.5],
+["Colorado",3.7],["Memphis",0.4],["New Mexico",5.0],["Iowa State",3.5],["James Madison",4.0],
+["UTSA",2.1],["West Virginia",3.0],["Fresno State",-0.8],["South Florida",-1.1],["North Dakota State",4.2],
+["Syracuse",1.7],["Texas State",-6.5],["Purdue",-1.2],["Stanford",-3.9],["East Carolina",-6.7],
+["Army",1.1],["Boston College",-3.3],["Hawaii",-5.8],["Air Force",-0.1],["Miami (OH)",-6.6],
+["Washington State",-6.9],["Tulane",-6.0],["Liberty",-7.1],["Oregon State",-4.6],["Western Michigan",-2.2],
+["Florida Atlantic",-8.0],["Tulsa",-4.0],["Old Dominion",-6.9],["Western Kentucky",-13.3],["Jacksonville State",-7.0],
+["Utah State",-7.1],["Troy",-7.1],["Marshall",-11.7],["Louisiana Tech",-5.3],["Temple",-6.2],
+["Toledo",-4.9],["Louisiana",-6.6],["Georgia Southern",-6.6],["Wyoming",-13.7],["North Texas",-8.1],
+["Arkansas State",-7.1],["Colorado State",-6.7],["Nevada",-7.6],["Ohio",-12.3],["UConn",-7.2],
+["Buffalo",-13.9],["Appalachian State",-7.4],["Delaware",-8.8],["Kennesaw State",-10.7],["FIU",-11.5],
+["South Alabama",-10.3],["Coastal Carolina",-9.5],["Bowling Green",-17.5],["Central Michigan",-16.9],["Rice",-15.1],
+["San Jose State",-12.5],["Eastern Michigan",-15.6],["Northern Illinois",-16.9],["UAB",-17.3],["New Mexico State",-15.0],
+["Missouri State",-16.4],["UTEP",-16.2],["Southern Miss",-16.2],["Kent State",-21.5],["Akron",-18.6],
+["Sacramento State",-21.7],["Charlotte",-25.2],["Ball State",-21.3],["Sam Houston",-21.1],["Middle Tennessee",-21.3],
+["UL Monroe",-29.3],["Georgia State",-21.6],["UMass",-25.2]
 ];
 
 // ESPN SP+ Offense/Defense/Special Teams sub-ratings (Bill Connelly), through
-// Week 1 (Sep 2026), per team: [offenseSP+, defenseSP+, specialTeamsSP+].
+// Week 3 (Sep 2026), per team: [offenseSP+, defenseSP+, specialTeamsSP+].
 // Off SP+ = expected points scored vs an average defense; Def SP+ = expected
 // points allowed vs an average offense (lower is better defense). This feeds
 // the Total model below — overall SP+ alone can't produce a total, only a spread.
 let OFF_DEF_ST = {
-"Ohio State":[40.0,10.1,0.1],"Oregon":[38.9,15.2,0.3],"Notre Dame":[40.6,14.0,0.3],
-"Georgia":[39.9,11.9,0.6],"Indiana":[37.8,14.2,0.5],"Texas":[39.2,14.2,0.4],
-"Miami":[36.9,12.5,0.3],"Texas Tech":[34.9,16.2,0.2],"Texas A&M":[38.8,14.6,-0.3],
-"LSU":[34.4,11.4,0.2],"Oklahoma":[34.0,12.6,0.4],"USC":[37.9,19.9,-0.3],
-"Alabama":[33.0,12.6,-0.4],"Tennessee":[40.3,20.8,0.4],"Michigan":[29.7,17.0,-0.5],
-"Ole Miss":[35.1,22.5,0.7],"Penn State":[35.3,16.2,0.6],"Washington":[30.5,18.1,-0.3],
-"Missouri":[31.2,17.9,-0.5],"Florida":[33.5,15.5,0.5],"BYU":[33.9,17.4,0.3],
-"Iowa":[32.1,14.7,0.6],"Clemson":[26.4,21.5,0.3],"South Carolina":[32.6,16.4,0.5],
-"SMU":[32.2,20.8,-0.4],"Auburn":[25.3,18.6,0.3],"Louisville":[31.7,21.9,0.2],
-"Illinois":[31.3,24.2,0.4],"Vanderbilt":[34.0,22.5,0.6],"Utah":[33.7,20.7,0.0],
-"Arizona":[32.7,19.6,-0.5],"TCU":[27.5,23.4,-0.2],"Nebraska":[32.4,20.4,0.1],
-"Kansas State":[34.3,21.8,0.3],"Florida State":[29.1,21.9,-0.2],"Virginia Tech":[32.6,20.0,-0.2],
-"Virginia":[28.4,17.1,0.2],"Houston":[30.7,23.9,-0.4],"Oklahoma State":[26.1,25.4,0.5],
-"Minnesota":[27.9,17.8,-0.5],"Pittsburgh":[33.0,23.0,0.1],"Georgia Tech":[25.3,24.1,0.6],
-"NC State":[27.4,27.8,-0.4],"Arkansas":[32.6,29.5,0.3],"Duke":[31.3,25.1,0.4],
-"UCLA":[31.9,22.7,0.0],"Kentucky":[28.6,20.0,0.0],"Maryland":[28.9,20.1,0.3],
-"Boise State":[29.5,24.1,-0.3],"Northwestern":[27.2,19.8,0.5],"Arizona State":[29.7,20.5,-0.6],
-"Mississippi State":[33.5,24.7,0.5],"Wisconsin":[19.3,20.6,-0.3],"Baylor":[31.1,26.9,0.6],
-"UNLV":[29.8,27.6,0.1],"North Carolina":[24.5,19.1,0.4],"Wake Forest":[23.8,22.2,0.0],
-"Kansas":[30.9,24.0,0.6],"Cincinnati":[30.0,24.3,0.3],"California":[26.6,29.7,-0.3],
-"Rutgers":[27.8,31.4,0.1],"Michigan State":[26.9,25.5,-0.4],"UCF":[26.5,20.5,-0.1],
-"Navy":[29.4,26.0,0.2],"San Diego State":[25.8,23.3,0.6],"Colorado":[25.7,23.1,-0.5],
-"Memphis":[30.4,28.8,0.5],"New Mexico":[27.4,23.6,0.6],"Iowa State":[24.2,21.6,0.5],
-"James Madison":[26.0,25.9,-0.4],"UTSA":[31.9,29.2,0.1],"West Virginia":[24.1,28.6,0.1],
-"Fresno State":[18.1,25.7,0.0],"South Florida":[26.0,28.9,-0.3],"North Dakota State":[25.9,23.2,0.0],
-"Syracuse":[25.7,23.4,0.4],"Texas State":[30.3,38.2,0.1],"Purdue":[26.2,25.6,0.6],
-"Stanford":[22.0,26.1,-0.5],"East Carolina":[22.0,29.9,-0.2],"Army":[27.2,25.1,0.1],
-"Boston College":[22.0,29.9,0.5],"Hawaii":[23.3,30.9,0.6],"Air Force":[26.6,25.6,0.1],
-"Miami (OH)":[17.8,28.4,0.5],"Washington State":[20.5,24.0,-0.1],"Tulane":[19.5,27.5,0.6],
-"Liberty":[24.0,31.0,-0.2],"Oregon State":[21.1,27.3,-0.7],"Western Michigan":[19.4,23.2,-0.4],
-"Florida Atlantic":[25.7,38.4,0.5],"Tulsa":[25.2,28.0,0.5],"Old Dominion":[20.1,25.6,-0.7],
-"Western Kentucky":[22.0,35.6,0.5],"Jacksonville State":[24.9,31.3,-0.5],"Utah State":[20.9,32.0,-0.5],
-"Troy":[20.6,32.2,0.2],"Marshall":[23.8,38.4,0.3],"Louisiana Tech":[24.7,28.5,0.0],
-"Temple":[26.9,32.2,0.3],"Toledo":[17.9,26.9,-0.4],"Louisiana":[26.9,32.2,-0.5],
-"Georgia Southern":[24.8,30.6,0.0],"Wyoming":[13.7,28.3,-0.6],"North Texas":[23.5,36.5,-0.2],
-"Arkansas State":[21.3,36.5,0.1],"Colorado State":[19.2,26.6,-0.1],"Nevada":[21.4,27.9,0.4],
-"Ohio":[13.2,29.0,-0.6],"UConn":[22.7,29.6,0.6],"Buffalo":[15.5,27.7,0.6],
-"Appalachian State":[23.6,31.1,0.3],"Delaware":[25.1,32.4,-0.3],"Kennesaw State":[22.3,29.2,-0.5],
-"FIU":[20.2,33.4,-0.3],"South Alabama":[23.5,34.2,-0.7],"Coastal Carolina":[22.1,33.7,-0.5],
-"Bowling Green":[15.0,28.1,0.3],"Central Michigan":[13.1,32.9,-0.2],"Rice":[18.8,29.7,0.5],
-"San Jose State":[19.9,32.2,-0.5],"Eastern Michigan":[17.2,32.8,0.0],"Northern Illinois":[12.3,34.4,-0.2],
-"UAB":[21.8,37.4,-0.5],"New Mexico State":[17.9,32.9,-0.1],"Missouri State":[13.6,37.4,-0.5],
-"UTEP":[12.9,36.8,-0.5],"Southern Miss":[20.6,35.1,-0.4],"Kent State":[12.3,39.4,-0.5],
-"Akron":[12.8,33.6,-0.6],"Sacramento State":[16.6,35.7,0.0],"Charlotte":[14.5,40.0,-0.5],
-"Ball State":[12.6,36.9,-0.7],"Sam Houston":[16.3,37.3,-0.4],"Middle Tennessee":[17.0,38.0,0.2],
-"UL Monroe":[10.5,42.9,-0.7],"Georgia State":[18.3,40.3,-0.7],"UMass":[12.6,37.9,-0.5]
+"Ohio State":[39.5,10.3,0.1],"Oregon":[38.6,16.0,0.3],"Notre Dame":[41.7,13.0,0.3],
+"Georgia":[40.8,12.1,0.6],"Indiana":[38.1,13.2,0.5],"Texas":[38.7,14.2,0.4],
+"Miami":[37.2,11.9,0.3],"Texas Tech":[35.4,16.5,0.2],"Texas A&M":[39.3,14.9,-0.3],
+"LSU":[34.8,10.9,0.2],"Oklahoma":[31.9,13.1,0.4],"USC":[39.3,19.5,-0.3],
+"Alabama":[33.5,11.9,-0.4],"Tennessee":[40.9,21.1,0.4],"Michigan":[30.4,16.1,-0.4],
+"Ole Miss":[35.4,20.8,0.6],"Penn State":[34.1,17.0,0.6],"Washington":[29.7,18.3,-0.3],
+"Missouri":[32.3,16.8,-0.5],"Florida":[33.4,14.5,0.5],"BYU":[33.9,17.4,0.3],
+"Iowa":[29.7,16.5,0.6],"Clemson":[27.0,19.2,0.3],"South Carolina":[32.6,16.1,0.5],
+"SMU":[34.3,18.6,-0.4],"Auburn":[28.2,16.8,0.2],"Louisville":[33.3,19.4,0.2],
+"Illinois":[31.1,24.3,0.4],"Vanderbilt":[33.3,23.7,0.6],"Utah":[34.5,19.7,0.0],
+"Arizona":[31.5,20.7,-0.4],"TCU":[31.9,20.4,-0.2],"Nebraska":[32.7,19.7,0.1],
+"Kansas State":[34.6,20.9,0.3],"Florida State":[29.5,21.5,-0.2],"Virginia Tech":[33.1,20.1,-0.2],
+"Virginia":[29.3,16.8,0.2],"Houston":[33.1,21.2,-0.3],"Oklahoma State":[29.6,23.4,0.4],
+"Minnesota":[25.4,20.2,-0.5],"Pittsburgh":[31.5,21.6,0.1],"Georgia Tech":[26.8,24.6,0.5],
+"NC State":[32.0,23.7,-0.4],"Arkansas":[31.8,30.6,0.3],"Duke":[32.5,26.0,0.3],
+"UCLA":[31.0,22.0,0.0],"Kentucky":[27.4,21.2,0.0],"Maryland":[28.8,20.4,0.3],
+"Boise State":[30.4,23.3,-0.2],"Northwestern":[27.1,19.8,0.4],"Arizona State":[29.4,21.1,-0.5],
+"Mississippi State":[33.7,24.2,0.5],"Wisconsin":[21.0,18.8,-0.3],"Baylor":[32.9,26.1,0.6],
+"UNLV":[26.9,29.6,0.0],"North Carolina":[25.5,19.5,0.4],"Wake Forest":[25.3,22.0,0.0],
+"Kansas":[29.5,25.4,0.6],"Cincinnati":[31.2,23.9,0.3],"California":[27.0,27.4,-0.3],
+"Rutgers":[27.9,30.8,0.1],"Michigan State":[28.2,24.3,-0.4],"UCF":[25.4,19.7,-0.1],
+"Navy":[27.5,28.4,0.2],"San Diego State":[23.7,24.8,0.6],"Colorado":[27.2,23.1,-0.5],
+"Memphis":[30.3,30.4,0.4],"New Mexico":[28.1,23.7,0.5],"Iowa State":[23.9,20.8,0.4],
+"James Madison":[28.6,24.2,-0.3],"UTSA":[31.4,29.4,0.1],"West Virginia":[27.8,24.9,0.1],
+"Fresno State":[21.7,22.4,0.0],"South Florida":[27.9,28.8,-0.2],"North Dakota State":[27.3,23.2,0.1],
+"Syracuse":[24.7,23.4,0.4],"Texas State":[30.8,37.4,0.1],"Purdue":[25.6,27.5,0.6],
+"Stanford":[22.3,25.7,-0.5],"East Carolina":[22.4,28.9,-0.2],"Army":[26.9,25.9,0.1],
+"Boston College":[24.2,27.9,0.4],"Hawaii":[23.9,30.2,0.5],"Air Force":[26.8,27.0,0.1],
+"Miami (OH)":[19.0,26.1,0.5],"Washington State":[18.9,25.7,-0.1],"Tulane":[21.2,27.8,0.5],
+"Liberty":[24.3,31.2,-0.2],"Oregon State":[22.2,26.1,-0.7],"Western Michigan":[21.1,22.9,-0.4],
+"Florida Atlantic":[27.6,36.1,0.5],"Tulsa":[24.4,28.9,0.5],"Old Dominion":[20.1,26.3,-0.6],
+"Western Kentucky":[22.2,35.9,0.5],"Jacksonville State":[24.8,31.4,-0.5],"Utah State":[23.1,29.7,-0.5],
+"Troy":[22.7,30.1,0.2],"Marshall":[25.3,37.3,0.2],"Louisiana Tech":[23.9,29.2,0.0],
+"Temple":[25.9,32.4,0.3],"Toledo":[20.3,24.8,-0.4],"Louisiana":[26.9,33.1,-0.4],
+"Georgia Southern":[23.7,30.4,0.0],"Wyoming":[14.1,27.3,-0.6],"North Texas":[25.7,33.5,-0.2],
+"Arkansas State":[24.9,32.1,0.1],"Colorado State":[20.0,26.7,-0.1],"Nevada":[20.0,27.9,0.4],
+"Ohio":[15.0,26.7,-0.6],"UConn":[22.6,30.3,0.5],"Buffalo":[14.8,29.2,0.6],
+"Appalachian State":[23.5,31.2,0.3],"Delaware":[24.8,33.3,-0.3],"Kennesaw State":[20.7,30.8,-0.5],
+"FIU":[21.8,33.0,-0.2],"South Alabama":[24.1,33.8,-0.6],"Coastal Carolina":[23.5,32.5,-0.4],
+"Bowling Green":[13.1,30.9,0.3],"Central Michigan":[14.2,30.9,-0.2],"Rice":[16.7,32.2,0.4],
+"San Jose State":[20.0,32.1,-0.4],"Eastern Michigan":[17.2,32.7,0.0],"Northern Illinois":[15.2,31.9,-0.2],
+"UAB":[20.7,37.5,-0.5],"New Mexico State":[18.4,33.3,-0.1],"Missouri State":[17.7,33.7,-0.5],
+"UTEP":[17.1,32.8,-0.4],"Southern Miss":[20.2,35.9,-0.4],"Kent State":[15.2,36.2,-0.5],
+"Akron":[14.0,32.0,-0.6],"Sacramento State":[15.1,36.8,0.0],"Charlotte":[14.5,39.2,-0.4],
+"Ball State":[14.3,35.0,-0.6],"Sam Houston":[16.2,36.9,-0.4],"Middle Tennessee":[16.4,37.9,0.2],
+"UL Monroe":[11.9,40.6,-0.6],"Georgia State":[18.6,39.6,-0.6],"UMass":[12.7,37.5,-0.5]
 };
 
 // BCF Toys 2026 FEI ratings (Fremeau Efficiency Index), through Week 1 —
@@ -474,43 +474,7 @@ const FEI_RANK = {
 // it should start reflecting actual games once Sagarin's site updates.
 // Values are [rank, rating] on Sagarin's own 0-100ish scale (not comparable
 // directly to SP+ point values).
-const SAGARIN_RANK = {
-"Ohio State":[1,103.07],"Oregon":[2,101.74],"Notre Dame":[3,101.0],"Indiana":[4,100.44],
-"Texas":[5,98.5],"Georgia":[6,97.38],"Miami":[7,95.73],"Texas A&M":[8,92.87],
-"Oklahoma":[9,92.66],"LSU":[10,92.31],"USC":[11,92.11],"Texas Tech":[12,92.08],
-"Michigan":[13,91.82],"Alabama":[14,91.76],"Ole Miss":[15,91.18],"Florida":[16,87.91],
-"Tennessee":[17,87.9],"Penn State":[18,87.68],"Washington":[19,87.63],"Iowa":[20,85.4],
-"Missouri":[21,84.98],"Auburn":[22,84.38],"South Carolina":[23,84.2],"BYU":[24,84.02],
-"SMU":[25,83.06],"Wisconsin":[26,82.49],"Louisville":[27,82.09],"Clemson":[28,81.63],
-"Utah":[29,81.6],"Illinois":[30,81.12],"Nebraska":[31,80.57],"Vanderbilt":[32,80.09],
-"Kentucky":[33,79.45],"Minnesota":[34,79.37],"UCLA":[35,79.24],"Pittsburgh":[36,78.78],
-"Houston":[37,78.71],"Mississippi State":[38,78.28],"Kansas State":[39,77.98],"Florida State":[40,77.72],
-"Arizona":[41,77.7],"Virginia Tech":[42,77.49],"Northwestern":[43,77.49],"Virginia":[44,77.43],
-"Arizona State":[45,77.11],"TCU":[46,76.92],"Georgia Tech":[47,76.31],"Arkansas":[48,75.76],
-"NC State":[49,75.29],"Baylor":[50,74.67],"Oklahoma State":[51,74.55],"Maryland":[52,74.14],
-"Kansas":[53,74.06],"California":[54,74.05],"Rutgers":[55,73.3],"West Virginia":[56,73.11],
-"Wake Forest":[57,72.71],"Duke":[58,72.32],"Michigan State":[59,72.15],"UCF":[60,71.77],
-"North Carolina":[61,70.72],"Purdue":[62,70.4],"Cincinnati":[63,70.29],"Colorado":[64,69.8],
-"Boise State":[65,69.71],"Syracuse":[66,69.2],"Iowa State":[67,68.73],"Stanford":[69,66.8],
-"Boston College":[71,65.7],"San Diego State":[72,64.58],"Navy":[73,64.23],"UNLV":[74,64.16],
-"UTSA":[75,63.92],"North Dakota State":[76,63.83],"Tulane":[77,63.39],"Memphis":[78,63.24],
-"South Florida":[79,63.15],"Army":[80,62.91],"New Mexico":[81,62.81],"James Madison":[82,62.67],
-"Texas State":[83,61.61],"Washington State":[84,61.44],"Hawaii":[85,60.58],"East Carolina":[86,60.51],
-"Old Dominion":[87,60.09],"Fresno State":[88,59.78],"Air Force":[90,58.76],"Liberty":[92,58.2],
-"Western Kentucky":[93,57.94],"Marshall":[94,57.57],"Western Michigan":[95,57.53],"Florida Atlantic":[96,57.47],
-"North Texas":[98,56.76],"Tulsa":[99,56.53],"Toledo":[100,56.53],"Miami (OH)":[101,56.45],
-"Troy":[102,56.23],"Oregon State":[103,56.18],"Jacksonville State":[106,55.87],"Temple":[107,55.61],
-"Utah State":[109,55.26],"UConn":[110,55.22],"Louisiana":[111,55.07],"Louisiana Tech":[112,54.99],
-"Colorado State":[113,54.84],"Delaware":[114,53.94],"Arkansas State":[115,53.82],"Wyoming":[116,53.8],
-"Appalachian State":[117,53.78],"South Alabama":[118,53.75],"Georgia Southern":[120,53.34],"Kennesaw State":[121,53.34],
-"Central Michigan":[122,53.14],"Ohio":[123,53.0],"Nevada":[127,52.05],"FIU":[128,51.97],
-"Coastal Carolina":[131,51.21],"Eastern Michigan":[133,51.09],"San Jose State":[134,50.82],"Rice":[136,50.61],
-"Bowling Green":[141,49.48],"Buffalo":[142,49.06],"New Mexico State":[144,48.39],"UAB":[145,48.17],
-"Northern Illinois":[146,48.14],"Missouri State":[147,48.11],"Akron":[148,47.94],"Georgia State":[153,47.38],
-"Southern Miss":[154,47.34],"UTEP":[158,46.71],"UL Monroe":[160,46.39],"Middle Tennessee":[164,46.11],
-"Sacramento State":[172,45.22],"Kent State":[177,44.3],"Sam Houston":[182,43.58],"Charlotte":[185,42.87],
-"Ball State":[186,42.69],"UMass":[226,35.9]
-};
+const SAGARIN_RANK = {"Ohio State":[9,87.27],"Oregon":[33,78.93],"Notre Dame":[1,95.24],"Georgia":[21,82.03],"Indiana":[2,93.47],"Texas":[11,85.55],"Miami":[6,89.12],"Texas Tech":[23,81.63],"Texas A&M":[5,89.74],"LSU":[4,90.96],"Oklahoma":[12,85.03],"USC":[10,86.03],"Alabama":[3,92.18],"Tennessee":[15,84.48],"Michigan":[13,84.77],"Ole Miss":[45,74.58],"Penn State":[8,87.41],"Washington":[68,70.27],"Missouri":[31,79.25],"Florida":[7,87.84],"BYU":[32,79.25],"Iowa":[19,82.82],"Clemson":[43,75.27],"South Carolina":[20,82.24],"SMU":[30,79.33],"Auburn":[14,84.52],"Louisville":[46,74.55],"Illinois":[37,78.29],"Vanderbilt":[35,78.44],"Utah":[18,83.5],"Arizona":[47,74.53],"TCU":[52,73.73],"Nebraska":[22,81.81],"Kansas State":[44,74.73],"Florida State":[48,74.21],"Virginia Tech":[24,81.15],"Virginia":[17,83.64],"Houston":[29,79.54],"Oklahoma State":[53,73.55],"Minnesota":[34,78.67],"Pittsburgh":[27,80.23],"Georgia Tech":[58,72.49],"NC State":[26,80.41],"Arkansas":[63,71.63],"Duke":[40,76.83],"UCLA":[25,80.74],"Kentucky":[28,79.93],"Maryland":[56,72.67],"Boise State":[61,72.07],"Northwestern":[54,73.06],"Arizona State":[41,76.48],"Mississippi State":[16,83.8],"Wisconsin":[38,77.45],"Baylor":[36,78.31],"UNLV":[99,62.89],"North Carolina":[55,73.05],"Wake Forest":[62,71.82],"Kansas":[66,70.46],"Cincinnati":[39,76.93],"California":[49,74.05],"Rutgers":[75,68.31],"Michigan State":[51,73.77],"UCF":[42,75.39],"Navy":[85,66.35],"San Diego State":[76,68.3],"Colorado":[64,71.39],"Memphis":[88,65.99],"New Mexico":[65,70.61],"Iowa State":[50,73.84],"James Madison":[87,66.07],"UTSA":[101,62.5],"West Virginia":[57,72.53],"Fresno State":[89,65.6],"South Florida":[67,70.32],"North Dakota State":[72,69.38],"Syracuse":[59,72.38],"Texas State":[127,59.06],"Purdue":[70,69.69],"Stanford":[84,66.38],"East Carolina":[78,67.93],"Army":[71,69.6],"Boston College":[73,69.38],"Hawaii":[118,60.51],"Air Force":[102,62.24],"Miami (OH)":[120,60.27],"Washington State":[115,60.84],"Tulane":[77,68.21],"Liberty":[122,59.73],"Oregon State":[91,64.81],"Western Michigan":[69,70.06],"Florida Atlantic":[95,64.47],"Tulsa":[82,66.83],"Old Dominion":[80,67.33],"Western Kentucky":[153,54.83],"Jacksonville State":[104,62.07],"Utah State":[132,57.8],"Troy":[112,61.03],"Marshall":[114,60.85],"Louisiana Tech":[83,66.61],"Temple":[79,67.39],"Toledo":[90,64.99],"Louisiana":[86,66.09],"Georgia Southern":[117,60.51],"Wyoming":[141,56.42],"North Texas":[74,68.4],"Arkansas State":[130,58.31],"Colorado State":[93,64.6],"Nevada":[109,61.55],"Ohio":[111,61.1],"UConn":[129,58.43],"Buffalo":[150,55.26],"Appalachian State":[81,67.21],"Delaware":[92,64.77],"Kennesaw State":[135,57.18],"FIU":[113,61.01],"South Alabama":[98,63.26],"Coastal Carolina":[107,61.84],"Bowling Green":[154,54.79],"Central Michigan":[140,56.44],"Rice":[116,60.66],"San Jose State":[110,61.2],"Eastern Michigan":[145,56.09],"Northern Illinois":[136,57.12],"UAB":[125,59.28],"New Mexico State":[139,56.47],"Missouri State":[133,57.53],"UTEP":[152,54.91],"Southern Miss":[121,60.02],"Kent State":[161,53.51],"Akron":[156,54.64],"Sacramento State":[200,48.26],"Charlotte":[208,47.02],"Ball State":[174,52.09],"Sam Houston":[143,56.2],"Middle Tennessee":[149,55.6],"UL Monroe":[138,56.65],"Georgia State":[126,59.18],"UMass":[226,35.9]};
 
 // ESPN FPI preseason Top 25 for 2026 (published July 9, 2026) — reference only
 const FPI_RANK = {
