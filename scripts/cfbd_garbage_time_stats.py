@@ -1,32 +1,43 @@
 """
 Hash Marks — Garbage-Time-Excluded Team Efficiency Puller
 ------------------------------------------------------------
-Pulls play-by-play from CollegeFootballData.com for a given year/week,
-strips out garbage-time snaps, and computes opponent-un-adjusted
-offensive & defensive EPA-per-play (PPA) and success rate for every team.
+Pulls play-by-play from CollegeFootballData.com for every week from 1
+through --through-week, strips out garbage-time snaps, and computes
+SEASON-TO-DATE opponent-un-adjusted offensive & defensive EPA-per-play
+(PPA) and success rate for every FBS team.
 
 USAGE
     pip install requests
     export CFBD_API_KEY="your key here"        # macOS/Linux
     setx CFBD_API_KEY "your key here"           # Windows (new terminal after)
-    python cfbd_garbage_time_stats.py --year 2026 --week 1
 
-Output: a CSV named team_efficiency_{year}_wk{week}.csv you can upload
-back into the chat to fold into Hash Marks.
+    python cfbd_garbage_time_stats.py --year 2026 --through-week 3
+
+    # Optional: also merge the result straight into your local repo's
+    # data/team_stats.json (same folder layout as cfbd_lines_puller.py):
+    python cfbd_garbage_time_stats.py --year 2026 --through-week 3 --out-json data/team_stats.json
+
+Output: data/team_stats.json (or wherever --out-json points), plus a CSV
+snapshot (team_efficiency_{year}_thru_wk{N}.csv) you can eyeball or upload
+back into the chat if something looks off.
 
 Notes:
   - Set CFBD_API_KEY as an environment variable rather than pasting it into
-    this file — keeps it out of anything you might later share.
-  - Run this locally; the API blocks direct browser calls (that's why the
-    tool itself can't do this), but a script on your machine works fine.
+    this file.
+  - Run this locally; the API blocks direct browser calls.
   - Garbage time definition below is a common score-margin-by-quarter
     heuristic, not official. Tune GARBAGE_TIME_THRESHOLDS if you want it
     stricter/looser.
+  - Team names come straight from CFBD's own spelling (e.g. "Miami-FL").
+    Hash Marks normalizes these against its own roster when you hit "Sync
+    Latest Data" on the site, the same way it does for lines/games — any
+    name that doesn't match gets reported rather than silently dropped.
 """
 
 import os
 import sys
 import csv
+import json
 import argparse
 from collections import defaultdict
 
@@ -75,10 +86,11 @@ def fetch_plays(year, week, season_type, api_key):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Pull garbage-time-excluded EPA/success rate from CFBD")
+    parser = argparse.ArgumentParser(description="Pull season-to-date garbage-time-excluded EPA/success rate from CFBD")
     parser.add_argument("--year", type=int, required=True)
-    parser.add_argument("--week", type=int, required=True)
+    parser.add_argument("--through-week", type=int, required=True, help="Aggregate weeks 1..N (inclusive)")
     parser.add_argument("--season-type", default="regular", choices=["regular", "postseason"])
+    parser.add_argument("--out-json", default="data/team_stats.json", help="Path to write the merged JSON (default: data/team_stats.json)")
     args = parser.parse_args()
 
     api_key = os.environ.get("CFBD_API_KEY")
@@ -86,85 +98,106 @@ def main():
         print("ERROR: set the CFBD_API_KEY environment variable first.", file=sys.stderr)
         sys.exit(1)
 
-    print(f"Fetching plays for {args.year} week {args.week} ({args.season_type})...")
-    plays = fetch_plays(args.year, args.week, args.season_type, api_key)
-    print(f"Got {len(plays)} plays.")
-
-    if not plays:
-        print("No plays returned — check the year/week (bye weeks, future weeks, etc. return nothing).")
-        sys.exit(0)
-
-    # Sanity check: print one raw play so you can confirm field names match
-    # what this script expects (CFBD's schema can shift between versions).
-    print("\nSample play (verify field names below match what the script uses):")
-    sample = plays[0]
-    for k in ("offense", "defense", "period", "down", "distance", "yardsGained",
-              "offenseScore", "defenseScore", "ppa", "playType"):
-        print(f"  {k}: {sample.get(k)}")
-    print()
-
     stats = defaultdict(lambda: {
         "off_plays": 0, "off_ppa_sum": 0.0, "off_success": 0,
         "def_plays": 0, "def_ppa_sum": 0.0, "def_success": 0,
     })
 
-    excluded_garbage = 0
-    excluded_no_ppa = 0
+    total_excluded_garbage = 0
+    total_excluded_no_ppa = 0
+    total_plays_seen = 0
 
-    for p in plays:
-        period = p.get("period")
-        off_score = p.get("offenseScore")
-        def_score = p.get("defenseScore")
-
-        if is_garbage_time(period, off_score, def_score):
-            excluded_garbage += 1
+    for wk in range(1, args.through_week + 1):
+        print(f"Fetching plays for {args.year} week {wk} ({args.season_type})...")
+        try:
+            plays = fetch_plays(args.year, wk, args.season_type, api_key)
+        except requests.exceptions.HTTPError as e:
+            print(f"  Skipping week {wk}: {e}")
             continue
+        print(f"  Got {len(plays)} plays.")
+        total_plays_seen += len(plays)
 
-        ppa = p.get("ppa")
-        if ppa is None:
-            excluded_no_ppa += 1
-            continue
+        for p in plays:
+            period = p.get("period")
+            off_score = p.get("offenseScore")
+            def_score = p.get("defenseScore")
 
-        offense = p.get("offense")
-        defense = p.get("defense")
-        down = p.get("down")
-        distance = p.get("distance")
-        yards_gained = p.get("yardsGained")
-        success = is_successful_play(down, distance, yards_gained)
+            if is_garbage_time(period, off_score, def_score):
+                total_excluded_garbage += 1
+                continue
 
-        if offense:
-            s = stats[offense]
-            s["off_plays"] += 1
-            s["off_ppa_sum"] += ppa
-            s["off_success"] += 1 if success else 0
+            ppa = p.get("ppa")
+            if ppa is None:
+                total_excluded_no_ppa += 1
+                continue
 
-        if defense:
-            s = stats[defense]
-            s["def_plays"] += 1
-            s["def_ppa_sum"] += ppa
-            s["def_success"] += 1 if success else 0
+            offense = p.get("offense")
+            defense = p.get("defense")
+            down = p.get("down")
+            distance = p.get("distance")
+            yards_gained = p.get("yardsGained")
+            success = is_successful_play(down, distance, yards_gained)
 
-    print(f"Excluded {excluded_garbage} garbage-time plays, {excluded_no_ppa} plays with no PPA value.")
+            if offense:
+                s = stats[offense]
+                s["off_plays"] += 1
+                s["off_ppa_sum"] += ppa
+                s["off_success"] += 1 if success else 0
 
-    out_path = f"team_efficiency_{args.year}_wk{args.week}.csv"
-    with open(out_path, "w", newline="") as f:
+            if defense:
+                s = stats[defense]
+                s["def_plays"] += 1
+                s["def_ppa_sum"] += ppa
+                s["def_success"] += 1 if success else 0
+
+    if total_plays_seen == 0:
+        print("No plays returned across any week — check --year/--through-week.")
+        sys.exit(0)
+
+    print(f"\nTotal plays seen: {total_plays_seen}")
+    print(f"Excluded {total_excluded_garbage} garbage-time plays, {total_excluded_no_ppa} plays with no PPA value.")
+
+    teams_out = {}
+    for team, s in sorted(stats.items()):
+        off_ppa = s["off_ppa_sum"] / s["off_plays"] if s["off_plays"] else 0
+        off_sr = s["off_success"] / s["off_plays"] if s["off_plays"] else 0
+        def_ppa = s["def_ppa_sum"] / s["def_plays"] if s["def_plays"] else 0
+        def_sr = s["def_success"] / s["def_plays"] if s["def_plays"] else 0
+        teams_out[team] = {
+            "offPlays": s["off_plays"],
+            "offPpa": round(off_ppa, 4),
+            "offSuccessRate": round(off_sr, 4),
+            "defPlays": s["def_plays"],
+            "defPpa": round(def_ppa, 4),
+            "defSuccessRate": round(def_sr, 4),
+        }
+
+    payload = {
+        "year": args.year,
+        "asOfWeek": args.through_week,
+        "teams": teams_out,
+    }
+
+    out_dir = os.path.dirname(args.out_json)
+    if out_dir:
+        os.makedirs(out_dir, exist_ok=True)
+    with open(args.out_json, "w") as f:
+        json.dump(payload, f, indent=1)
+    print(f"\nWrote {args.out_json} ({len(teams_out)} teams, season-to-date through week {args.through_week}).")
+
+    csv_path = f"team_efficiency_{args.year}_thru_wk{args.through_week}.csv"
+    with open(csv_path, "w", newline="") as f:
         writer = csv.writer(f)
         writer.writerow([
             "team", "off_plays", "off_ppa_per_play", "off_success_rate",
             "def_plays", "def_ppa_per_play", "def_success_rate",
         ])
-        for team, s in sorted(stats.items()):
-            off_ppa = s["off_ppa_sum"] / s["off_plays"] if s["off_plays"] else 0
-            off_sr = s["off_success"] / s["off_plays"] if s["off_plays"] else 0
-            def_ppa = s["def_ppa_sum"] / s["def_plays"] if s["def_plays"] else 0
-            def_sr = s["def_success"] / s["def_plays"] if s["def_plays"] else 0
+        for team, s in teams_out.items():
             writer.writerow([
-                team, s["off_plays"], round(off_ppa, 4), round(off_sr, 4),
-                s["def_plays"], round(def_ppa, 4), round(def_sr, 4),
+                team, s["offPlays"], s["offPpa"], s["offSuccessRate"],
+                s["defPlays"], s["defPpa"], s["defSuccessRate"],
             ])
-
-    print(f"\nWrote {out_path}")
-    print("Upload this CSV in chat and I'll fold it into Hash Marks.")
+    print(f"Wrote {csv_path} (snapshot copy, not used by the site).")
 
 
 if __name__ == "__main__":
