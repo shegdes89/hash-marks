@@ -2143,5 +2143,159 @@
     "time": "2026-09-12T23:00:00.000Z",
     "homeML": null,
     "awayML": null
+  },
+  {
+    "week": 4,
+    "away": "Oregon",
+    "home": "USC",
+    "marketLine": -2.5,
+    "marketTotal": 62.5,
+    "neutral": false,
+    "time": "2026-09-26T23:30:00.000Z",
+    "homeML": -125,
+    "awayML": 105
+  },
+  {
+    "week": 4,
+    "away": "Oklahoma",
+    "home": "Georgia",
+    "marketLine": -13.5,
+    "marketTotal": 47.5,
+    "neutral": false,
+    "time": "2026-09-26T19:30:00.000Z",
+    "homeML": -485,
+    "awayML": 370
+  },
+  {
+    "week": 4,
+    "away": "Texas A&M",
+    "home": "LSU",
+    "marketLine": -5.5,
+    "marketTotal": 54.5,
+    "neutral": false,
+    "time": "2026-09-26T23:30:00.000Z",
+    "homeML": -205,
+    "awayML": 170
+  },
+  {
+    "week": 4,
+    "away": "Texas",
+    "home": "Tennessee",
+    "marketLine": 4.5,
+    "marketTotal": 56.5,
+    "neutral": false,
+    "time": "2026-09-26T16:00:00.000Z",
+    "homeML": 150,
+    "awayML": -180
+  },
+  {
+    "week": 4,
+    "away": "Boise State",
+    "home": "Western Michigan",
+    "marketLine": 7.5,
+    "marketTotal": 47.5,
+    "neutral": false,
+    "time": "2026-09-26T04:00:00.000Z",
+    "homeML": 240,
+    "awayML": -298
+  },
+  {
+    "week": 4,
+    "away": "UCLA",
+    "home": "Maryland",
+    "marketLine": 1.5,
+    "marketTotal": 51.5,
+    "neutral": false,
+    "time": "2026-09-26T17:30:00.000Z",
+    "homeML": -102,
+    "awayML": -118
+  },
+  {
+    "week": 4,
+    "away": "Ole Miss",
+    "home": "Florida",
+    "marketLine": -1.5,
+    "marketTotal": 57.5,
+    "neutral": false,
+    "time": "2026-09-26T19:30:00.000Z",
+    "homeML": -115,
+    "awayML": -105
+  },
+  {
+    "week": 4,
+    "away": "Iowa",
+    "home": "Michigan",
+    "marketLine": -4.5,
+    "marketTotal": 39.5,
+    "neutral": false,
+    "time": "2026-09-26T19:30:00.000Z",
+    "homeML": -192,
+    "awayML": 160
+  },
+  {
+    "week": 4,
+    "away": "Vanderbilt",
+    "home": "Auburn",
+    "marketLine": -8.5,
+    "marketTotal": 50.5,
+    "neutral": false,
+    "time": "2026-09-26T20:15:00.000Z",
+    "homeML": -340,
+    "awayML": 270
+  },
+  {
+    "week": 4,
+    "away": "Wisconsin",
+    "home": "Penn State",
+    "marketLine": -11.5,
+    "marketTotal": 42.5,
+    "neutral": false,
+    "time": "2026-09-26T21:00:00.000Z",
+    "homeML": -455,
+    "awayML": 350
+  },
+  {
+    "week": 4,
+    "away": "Nebraska",
+    "home": "Michigan State",
+    "marketLine": 5.5,
+    "marketTotal": 52.5,
+    "neutral": false,
+    "time": "2026-09-26T21:00:00.000Z",
+    "homeML": 170,
+    "awayML": -205
+  },
+  {
+    "week": 4,
+    "away": "South Carolina",
+    "home": "Alabama",
+    "marketLine": -11.5,
+    "marketTotal": 46.5,
+    "neutral": false,
+    "time": "2026-09-26T23:00:00.000Z",
+    "homeML": -455,
+    "awayML": 350
+  },
+  {
+    "week": 4,
+    "away": "Oklahoma State",
+    "home": "West Virginia",
+    "marketLine": 2.5,
+    "marketTotal": 57.5,
+    "neutral": false,
+    "time": "2026-09-26T23:00:00.000Z",
+    "homeML": 110,
+    "awayML": -130
+  },
+  {
+    "week": 4,
+    "away": "Missouri",
+    "home": "Mississippi State",
+    "marketLine": -1.5,
+    "marketTotal": 56.5,
+    "neutral": false,
+    "time": "2026-09-26T23:45:00.000Z",
+    "homeML": -115,
+    "awayML": -105
   }
 ]
