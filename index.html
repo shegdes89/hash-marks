@@ -1063,6 +1063,25 @@ function formatKickoff(timeStr){
   return d.toLocaleString(undefined, { weekday:'short', month:'short', day:'numeric', hour:'numeric', minute:'2-digit' });
 }
 
+// Rank a team's value for a given TEAM_STATS field against the rest of FBS.
+// higherIsBetter=true for offense metrics (more EPA/play, higher success%
+// is good); false for defense metrics (fewer EPA/play allowed, lower
+// opponent success% is good — "lower is better defense"). Teams with no
+// snaps in that split (e.g. a team that hasn't faced/run many pass plays
+// yet) are excluded from the ranking pool. Returns null if this team isn't
+// rankable (no plays of that type yet) or the pool is too small to be
+// meaningful.
+function rankTeamStat(team, statKey, playsKey, higherIsBetter){
+  const pool = Object.entries(TEAM_STATS).filter(([t,s])=> s && s[playsKey] > 0);
+  if(pool.length < 5) return null;
+  const teamEntry = TEAM_STATS[team];
+  if(!teamEntry || !(teamEntry[playsKey] > 0)) return null;
+  pool.sort((a,b)=> higherIsBetter ? (b[1][statKey]-a[1][statKey]) : (a[1][statKey]-b[1][statKey]));
+  const idx = pool.findIndex(([t])=> t === team);
+  if(idx === -1) return null;
+  return { rank: idx+1, total: pool.length };
+}
+
 function renderBoard(){
   const filterVal = document.getElementById('weekFilter').value;
   const sortVal = document.getElementById('sortFilter').value;
@@ -1157,46 +1176,68 @@ function renderBoard(){
 
     // Garbage-time-excluded EPA/success-rate panel (season-to-date), from
     // scripts/cfbd_garbage_time_stats.py via data/team_stats.json. Only
-    // rendered if we actually have both teams' stats synced.
+    // rendered if we actually have both teams' stats synced. Laid out as
+    // two "Offense vs Defense" comparisons (à la gameonpaper.com): each
+    // team's offense against the other's defense, overall + pass + rush,
+    // each cell showing the value and its rank out of the FBS teams we
+    // have data for. Ranks are NOT opponent-adjusted.
     const homeStats = TEAM_STATS[g.home];
     const awayStats = TEAM_STATS[g.away];
     const hasStats = !!(homeStats && awayStats);
     const isExpanded = statsExpanded.has(g.id);
     const fmtPpa = v => (v>=0?'+':'') + v.toFixed(2);
     const fmtPct = v => (v*100).toFixed(1)+'%';
+    const fmtRank = r => r ? `<span style="color:var(--muted);">#${r.rank}</span>` : '';
+
+    // Build one "offense vs defense" mini-table: offense team's off stats
+    // (higher-is-better) vs defense team's def stats (lower-is-better),
+    // overall/pass/rush rows.
+    function buildOffDefTable(offName, offS, defName, defS){
+      const rows = [
+        ['Overall',  'offPpa','offSuccessRate','offPlays', 'defPpa','defSuccessRate','defPlays'],
+        ['Pass',     'offPassPpa','offPassSuccessRate','offPassPlays', 'defPassPpa','defPassSuccessRate','defPassPlays'],
+        ['Rush',     'offRushPpa','offRushSuccessRate','offRushPlays', 'defRushPpa','defRushSuccessRate','defRushPlays'],
+      ];
+      const body = rows.map(([label, offPpaK, offSrK, offPlaysK, defPpaK, defSrK, defPlaysK])=>{
+        const offPpaRank = rankTeamStat(offName, offPpaK, offPlaysK, true);
+        const offSrRank = rankTeamStat(offName, offSrK, offPlaysK, true);
+        const defPpaRank = rankTeamStat(defName, defPpaK, defPlaysK, false);
+        const defSrRank = rankTeamStat(defName, defSrK, defPlaysK, false);
+        return `
+            <tr>
+              <td style="padding:2px 6px 2px 0;color:var(--muted);">${label}</td>
+              <td style="padding:2px 6px;">${fmtPpa(offS[offPpaK])} ${fmtRank(offPpaRank)}</td>
+              <td style="padding:2px 6px;">${fmtPct(offS[offSrK])} ${fmtRank(offSrRank)}</td>
+              <td style="padding:2px 6px;">${fmtPpa(defS[defPpaK])} ${fmtRank(defPpaRank)}</td>
+              <td style="padding:2px 6px;">${fmtPct(defS[defSrK])} ${fmtRank(defSrRank)}</td>
+            </tr>`;
+      }).join('');
+      return `
+        <div style="margin-bottom:10px;">
+          <div class="edge-label" style="margin-bottom:4px;font-weight:600;">${offName} Offense vs ${defName} Defense</div>
+          <table style="width:100%;border-collapse:collapse;">
+            <thead>
+              <tr style="color:var(--muted);text-align:left;">
+                <th style="padding:2px 6px 2px 0;"></th>
+                <th style="padding:2px 6px;">${offName} EPA/play</th>
+                <th style="padding:2px 6px;">${offName} Succ%</th>
+                <th style="padding:2px 6px;">${defName} EPA/play</th>
+                <th style="padding:2px 6px;">${defName} Succ%</th>
+              </tr>
+            </thead>
+            <tbody>${body}</tbody>
+          </table>
+        </div>`;
+    }
+
     let statsPanel = '';
     if(hasStats && isExpanded){
       statsPanel = `
       <div class="stats-panel" style="margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);font-size:12.5px;">
-        <div class="edge-label" style="margin-bottom:6px;">Garbage-time-excluded, season-to-date${TEAM_STATS_META.asOfWeek? ' (thru wk '+TEAM_STATS_META.asOfWeek+')' : ''} — EPA/play &amp; success rate</div>
-        <table style="width:100%;border-collapse:collapse;">
-          <thead>
-            <tr style="color:var(--muted);text-align:left;">
-              <th style="padding:2px 6px 2px 0;">Team</th>
-              <th style="padding:2px 6px;">Off EPA/play</th>
-              <th style="padding:2px 6px;">Off Succ%</th>
-              <th style="padding:2px 6px;">Def EPA/play</th>
-              <th style="padding:2px 6px;">Def Succ%</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style="padding:2px 6px 2px 0;">${g.away}</td>
-              <td style="padding:2px 6px;">${fmtPpa(awayStats.offPpa)}</td>
-              <td style="padding:2px 6px;">${fmtPct(awayStats.offSuccessRate)}</td>
-              <td style="padding:2px 6px;">${fmtPpa(awayStats.defPpa)}</td>
-              <td style="padding:2px 6px;">${fmtPct(awayStats.defSuccessRate)}</td>
-            </tr>
-            <tr>
-              <td style="padding:2px 6px 2px 0;">${g.home}</td>
-              <td style="padding:2px 6px;">${fmtPpa(homeStats.offPpa)}</td>
-              <td style="padding:2px 6px;">${fmtPct(homeStats.offSuccessRate)}</td>
-              <td style="padding:2px 6px;">${fmtPpa(homeStats.defPpa)}</td>
-              <td style="padding:2px 6px;">${fmtPct(homeStats.defSuccessRate)}</td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="edge-label" style="margin-top:4px;color:var(--muted);">Def EPA/play: lower (more negative) is better defense. Not opponent-adjusted.</div>
+        <div class="edge-label" style="margin-bottom:8px;">Garbage-time-excluded, season-to-date${TEAM_STATS_META.asOfWeek? ' (thru wk '+TEAM_STATS_META.asOfWeek+')' : ''} — EPA/play &amp; success rate, ranked vs FBS. Not opponent-adjusted.</div>
+        ${buildOffDefTable(g.away, awayStats, g.home, homeStats)}
+        ${buildOffDefTable(g.home, homeStats, g.away, awayStats)}
+        <div class="edge-label" style="color:var(--muted);">Defense EPA/play &amp; Succ% ranks: lower value = better defense = better (lower #) rank.</div>
       </div>`;
     }
 
