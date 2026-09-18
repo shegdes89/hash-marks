@@ -4,7 +4,8 @@ Hash Marks — Garbage-Time-Excluded Team Efficiency Puller
 Pulls play-by-play from CollegeFootballData.com for every week from 1
 through --through-week, strips out garbage-time snaps, and computes
 SEASON-TO-DATE opponent-un-adjusted offensive & defensive EPA-per-play
-(PPA) and success rate for every FBS team.
+(PPA) and success rate for every FBS team — overall, and split by rush
+vs. pass plays.
 
 USAGE
     pip install requests
@@ -77,6 +78,23 @@ def is_successful_play(down, distance, yards_gained):
         return yards_gained >= distance
 
 
+RUSH_KEYWORDS = ("rush", "rushing")
+PASS_KEYWORDS = ("pass", "sack", "interception")
+
+
+def classify_rush_pass(play_type):
+    """Return 'rush', 'pass', or None (special-teams/penalty/other plays we
+    don't split — they still count in the overall off/def totals above)."""
+    if not play_type:
+        return None
+    pt = play_type.lower()
+    if any(k in pt for k in RUSH_KEYWORDS):
+        return "rush"
+    if any(k in pt for k in PASS_KEYWORDS):
+        return "pass"
+    return None
+
+
 def fetch_plays(year, week, season_type, api_key):
     headers = {"Authorization": f"Bearer {api_key}"}
     params = {"year": year, "week": week, "seasonType": season_type, "classification": "fbs"}
@@ -101,6 +119,10 @@ def main():
     stats = defaultdict(lambda: {
         "off_plays": 0, "off_ppa_sum": 0.0, "off_success": 0,
         "def_plays": 0, "def_ppa_sum": 0.0, "def_success": 0,
+        "off_rush_plays": 0, "off_rush_ppa_sum": 0.0, "off_rush_success": 0,
+        "off_pass_plays": 0, "off_pass_ppa_sum": 0.0, "off_pass_success": 0,
+        "def_rush_plays": 0, "def_rush_ppa_sum": 0.0, "def_rush_success": 0,
+        "def_pass_plays": 0, "def_pass_ppa_sum": 0.0, "def_pass_success": 0,
     })
 
     total_excluded_garbage = 0
@@ -137,18 +159,35 @@ def main():
             distance = p.get("distance")
             yards_gained = p.get("yardsGained")
             success = is_successful_play(down, distance, yards_gained)
+            rush_or_pass = classify_rush_pass(p.get("playType"))
 
             if offense:
                 s = stats[offense]
                 s["off_plays"] += 1
                 s["off_ppa_sum"] += ppa
                 s["off_success"] += 1 if success else 0
+                if rush_or_pass == "rush":
+                    s["off_rush_plays"] += 1
+                    s["off_rush_ppa_sum"] += ppa
+                    s["off_rush_success"] += 1 if success else 0
+                elif rush_or_pass == "pass":
+                    s["off_pass_plays"] += 1
+                    s["off_pass_ppa_sum"] += ppa
+                    s["off_pass_success"] += 1 if success else 0
 
             if defense:
                 s = stats[defense]
                 s["def_plays"] += 1
                 s["def_ppa_sum"] += ppa
                 s["def_success"] += 1 if success else 0
+                if rush_or_pass == "rush":
+                    s["def_rush_plays"] += 1
+                    s["def_rush_ppa_sum"] += ppa
+                    s["def_rush_success"] += 1 if success else 0
+                elif rush_or_pass == "pass":
+                    s["def_pass_plays"] += 1
+                    s["def_pass_ppa_sum"] += ppa
+                    s["def_pass_success"] += 1 if success else 0
 
     if total_plays_seen == 0:
         print("No plays returned across any week — check --year/--through-week.")
@@ -157,19 +196,32 @@ def main():
     print(f"\nTotal plays seen: {total_plays_seen}")
     print(f"Excluded {total_excluded_garbage} garbage-time plays, {total_excluded_no_ppa} plays with no PPA value.")
 
+    def safe_div(n, d):
+        return n / d if d else 0
+
     teams_out = {}
     for team, s in sorted(stats.items()):
-        off_ppa = s["off_ppa_sum"] / s["off_plays"] if s["off_plays"] else 0
-        off_sr = s["off_success"] / s["off_plays"] if s["off_plays"] else 0
-        def_ppa = s["def_ppa_sum"] / s["def_plays"] if s["def_plays"] else 0
-        def_sr = s["def_success"] / s["def_plays"] if s["def_plays"] else 0
         teams_out[team] = {
             "offPlays": s["off_plays"],
-            "offPpa": round(off_ppa, 4),
-            "offSuccessRate": round(off_sr, 4),
+            "offPpa": round(safe_div(s["off_ppa_sum"], s["off_plays"]), 4),
+            "offSuccessRate": round(safe_div(s["off_success"], s["off_plays"]), 4),
             "defPlays": s["def_plays"],
-            "defPpa": round(def_ppa, 4),
-            "defSuccessRate": round(def_sr, 4),
+            "defPpa": round(safe_div(s["def_ppa_sum"], s["def_plays"]), 4),
+            "defSuccessRate": round(safe_div(s["def_success"], s["def_plays"]), 4),
+
+            "offRushPlays": s["off_rush_plays"],
+            "offRushPpa": round(safe_div(s["off_rush_ppa_sum"], s["off_rush_plays"]), 4),
+            "offRushSuccessRate": round(safe_div(s["off_rush_success"], s["off_rush_plays"]), 4),
+            "offPassPlays": s["off_pass_plays"],
+            "offPassPpa": round(safe_div(s["off_pass_ppa_sum"], s["off_pass_plays"]), 4),
+            "offPassSuccessRate": round(safe_div(s["off_pass_success"], s["off_pass_plays"]), 4),
+
+            "defRushPlays": s["def_rush_plays"],
+            "defRushPpa": round(safe_div(s["def_rush_ppa_sum"], s["def_rush_plays"]), 4),
+            "defRushSuccessRate": round(safe_div(s["def_rush_success"], s["def_rush_plays"]), 4),
+            "defPassPlays": s["def_pass_plays"],
+            "defPassPpa": round(safe_div(s["def_pass_ppa_sum"], s["def_pass_plays"]), 4),
+            "defPassSuccessRate": round(safe_div(s["def_pass_success"], s["def_pass_plays"]), 4),
         }
 
     payload = {
@@ -191,11 +243,15 @@ def main():
         writer.writerow([
             "team", "off_plays", "off_ppa_per_play", "off_success_rate",
             "def_plays", "def_ppa_per_play", "def_success_rate",
+            "off_rush_ppa", "off_rush_sr", "off_pass_ppa", "off_pass_sr",
+            "def_rush_ppa", "def_rush_sr", "def_pass_ppa", "def_pass_sr",
         ])
         for team, s in teams_out.items():
             writer.writerow([
                 team, s["offPlays"], s["offPpa"], s["offSuccessRate"],
                 s["defPlays"], s["defPpa"], s["defSuccessRate"],
+                s["offRushPpa"], s["offRushSuccessRate"], s["offPassPpa"], s["offPassSuccessRate"],
+                s["defRushPpa"], s["defRushSuccessRate"], s["defPassPpa"], s["defPassSuccessRate"],
             ])
     print(f"Wrote {csv_path} (snapshot copy, not used by the site).")
 
